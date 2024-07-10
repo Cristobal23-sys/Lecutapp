@@ -1,0 +1,22 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navbar-left,
+  .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-right {
+    margin-left: auto;
+  }
+  
+  .navbar-right .form-control,
+  .navbar-right .btn,
+  .navbar-right .dropdown {
+    margin-left: 0.5rem;
+  }
+ 
+
