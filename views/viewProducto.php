@@ -15,7 +15,7 @@ if (isset($_SESSION['user'])) {
         $cambio = "<a class='dropdown-item' href='../views/view-listacompra.php'>Lista de deseos</a>";
         $reg = "<a class='dropdown-item' href='../class/Cerrarsesion.php'>Cerrar Sesión</a>";
         
-        $listaA = "<a 10px>   </a> <a class='btn btn-primary' target='_blank' href='#' data-bs-toggle='modal' data-bs-target='#wishlistModal'>Añadir a lista de deseos</a>";
+        $listaA = "<a 10px>   </a> <a  class='btn btn-success ' style=''target='_blank' href='#' data-bs-toggle='modal' data-bs-target='#wishlistModal'>Añadir a lista de compras</a>";
 
         // Obtener las listas de deseos del usuario actual
         $query = "SELECT id, nombre FROM listacompra WHERE id_usuario = '$idUser'"; // Cambiado 'name' a 'nombre' si ese es el nombre correcto de la columna
@@ -40,7 +40,7 @@ if (isset($_SESSION['user'])) {
     $inicio = "Iniciar sesión";
     $cambio = "<a class='dropdown-item' href='../Views/view-register.php'>Iniciar Sesión</a>";
     $reg = "<a class='dropdown-item' href='../Views/view-register.php'>Registrarse</a>";
-    $listaA = "<a class='btn btn-secondary' style='pointer-events: none;'>Añadir a lista de deseos</a>";
+    $listaA = "<p class='card-text' style='color: Black; text-decoration: none; text-align: left;'>Para agregar un producto debes Iniciar Sesión</p>";
 }
 
 $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
@@ -186,16 +186,20 @@ if ($resultCategorias) {
                   <h5 class="card-title" style="color: Black;"><?php echo $name; ?></h5>
                   <p class="card-text" style="color: Black;"><?php echo $brand; ?></p>
                   <p class="card-text" style="color: Black;"><?php echo $descripcion; ?></p>
-                  <h5 class="card-text" style="color: black;"> Precio: <?php echo $price; ?></h5><br><br><br>
-                  <div class="d-flex justify-content-end">
-                    <a href="<?php echo $url ?>" class="btn btn-primary" target="_blank">Ir a la página</a><br>
-                    <?php echo $listaA ?>
+                  <h5 class="card-text" style="color: black;"> Precio: <?php echo $price; ?></h5><br><br>
+                  
+                  <div class="d-flex ">
+                    <a href="<?php echo $url ?>" class="btn btn-primary " style=" margin-bottom: 8px ;" target="_blank">Ir a la página</a><br>
+                   
+                    
                   </div>
-                </div>
+                  <a href="" style=""><?php echo $listaA ?></a>
               </div>
             </div>
           </div>
+          
         </div>
+        
       <?php
       }
       ?>
