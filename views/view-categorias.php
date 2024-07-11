@@ -169,7 +169,7 @@ try {
                   }
                   ?>
                   <button type="submit" class="btn btn-primary" style="margin-left: 35px;">Iniciar sesión</button>
-                  <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a href="view-register.php"
+                  <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a href="../views/view-register.php"
                     style="display: flex; justify-content: center;">Regístrate</a>
                 </form>
               </div>
