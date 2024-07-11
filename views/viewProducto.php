@@ -221,9 +221,14 @@ if ($resultCategorias) {
                 <?php echo $wishlistOptions; ?>
               </select>
             </div>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-center">
               <button type="submit" class="btn btn-primary">Añadir</button>
             </div>
+          </form>
+          <form action="../views/view-listacompra.php">
+          <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-link" style="text-decoration:none;">Crear Lista</button>
+          </div>
           </form>
         </div>
       </div>
