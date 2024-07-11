@@ -59,7 +59,12 @@ if (isset($_POST['prod']) && isset($_POST['wishlist'])) {
     }
 } else {
     // Parámetros inválidos
-    echo "Parámetros inválidos.";
+    echo "Debes crear una lista para agregar un producto.";
+    echo "<form action='../views/view-listacompra.php'>
+          <div class='d-flex justify-content-center'>
+          <button type='submit' style='margin-top:10px; margin-left:10px;'>Crear Lista</button>
+          </div>
+          </form>";
 }
 
 mysqli_close($conn);
