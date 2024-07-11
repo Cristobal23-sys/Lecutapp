@@ -89,83 +89,96 @@ try {
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
     <div class="container">
-        <a class="navbar-brand" href="../views/index.php">
+      <a class="navbar-brand" href="../views/index.php">
         Ahorrando®
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorías
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <?php foreach ($categorias as $categoria) { ?>
-                            <li><a class="dropdown-item" href="../views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a></li>
-                        <?php } ?>
-                    </ul>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Categorías
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <?php foreach ($categorias as $categoria) { ?>
+                <li><a class="dropdown-item"
+                    href="../views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Recetas
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                        <?php foreach ($TipoReceta as $TipoRecetas) { ?>
-                            <li><a class="dropdown-item" href="../views/view-cat-receta.php?TipoReceta=<?php echo $TipoRecetas; ?>"><?php echo $TipoRecetas; ?></a></li>
-                        <?php } ?>
-                        <li><a class="dropdown-item" href="../views/view-cat-receta.php?"> Todas </a></li>
-                    </ul>
+              <?php } ?>
+
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Recetas
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+              <?php foreach ($TipoReceta as $TipoRecetas) { ?>
+                <li><a class="dropdown-item"
+                    href="../views/view-cat-receta.php?TipoReceta=<?php echo $TipoRecetas; ?>"><?php echo $TipoRecetas; ?></a>
                 </li>
+              <?php } ?>
+              <li><a class="dropdown-item" href="../views/view-cat-receta.php?"> Todas </a></li>
             </ul>
-            <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
-                <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">🔎</button>
-            </form>
-            <ul class="navbar-nav">
-                <?php if (isset($_SESSION['username'])) { ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenido, <?php echo $_SESSION['username']; ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                            <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
-                            <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
-                <?php } else { ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Iniciar sesión
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
-                            <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
-                                <div class="mb-3">
-                                    <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
-                                    <input type="text" id="user" class="fadeIn second" name="user" placeholder="Usuario" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
-                                    <input type="password" name="pass" class="form-control fadeIn third" id="pass" placeholder="Contraseña" required onkeyup="maskPassword(this)">
-                                </div>
-                                <?php
-                                $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-                                unset($_SESSION['error_message']);
-                                if (!empty($errorMessage)) {
-                                    echo '<p style="color: red;">' . $errorMessage . '</p>';
-                                }
-                                ?>
-                                <button type="submit" class="btn btn-primary" style="margin-left: 35px;">Iniciar sesión</button>
-                                <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a href="view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
-                            </form>
-                        </div>
-                    </li>
-                <?php } ?>
-            </ul>
-        </div>
+          </li>
+        </ul>
+        <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
+          <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
+            aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">🔎</button>
+        </form>
+        <ul class="navbar-nav">
+          <?php if (isset($_SESSION['username'])) { ?>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Bienvenido, <?php echo $_SESSION['username']; ?>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+                <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
+                <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
+              </ul>
+            </li>
+          <?php } else { ?>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Iniciar sesión
+              </a>
+              <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
+                <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
+                  <div class="mb-3">
+                    <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
+                    <input type="text" id="user" class=" fadeIn second" name="user" placeholder="Usuario" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
+                    <input type="password" name="pass" class=" fadeIn third" id="pass"
+                      placeholder="Contraseña" required onkeyup="maskPassword(this)">
+                  </div>
+                  <?php
+                  $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+                  unset($_SESSION['error_message']);
+                  if (!empty($errorMessage)) {
+                    echo '<p style="color: red;">' . $errorMessage . '</p>';
+                  }
+                  ?>
+                  <button type="submit" class="btn btn-primary" style="margin-left: 35px;">Iniciar sesión</button>
+                  <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a href="view-register.php"
+                    style="display: flex; justify-content: center;">Regístrate</a>
+                </form>
+              </div>
+            </li>
+          <?php } ?>
+        </ul>
+      </div>
     </div>
-</nav>
+  </nav>
 </body>
 
 <!--carrusel-->
@@ -191,40 +204,46 @@ try {
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-<div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">   
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5" style="margin-top: 1px;">
-  <?php
-  if ($count > 0) {
-    $i = 0;
-    while ($row = mysqli_fetch_assoc($result)) {
-      $id = $row['id'];
-      $name = $row['producto_name'];
-      $urlImagen = $row['producto_image'];
-      $price = $row['producto_price'];
-      $categoria = $row['producto_categoria'];
-  ?>
- 
-      <div class="col">
-        <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-          <div class="card" style="background-color: rgb(1, 179, 200); width: 15.5rem; height: 23rem;">
-            <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
-            <div class="card-body">
-              <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
-              <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $categoria; ?></p>
-              <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $price; ?></p>
+<br>
+<br>
+<div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
+<div class="container my-4">
+    <div class="d-flex justify-content-center">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
+        <?php
+        if ($count > 0) {
+          $i = 0;
+          while ($row = mysqli_fetch_assoc($result)) {
+            $id = $row['id'];
+            $name = $row['producto_name'];
+            $urlImagen = $row['producto_image'];
+            $price = $row['producto_price'];
+            $brand = $row['producto_categoria'];
+            ?>
+           <div class="col">
+          <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+            <div class="card" style="background-color: rgb(1, 179, 200); width: 15.5rem; height: 26rem;">
+              <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
+              <div class="card-body">
+                <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
+                <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
+                <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $price; ?></p>
+                
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+
+        </div>
+            <?php
+          }
+        } else {
+          echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+        }
+        mysqli_close($connection);
+        ?>
       </div>
-  <?php
-     
-    }
-  } else {
-    echo "<p style='text-align: center;'>No se encontraron productos.</p>";
-  }
-  // Cerrar la conexión a la base de datos
-  mysqli_close($connection);
-  ?>
+    </div>
+  </div>
 </div>
       <br>
       <!-- paginacion -->

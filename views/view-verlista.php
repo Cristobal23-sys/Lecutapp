@@ -112,7 +112,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
                 <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
-                <li><a class="dropdown-item" href="../class/Cerrarsesionlistas.php">Cerrar sesión</a></li>
+                <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
               </ul>
             </li>
           <?php } else { ?>
@@ -125,11 +125,11 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                 <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
                   <div class="mb-3">
                     <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
-                    <input type="text" id="user" class="fadeIn second" name="user" placeholder="Usuario" required>
+                    <input type="text" id="user" class=" fadeIn second" name="user" placeholder="Usuario" required>
                   </div>
                   <div class="mb-3">
                     <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
-                    <input type="password" name="pass" class="form-control fadeIn third" id="pass"
+                    <input type="password" name="pass" class=" fadeIn third" id="pass"
                       placeholder="Contraseña" required onkeyup="maskPassword(this)">
                   </div>
                   <?php

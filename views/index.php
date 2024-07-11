@@ -156,11 +156,11 @@ try {
                 <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
                   <div class="mb-3">
                     <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
-                    <input type="text" id="user" class="fadeIn second" name="user" placeholder="Usuario" required>
+                    <input type="text" id="user" class=" fadeIn second" name="user" placeholder="Usuario" required>
                   </div>
                   <div class="mb-3">
                     <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
-                    <input type="password" name="pass" class="form-control fadeIn third" id="pass"
+                    <input type="password" name="pass" class=" fadeIn third" id="pass"
                       placeholder="Contraseña" required onkeyup="maskPassword(this)">
                   </div>
                   <?php
@@ -206,22 +206,23 @@ try {
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+<br>
+<br>
 <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
-
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5" style="margin-top: 1px;">
-    <?php
-    if ($count > 0) {
-      $i = 0;
-      while ($row = mysqli_fetch_assoc($result)) {
-        $id = $row['id'];
-        $name = $row['producto_name'];
-        $urlImagen = $row['producto_image'];
-        $price = $row['producto_price'];
-        $brand = $row['producto_categoria'];
-        
-        ?>
-
-        <div class="col">
+<div class="container my-4">
+    <div class="d-flex justify-content-center">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
+        <?php
+        if ($count > 0) {
+          $i = 0;
+          while ($row = mysqli_fetch_assoc($result)) {
+            $id = $row['id'];
+            $name = $row['producto_name'];
+            $urlImagen = $row['producto_image'];
+            $price = $row['producto_price'];
+            $brand = $row['producto_categoria'];
+            ?>
+           <div class="col">
           <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
             <div class="card" style="background-color: rgb(1, 179, 200); width: 15.5rem; height: 26rem;">
               <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
@@ -236,15 +237,15 @@ try {
           </a>
 
         </div>
-        <?php
-
-      }
-    } else {
-      echo "<p style='text-align: center;'>No se encontraron productos.</p>";
-    }
-    // Cerrar la conexión a la base de datos
-    mysqli_close($connection);
-    ?>
+            <?php
+          }
+        } else {
+          echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+        }
+        mysqli_close($connection);
+        ?>
+      </div>
+    </div>
   </div>
   <br>
   <!-- paginacion -->
