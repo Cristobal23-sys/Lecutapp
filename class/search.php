@@ -355,16 +355,16 @@ try {
             Categorias
           </h6>
           <p>
-            <a href="../Class/datos.php?brand=nike" class="text-reset">lacteos</a>
+            <a href="../views/view-categorias.php?producto_categoria=Lácteos" class="text-reset">Lácteos</a>
           </p>
           <p>
-            <a href="../Class/datos.php?brand=jordan" class="text-reset">frutas</a>
+            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y Verduras</a>
           </p>
           <p>
-            <a href="../Class/datos.php?brand=adidas" class="text-reset">verduras</a>
+            <a href="../views/view-categorias.php?producto_categoria=Carniceria" class="text-reset">Carnes</a>
           </p>
           <p>
-            <a href="../Class/datos.php?brand=vans" class="text-reset">carnes</a>
+            <a href="../views/view-categorias.php?producto_categoria=Botillería" class="text-reset">Botillería</a>
           </p>
         </div>
         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4" style="background-color: rgba(255, 2555, 255)">
@@ -372,16 +372,16 @@ try {
             Enlaces
           </h6>
           <p>
-            <a href="../Views/register.php" class="text-reset">Registrarse</a>
+            <a href="../views/view-register.php" class="text-reset">Registrarse</a>
           </p>
           <p>
-            <a href="../Views/login.php" class="text-reset">iniciar sesion</a>
+            <a href="../Views/index.php" class="text-reset">Proximamente</a>
           </p>
           <p>
-            <a href="../Views/index.php" class="text-reset">inicio</a>
+            <a href="../Views/index.php" class="text-reset">Inicio</a>
           </p>
           <p>
-            <a href="../Views/index.php" class="text-reset">Accesorios</a>
+            <a href="../views/view-cat-receta.php?" class="text-reset">Recetas</a>
           </p>
         </div>
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4" style="background-color: rgba(255, 255, 255)">
