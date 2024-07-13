@@ -54,6 +54,12 @@ if ($resultCategorias) {
     // Manejar error en la consulta de categorías
     echo "Error en la consulta de categorías: " . mysqli_error($conn);
 }
+$sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
+$resultReceta = mysqli_query($conn, $sqlReceta);
+$TipoReceta = [];
+while ($row = mysqli_fetch_assoc($resultReceta)) {
+  $TipoReceta[] = $row['TipoReceta'];
+}
 ?>
 <!DOCTYPE html>
 <html>
