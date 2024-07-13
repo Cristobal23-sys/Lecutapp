@@ -4,68 +4,91 @@ require_once '../class/connection.php';
 $conn = new connection();
 
 try {
-  $connection = $conn->conectar();
-  session_start();
+    $connection = $conn->conectar();
+    session_start();
 
-  // Obtener el número total de registros
-  $sqlTotal = "SELECT COUNT(*) AS total FROM producto";
-  $resultTotal = mysqli_query($connection, $sqlTotal);
-  $rowTotal = mysqli_fetch_assoc($resultTotal);
-  $totalRegistros = $rowTotal['total'];
+    // Obtener el número total de registros
+    $sqlTotal = "SELECT COUNT(*) AS total FROM producto";
+    $resultTotal = mysqli_query($connection, $sqlTotal);
+    $rowTotal = mysqli_fetch_assoc($resultTotal);
+    $totalRegistros = $rowTotal['total'];
 
-  $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
-  $resultCategorias = mysqli_query($connection, $sqlCategorias);
-  $categorias = [];
-  while ($row = mysqli_fetch_assoc($resultCategorias)) {
-    $categorias[] = $row['producto_categoria'];
-  }
+    $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
+    $resultCategorias = mysqli_query($connection, $sqlCategorias);
+    $categorias = [];
+    while ($row = mysqli_fetch_assoc($resultCategorias)) {
+        $categorias[] = $row['producto_categoria'];
+    }
 
-  $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
-  $resultReceta = mysqli_query($connection, $sqlReceta);
-  $TipoReceta = [];
-  while ($row = mysqli_fetch_assoc($resultReceta)) {
-    $TipoReceta[] = $row['TipoReceta'];
-  }
-  //$supermercado = "SELECT * FROM receta WHERE producto_url LIKE '%santaisabel%'";
+    $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
+    $resultReceta = mysqli_query($connection, $sqlReceta);
+    $TipoReceta = [];
+    while ($row = mysqli_fetch_assoc($resultReceta)) {
+        $TipoReceta[] = $row['TipoReceta'];
+    }
 
-  // Definir la cantidad de resultados por página
-  $resultadosPorPagina = 25;
+    // Definir la cantidad de resultados por página
+    $resultadosPorPagina = 25;
 
-  // Calcular el número total de páginas
-  $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
+    // Calcular el número total de páginas
+    $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
 
-  // Obtener el número de página actual
-  $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+    // Obtener el número de página actual
+    $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
-  // Calcular el índice de inicio y fin de los resultados
-  $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
-  $indiceFin = $indiceInicio + $resultadosPorPagina;
+    // Calcular el índice de inicio y fin de los resultados
+    $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
+    $indiceFin = $indiceInicio + $resultadosPorPagina;
 
-  // Obtener el rango de precio seleccionado
-  $rangoSeleccionado = isset($_GET['precio']) ? $_GET['precio'] : "";
+    // Obtener el rango de precio seleccionado
+    $rangoSeleccionado = isset($_GET['precio']) ? $_GET['precio'] : "";
 
-  // Reiniciar la consulta SQL
-  $sql = "SELECT * FROM `producto`";
+    // Obtener el criterio de orden seleccionado
+    $orden = isset($_GET['orden']) ? $_GET['orden'] : "";
 
-  // Verificar si se ha seleccionado un rango de precio
-  if (!empty($rangoSeleccionado)) {
-    $precioMin = $rangosPrecios[$rangoSeleccionado][0];
-    $precioMax = $rangosPrecios[$rangoSeleccionado][1];
+    // Reiniciar la consulta SQL
+    $sql = "SELECT * FROM `producto`";
 
-    // Modificar la consulta SQL para incluir el filtro de precio
-    $sql .= " WHERE `price` BETWEEN $precioMin AND $precioMax";
-  }
+    // Verificar si se ha seleccionado un rango de precio
+    if (!empty($rangoSeleccionado)) {
+        $precioMin = $rangosPrecios[$rangoSeleccionado][0];
+        $precioMax = $rangosPrecios[$rangoSeleccionado][1];
 
-  // Modificar la consulta SQL para incluir la paginación
-  $sql .= " ORDER BY RAND() LIMIT $indiceInicio, $resultadosPorPagina";
+        // Modificar la consulta SQL para incluir el filtro de precio
+        $sql .= " WHERE `price` BETWEEN $precioMin AND $precioMax";
+    }
 
-  $result = mysqli_query($connection, $sql);
-  $count = mysqli_num_rows($result);
+    // Modificar la consulta SQL para incluir el criterio de ordenamiento
+    switch ($orden) {
+        case 'precio_asc':
+            $sql .= " ORDER BY `producto_price` ASC";
+            break;
+        case 'precio_desc':
+            $sql .= " ORDER BY `producto_price` DESC";
+            break;
+        case 'nombre_asc':
+            $sql .= " ORDER BY `producto_name` ASC";
+            break;
+        case 'nombre_desc':
+            $sql .= " ORDER BY `producto_name` DESC";
+            break;
+        default:
+            // Por defecto, ordenar por alguna columna relevante
+            $sql .= " ORDER BY RAND()"; // Ordenar aleatoriamente si no se especifica orden
+            break;
+    }
+
+    // Modificar la consulta SQL para incluir la paginación
+    $sql .= " LIMIT $indiceInicio, $resultadosPorPagina";
+
+    $result = mysqli_query($connection, $sql);
+    $count = mysqli_num_rows($result);
 } catch (Exception $e) {
-  echo "Error de conexión a la base de datos: " . $e->getMessage();
-  exit;
+    echo "Error de conexión a la base de datos: " . $e->getMessage();
+    exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -206,46 +229,69 @@ try {
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-<br>
-<br>
+
+
+<div class="container my-4">
+    <div class="row">
+               
+        <div class="col-md-6">
+            <div class="dropdown">
+                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                🟰FILTROS
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="?orden=precio_asc">Precio Menor a Mayor</a></li>
+                    <li><a class="dropdown-item" href="?orden=precio_desc">Precio Mayor a Menor</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="?orden=nombre_asc">Nombre (A-Z)</a></li>
+                    <li><a class="dropdown-item" href="?orden=nombre_desc">Nombre (Z-A)</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+
 <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
 <div class="container my-4">
     <div class="d-flex justify-content-center">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
-        <?php
-        if ($count > 0) {
-          $i = 0;
-          while ($row = mysqli_fetch_assoc($result)) {
+    <?php
+    if ($count > 0) {
+        $i = 0;
+        while ($row = mysqli_fetch_assoc($result)) {
             $id = $row['id'];
             $name = $row['producto_name'];
             $urlImagen = $row['producto_image'];
             $price = $row['producto_price'];
             $brand = $row['producto_categoria'];
             $logo = $row['producto_logo'];
+            // Obtener los primeros 35 caracteres del nombre
+            $shortName = substr($name, 0, 35);
+            // Formatear el precio
+            $formattedPrice = "$" . number_format($price, 0, '', '.');
             ?>
-           <div class="col">
-          <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-            <div class="card" style="background-color: rgb(1, 179, 200); width: 15.5rem; height: 26rem;">
-              <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
-              <div class="card-body">
-                <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
-                <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
-                <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $price; ?></p>
-                <img src="<?php echo $logo; ?>" class="" alt="Imagen" style="height: 3%;">
-              </div>
-              
+            <div class="col">
+                <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+                    <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
+                        <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: black; font-size: 1.0rem;"><?php echo $shortName; ?></h5>
+                            <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
+                            <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $formattedPrice; ?></p>
+                            <img src="<?php echo $logo; ?>" alt="Imagen" style="height: 10%; position: absolute; bottom: 1%; right: 1%;">
+                        </div>
+                    </div>
+                </a>
             </div>
-          </a>
-
-        </div>
             <?php
-          }
-        } else {
-          echo "<p style='text-align: center;'>No se encontraron productos.</p>";
         }
-        mysqli_close($connection);
-        ?>
-      </div>
+    } else {
+        echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+    }
+    mysqli_close($connection);
+    ?>
+</div>
+
     </div>
   </div>
   <br>

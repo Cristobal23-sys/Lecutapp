@@ -165,6 +165,10 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                 WHERE w.id = $idL";
       $result = $conn->query($sql);
 
+
+
+      
+      $total = 0;
       if ($result) {
         if ($result->num_rows > 0) {
           // Iterar sobre los resultados y mostrar la información
@@ -172,9 +176,15 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             $id = $row['id'];
             $name = $row['producto_name'];
             $urlImagen = $row['producto_image'];
-            $price = $row['producto_price'];
+            $price = number_format($row['producto_price'], 0, ',', '.'); // Formato sin decimales y separador de miles
             $brand = $row['producto_categoria'];
             $url = $row['producto_url'];
+            $price = intval($row['producto_price']); // Convertir a entero si es necesario
+            $total += $price;
+
+            // Formatear el precio con símbolo de dólar y separadores de miles
+            $formatted_price = '$' . number_format($price, 0, ',', '.'); // Formato sin decimales y separador de miles
+
             ?>
             <div class="card mb-4 col-12 col-md-8" style="background-color: rgb(255, 255, 255); margin-top: 10px;">
               <div class="row g-0 align-items-start">
@@ -185,7 +195,8 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                   <div class="card-body d-flex flex-column">
                     <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
                     <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
-                    <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $price; ?></p>
+                    <p class="card-title" style="color: black; font-size: 1.1rem;">$<?php echo $price; ?></p>
+
                     <div class="mt-auto">
                       <div class="card-footer d-flex flex-column justify-content-end align-items-end"
                         style="background-color: transparent; border: none;">
@@ -209,6 +220,17 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
       }
       ?>
     </div>
+    
+<?php
+    $formatted_total = '$' . number_format($total, 0, ',', '.'); // Formato sin decimales y separador de miles
+?>
+
+<!-- Código HTML para mostrar el total -->
+<div class="row justify-content-center mt-3">
+    <div class="col-auto">
+        <h2>Total: <?php echo $formatted_total; ?></h2>
+    </div>
+</div>
     <div class="row justify-content-center mt-3">
       <div class="col-auto">
         <a href="../views/index.php" class="btn btn-success">Añadir productos</a>

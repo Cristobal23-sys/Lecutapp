@@ -4,90 +4,108 @@ require_once '../class/connection.php';
 $conn = new connection();
 
 try {
-    $connection = $conn->conectar();
-    session_start();
+  $connection = $conn->conectar();
+  session_start();
 
-    // Obtener las categorías de productos
-    $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
-    $resultCategorias = mysqli_query($connection, $sqlCategorias);
-    $categorias = [];
-    while ($row = mysqli_fetch_assoc($resultCategorias)) {
-        $categorias[] = $row['producto_categoria'];
+  // Obtener las categorías de productos
+  $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
+  $resultCategorias = mysqli_query($connection, $sqlCategorias);
+  $categorias = [];
+  while ($row = mysqli_fetch_assoc($resultCategorias)) {
+    $categorias[] = $row['producto_categoria'];
+  }
+
+  $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
+  $resultReceta = mysqli_query($connection, $sqlReceta);
+  $TipoReceta = [];
+  while ($row = mysqli_fetch_assoc($resultReceta)) {
+    $TipoReceta[] = $row['TipoReceta'];
+  }
+
+  // Obtener el número total de registros según la categoría seleccionada
+  $categoriaSeleccionada = isset($_GET['producto_categoria']) ? $_GET['producto_categoria'] : "";
+
+  $sqlTotal = "SELECT COUNT(*) AS total FROM producto";
+  if (!empty($categoriaSeleccionada)) {
+    $sqlTotal .= " WHERE producto_categoria = '$categoriaSeleccionada'";
+  }
+
+  $resultTotal = mysqli_query($connection, $sqlTotal);
+  $rowTotal = mysqli_fetch_assoc($resultTotal);
+  $totalRegistros = $rowTotal['total'];
+
+  // Definir la cantidad de resultados por página
+  $resultadosPorPagina = 25;
+
+  // Calcular el número total de páginas
+  $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
+
+  // Obtener el número de página actual
+  $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+
+  // Calcular el índice de inicio y fin de los resultados
+  $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
+
+  // Reiniciar la consulta SQL
+  $sql = "SELECT * FROM `producto`";
+
+  // Verificar si se ha seleccionado una categoría
+  if (!empty($categoriaSeleccionada)) {
+    $sql .= " WHERE `producto_categoria` = '$categoriaSeleccionada'";
+  }
+
+  // Modificar la consulta SQL para incluir el ordenamiento
+  if (isset($_GET['orden'])) {
+    switch ($_GET['orden']) {
+      case 'precio_asc':
+        $sql .= " ORDER BY producto_price ASC";
+        break;
+      case 'precio_desc':
+        $sql .= " ORDER BY producto_price DESC";
+        break;
+      case 'nombre_asc':
+        $sql .= " ORDER BY producto_name ASC";
+        break;
+      case 'nombre_desc':
+        $sql .= " ORDER BY producto_name DESC";
+        break;
+      default:
+        // Por defecto, no se aplica ningún orden
+        break;
     }
+  }
 
-    // Obtener el número total de registros
-    $categoria = $_GET['producto_categoria'];
-    $sqlTotal = "SELECT COUNT(*) AS total FROM producto WHERE producto_categoria='$categoria'";
-    $resultTotal = mysqli_query($connection, $sqlTotal);
-    $rowTotal = mysqli_fetch_assoc($resultTotal);
-    $totalRegistros = $rowTotal['total'];
-    
-    $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
-    $resultCategorias = mysqli_query($connection, $sqlCategorias);
-    $categorias = [];
-    while ($row = mysqli_fetch_assoc($resultCategorias)) {
-        $categorias[] = $row['producto_categoria'];
-    }
+  // Añadir límite y offset para la paginación
+  $sql .= " LIMIT $indiceInicio, $resultadosPorPagina";
 
-    $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
-    $resultReceta = mysqli_query($connection, $sqlReceta);
-    $TipoReceta = [];
-    while ($row = mysqli_fetch_assoc($resultReceta)) {
-        $TipoReceta[] = $row['TipoReceta'];
-    }
-
-    // Definir la cantidad de resultados por página
-    $resultadosPorPagina = 25;
-
-    // Calcular el número total de páginas
-    $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
-
-    // Obtener el número de página actual
-    $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-
-    // Calcular el índice de inicio y fin de los resultados
-    $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
-    $indiceFin = $indiceInicio + $resultadosPorPagina;
-
-    // Obtener la categoría seleccionada
-    $categoriaSeleccionada = isset($_GET['producto_categoria']) ? $_GET['producto_categoria'] : "";
-
-    // Reiniciar la consulta SQL
-    $sql = "SELECT * FROM `producto`";
-
-    // Verificar si se ha seleccionado una categoría
-    if (!empty($categoriaSeleccionada)) {
-        $sql .= " WHERE `producto_categoria` = '$categoriaSeleccionada'";
-    }
-
-    // Modificar la consulta SQL para incluir la paginación
-    $sql .= " LIMIT $indiceInicio, $resultadosPorPagina";
-
-    $result = mysqli_query($connection, $sql);
-    $count = mysqli_num_rows($result);
+  $result = mysqli_query($connection, $sql);
+  $count = mysqli_num_rows($result);
 } catch (Exception $e) {
-    echo "Error de conexión a la base de datos: " . $e->getMessage();
-    exit;
+  echo "Error de conexión a la base de datos: " . $e->getMessage();
+  exit;
 }
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahorrando</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ahorrando</title>
 </head>
+
 <body style="background-color: rgb(255, 255, 255);">
-    <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+  <!--Navbar-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
     <div class="container">
       <a class="navbar-brand" href="../views/index.php">
         Ahorrando®
@@ -106,7 +124,7 @@ try {
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <?php foreach ($categorias as $categoria) { ?>
                 <li><a class="dropdown-item"
-                    href="../views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
+                    href="?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
                 </li>
               <?php } ?>
 
@@ -140,7 +158,8 @@ try {
                 Bienvenido, <?php echo $_SESSION['username']; ?>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
+                <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a>
+                </li>
                 <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
               </ul>
             </li>
@@ -158,19 +177,18 @@ try {
                   </div>
                   <div class="mb-3">
                     <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
-                    <input type="password" name="pass" class=" fadeIn third" id="pass"
-                      placeholder="Contraseña" required onkeyup="maskPassword(this)">
+                    <input type="password" name="pass" class=" fadeIn third" id="pass" placeholder="Contraseña" required
+                      onkeyup="maskPassword(this)">
                   </div>
                   <?php
                   $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
                   unset($_SESSION['error_message']);
                   if (!empty($errorMessage)) {
-                    echo '<p style="color: red;">' . $errorMessage . '</p>';
+                    echo '<div class="alert alert-danger" role="alert">' . $errorMessage . '</div>';
                   }
                   ?>
-                  <button type="submit" class="btn btn-primary" style="margin-left: 35px;">Iniciar sesión</button>
-                  <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a href="../views/view-register.php"
-                    style="display: flex; justify-content: center;">Regístrate</a>
+                  <button type="submit" class="btn btn-primary fadeIn fourth">Iniciar sesión</button>
+                  <a class="dropdown-item" href="../class/f1.php">Registrarse</a></p>
                 </form>
               </div>
             </li>
@@ -179,102 +197,138 @@ try {
       </div>
     </div>
   </nav>
-</body>
-
-<!--carrusel-->
-</div>
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+  <!--Navbar-->
+  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="../img/banner1.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="../img/banner2.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="../img/banner3.png" class="d-block w-100" alt="...">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
-<br>
-<br>
-<div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
-<div class="container my-4">
-    <div class="d-flex justify-content-center">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
-        <?php
-        if ($count > 0) {
-          $i = 0;
-          while ($row = mysqli_fetch_assoc($result)) {
-            $id = $row['id'];
-            $name = $row['producto_name'];
-            $urlImagen = $row['producto_image'];
-            $price = $row['producto_price'];
-            $brand = $row['producto_categoria'];
-            ?>
-           <div class="col">
-          <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-            <div class="card" style="background-color: rgb(1, 179, 200); width: 15.5rem; height: 26rem;">
-              <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
-              <div class="card-body">
-                <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
-                <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
-                <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $price; ?></p>
-                
-              </div>
-            </div>
-          </a>
-
-        </div>
-            <?php
-          }
-        } else {
-          echo "<p style='text-align: center;'>No se encontraron productos.</p>";
-        }
-        mysqli_close($connection);
-        ?>
+      <div class="carousel-item active">
+        <img src="../img/banner1.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="../img/banner2.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="../img/banner3.png" class="d-block w-100" alt="...">
       </div>
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
-</div>
-      <br>
-      <!-- paginacion -->
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <?php if ($paginaActual > 1) : ?>
-            <li class="page-item">
-              <a class="page-link" href="?pagina=<?php echo ($paginaActual - 1); ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
+  <!-- Contenido principal -->
+  <div class="container my-4">
+    <div class="row">
+      <!-- Menú desplegable para ordenar productos -->
+      <div class="col-md-6">
+        <div class="dropdown">
+          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            🟰FILTROS
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item"
+                href="?producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=precio_asc">Precio Menor a
+                Mayor</a></li>
+            <li><a class="dropdown-item"
+                href="?producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=precio_desc">Precio Mayor a
+                Menor</a></li>
+            <li>
+              <hr class="dropdown-divider">
             </li>
-          <?php endif; ?>
+            <li><a class="dropdown-item"
+                href="?producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=nombre_asc">Nombre (A-Z)</a></li>
+            <li><a class="dropdown-item"
+                href="?producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=nombre_desc">Nombre (Z-A)</a></li>
+          </ul>
+        </div>
+      </div>
+      </div>
+      </div>
+      <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
+        <div class="container my-4">
+          <div class="d-flex justify-content-center">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
+              <?php
+              if ($count > 0) {
+                $i = 0;
+                while ($row = mysqli_fetch_assoc($result)) {
+                  $id = $row['id'];
+                  $name = $row['producto_name'];
+                  $urlImagen = $row['producto_image'];
+                  $price = $row['producto_price'];
+                  $brand = $row['producto_categoria'];
+                  $logo = $row['producto_logo'];
+                  // Obtener los primeros 35 caracteres del nombre
+                  $shortName = substr($name, 0, 35);
+                  // Formatear el precio
+                  $formattedPrice = "$" . number_format($price, 0, '', '.');
+                  ?>
+                  <div class="col">
+                    <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+                      <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
+                        <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
+                        <div class="card-body">
+                          <h5 class="card-title" style="color: black; font-size: 1.0rem;"><?php echo $shortName; ?></h5>
+                          <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
+                          <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $formattedPrice; ?></p>
+                          <img src="<?php echo $logo; ?>" alt="Imagen"
+                            style="height: 10%; position: absolute; bottom: 1%; right: 1%;">
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <?php
+                }
+              } else {
+                echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+              }
+              mysqli_close($connection);
+              ?>
+            </div>
 
-          <?php
-          // Calcular los límites inferior y superior para las páginas
-          $limiteInferior = max(1, $paginaActual - 2);
-          $limiteSuperior = min($totalPaginas, $paginaActual + 2);
-
-          for ($i = $limiteInferior; $i <= $limiteSuperior; $i++) :
-          ?>
-            <li class="page-item <?php echo ($i == $paginaActual) ? 'active' : ''; ?>">
-              <a class="page-link" href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>"><?php echo $i; ?></a>
-              
-
-            </li>
-          <?php endfor; ?>
-
-          <?php if ($paginaActual < $totalPaginas) : ?>
+          </div>
+        </div>
+        <br>
+        <!-- paginacion -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <?php if ($paginaActual > 1): ?>
               <li class="page-item">
-                <a class="page-link" href="?pagina=<?php echo ($paginaActual + 1); ?>&producto_categoria=<?php echo $categoriaSeleccionada;?>" aria-label="Next">
+                <a class="page-link"
+                  href="?pagina=<?php echo ($paginaActual - 1); ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>"
+                  aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+            <?php endif; ?>
+
+            <?php
+            // Calcular los límites inferior y superior para las páginas
+            $limiteInferior = max(1, $paginaActual - 2);
+            $limiteSuperior = min($totalPaginas, $paginaActual + 2);
+
+            for ($i = $limiteInferior; $i <= $limiteSuperior; $i++):
+              ?>
+              <li class="page-item <?php echo ($i == $paginaActual) ? 'active' : ''; ?>">
+                <a class="page-link"
+                  href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>"><?php echo $i; ?></a>
+
+
+              </li>
+            <?php endfor; ?>
+
+            <?php if ($paginaActual < $totalPaginas): ?>
+              <li class="page-item">
+                <a class="page-link"
+                  href="?pagina=<?php echo ($paginaActual + 1); ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>"
+                  aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                   <span class="sr-only">Next</span>
                 </a>
@@ -282,57 +336,66 @@ try {
             <?php endif; ?>
           </ul>
         </nav>
-    </div>
 
+      </div>
 
-
-    <script>
-      function toggleForm() {
-        var form = document.getElementById("filter-form");
-
-        // Verificar si el formulario está oculto
-        if (form.style.display === "none") {
-          // Mostrar el formulario con animación
-          form.style.opacity = 0;
-          form.style.display = "block";
-          // Aplicar la animación de fundido
-          fadeIn(form);
-        } else {
-          // Ocultar el formulario con animación
-          fadeOut(form, function() {
-            form.style.display = "none";
-          });
+      <!-- Scripts JavaScript -->
+      <script>
+        // Función para mostrar contraseña en el formulario de inicio de sesión
+        function maskPassword(input) {
+          if (input.type === "password") {
+            input.type = "text";
+          } else {
+            input.type = "password";
+          }
         }
-      }
+      </script>
+      <script>
+        function toggleForm() {
+          var form = document.getElementById("filter-form");
 
-      // Función para animar la aparición gradual del elemento
-      function fadeIn(element) {
-        var opacity = 0;
-        var timer = setInterval(function() {
-          if (opacity >= 1) {
-            clearInterval(timer);
+          // Verificar si el formulario está oculto
+          if (form.style.display === "none") {
+            // Mostrar el formulario con animación
+            form.style.opacity = 0;
+            form.style.display = "block";
+            // Aplicar la animación de fundido
+            fadeIn(form);
+          } else {
+            // Ocultar el formulario con animación
+            fadeOut(form, function () {
+              form.style.display = "none";
+            });
           }
-          element.style.opacity = opacity;
-          opacity += 0.1;
-        }, 50);
-      }
+        }
 
-      // Función para animar la desaparición gradual del elemento
-      function fadeOut(element, callback) {
-        var opacity = 1;
-        var timer = setInterval(function() {
-          if (opacity <= 0) {
-            clearInterval(timer);
-            callback();
-          }
-          element.style.opacity = opacity;
-          opacity -= 0.1;
-        }, 50);
-      }
-    </script>
+        // Función para animar la aparición gradual del elemento
+        function fadeIn(element) {
+          var opacity = 0;
+          var timer = setInterval(function () {
+            if (opacity >= 1) {
+              clearInterval(timer);
+            }
+            element.style.opacity = opacity;
+            opacity += 0.1;
+          }, 50);
+        }
+
+        // Función para animar la desaparición gradual del elemento
+        function fadeOut(element, callback) {
+          var opacity = 1;
+          var timer = setInterval(function () {
+            if (opacity <= 0) {
+              clearInterval(timer);
+              callback();
+            }
+            element.style.opacity = opacity;
+            opacity -= 0.1;
+          }, 50);
+        }
+      </script>
 
 </body>
-
 <footer class="" style="margin-left:0px; color:black;">
   <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
     <div class="me-5 d-none d-lg-block">
@@ -378,7 +441,8 @@ try {
             <a href="../views/view-categorias.php?producto_categoria=Lácteos" class="text-reset">Lácteos</a>
           </p>
           <p>
-            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y Verduras</a>
+            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y
+              Verduras</a>
           </p>
           <p>
             <a href="../views/view-categorias.php?producto_categoria=Carniceria" class="text-reset">Carnes</a>
@@ -422,5 +486,4 @@ try {
     <a class="text-reset fw-bold" href="../Views/index.php">AHORRANDO<i class="fa-solid fa-cart-shopping"></i></a>
   </div>
 </footer>
-
 </html>
