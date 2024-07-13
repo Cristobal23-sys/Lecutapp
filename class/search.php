@@ -132,7 +132,7 @@ try {
                             Bienvenido, <?php echo $_SESSION['username']; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                            <li><a class="dropdown-item" href="iniciosesion.php">Lista de compras</a></li>
+                            <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
                             <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
                         </ul>
                     </li>
