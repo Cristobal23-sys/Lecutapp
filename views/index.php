@@ -221,6 +221,7 @@ try {
             $urlImagen = $row['producto_image'];
             $price = $row['producto_price'];
             $brand = $row['producto_categoria'];
+            $logo = $row['producto_logo'];
             ?>
            <div class="col">
           <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
@@ -230,7 +231,7 @@ try {
                 <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
                 <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
                 <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $price; ?></p>
-                
+                <img src="<?php echo $logo; ?>" class="" alt="Imagen" style="height: 3%;">
               </div>
               
             </div>
