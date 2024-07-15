@@ -150,12 +150,9 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
       </div>
     </div>
   </nav>
-
-
-
-
   <div class="container" style="background-color: rgb(255, 255, 255); margin-top: 25px;">
-    <div class="row justify-content-center">
+  <a href="../views/view-listacompra.php" class="btn btn-link text-decoration-none" style="margin-left:15%; color: black">⬅️ Volver Atrás</a>
+  <div class="row justify-content-center">      
       <?php
       // Verificar si el usuario tiene listas de deseos
       $sql = "SELECT c.id, c.producto_name AS producto_name, c.producto_url, c.producto_image AS producto_image, c.producto_categoria AS producto_categoria, c.producto_price AS producto_price, c.producto_url AS producto_url
@@ -176,14 +173,14 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             $id = $row['id'];
             $name = $row['producto_name'];
             $urlImagen = $row['producto_image'];
-            $price = number_format($row['producto_price'], 0, ',', '.'); // Formato sin decimales y separador de miles
+            $price = number_format($row['producto_price'], 0, '', '.'); // Formato sin decimales y separador de miles
             $brand = $row['producto_categoria'];
             $url = $row['producto_url'];
-            $price = intval($row['producto_price']); // Convertir a entero si es necesario
-            $total += $price;
+            $prices = intval($row['producto_price']); // Convertir a entero si es necesario
+            $total += $prices;
 
             // Formatear el precio con símbolo de dólar y separadores de miles
-            $formatted_price = '$' . number_format($price, 0, ',', '.'); // Formato sin decimales y separador de miles
+            $formatted_Price = "$" . number_format($price, 0, '', '.'); // Formato sin decimales y separador de miles
 
             ?>
             <div class="card mb-4 col-12 col-md-8" style="background-color: rgb(255, 255, 255); margin-top: 10px;">
@@ -224,8 +221,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
 <?php
     $formatted_total = '$' . number_format($total, 0, ',', '.'); // Formato sin decimales y separador de miles
 ?>
-
-<!-- Código HTML para mostrar el total -->
+<!-- mostrar el total -->
 <div class="row justify-content-center mt-3">
     <div class="col-auto">
         <h2>Total: <?php echo $formatted_total; ?></h2>
@@ -237,7 +233,6 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
       </div>
     </div>
 </div>
-
   <?php if (isset($alert_message)): ?>
     <script>
       alert("<?php echo $alert_message; ?>");
