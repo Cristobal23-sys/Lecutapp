@@ -7,13 +7,13 @@
     $Auth = new Auth();
 
     if ($Auth->registrar($email, $pass, $user)) {
-        $_SESSION['error_message'] = "Usuario registrado correctamente.";
+        $_SESSION['message'] = "Usuario registrado correctamente.";
+        $_SESSION['message_type'] = "success";
         header("location:../views/view-register.php");
     } else {
-        session_start();
-        $_SESSION['error_message'] = "El correo electrónico ya existe en la base de datos.";
+        $_SESSION['message'] = "El correo electrónico ya existe en la base de datos.";
+        $_SESSION['message_type'] = "error";
         header("location:../views/view-register.php");
         exit();
     }
-
 ?>

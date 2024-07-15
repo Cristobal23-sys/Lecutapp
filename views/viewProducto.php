@@ -327,12 +327,12 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                     echo "</div>";
                 }
                 ?>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" style="color:black;">
+            </div><br>
+            <button class="carousel-control-prev-sm" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" style="background-color:rgb(241, 192, 134);">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next" style="color:black;">
+            <button class="carousel-control-next-sm" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next" style="background-color:rgb(241, 192, 134);">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>

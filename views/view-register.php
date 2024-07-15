@@ -2,6 +2,9 @@
 include "../class/connection.php";
 $conn = new connection();
 session_start();
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,7 +32,24 @@ session_start();
   <div class="fadeIn first" style="display: flex; justify-content: center;">
 
   </div>
-
+  <style>
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        .message.success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .message.error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
 
   <div class="container my-5">
     <div class="row justify-content-center">
@@ -59,13 +79,14 @@ session_start();
              <p><?php
     // Verificar si hay un mensaje de error almacenado en la sesión
     
-    $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-    unset($_SESSION['error_message']); // Limpiar el mensaje de error de la sesión
+    if (isset($_SESSION['message'])) {
+      $message = $_SESSION['message'];
+      $message_type = $_SESSION['message_type'];
+      echo "<div class='message $message_type'>$message</div>";
+      unset($_SESSION['message']);
+      unset($_SESSION['message_type']);
+  }
     
-    // Mostrar el mensaje de error si existe
-    if (!empty($errorMessage)) {
-      echo '<p style="color: red;">' . $errorMessage . '</p>';
-    }
     ?></p>
             </div>
           </div>
