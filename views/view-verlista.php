@@ -151,7 +151,13 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
     </div>
   </nav>
   <div class="container" style="background-color: rgb(255, 255, 255); margin-top: 25px;">
-  <a href="../views/view-listacompra.php" class="btn btn-link text-decoration-none" style="margin-left:15%; color: black">⬅️ Volver Atrás</a>
+  <div class="d-flex justify-content-lg-between" style="margin-inline-start: 15%; margin-inline-end: 16%">
+  <a href="../views/view-listacompra.php" class="btn btn-link text-decoration-none" style="color: black">⬅️ Volver Atrás</a>
+  
+  <a href="../views/index.php" class="btn btn-outline-success">Añadir productos</a>
+</div>
+
+      
   <div class="row justify-content-center">      
       <?php
       // Verificar si el usuario tiene listas de deseos
@@ -178,7 +184,12 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             $url = $row['producto_url'];
             $prices = intval($row['producto_price']); // Convertir a entero si es necesario
             $total += $prices;
-
+            
+            $productos[] = [
+              'name' => $name,
+              'price' => $price,
+              'url' => $url
+          ];
             // Formatear el precio con símbolo de dólar y separadores de miles
             $formatted_Price = "$" . number_format($price, 0, '', '.'); // Formato sin decimales y separador de miles
 
@@ -227,17 +238,42 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
         <h2>Total: <?php echo $formatted_total; ?></h2>
     </div>
 </div>
-    <div class="row justify-content-center mt-3">
-      <div class="col-auto">
-        <a href="../views/index.php" class="btn btn-success">Añadir productos</a>
-      </div>
-    </div>
+    
 </div>
   <?php if (isset($alert_message)): ?>
     <script>
       alert("<?php echo $alert_message; ?>");
     </script>
-  <?php endif; ?>
+  <?php endif; 
+
+ // Construir el mensaje de WhatsApp
+ $mensaje = "Estos son los productos en mi lista de compras:\n\n";
+ foreach ($productos as $producto) {
+     $mensaje .= "• " . $producto['name'] . " - $" . $producto['price'] . "\n  Enlace: " . $producto['url'] . "\n";
+ }
+ $mensaje .= "\nTotal: $" . number_format($total, 0, ',', '.');
+ ?>
+ <div class="col-12 text-center">
+    
+     <!-- Botón para compartir por WhatsApp -->
+     <button class="btn btn-success" style="margin-top: 10px;" onclick="compartirPorWhatsApp('<?php echo urlencode($mensaje); ?>')">Compartir
+         por WhatsApp <i class="fa-brands fa-whatsapp"></i></button>
+ </div>
+ </div>
+ </div>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+     integrity="sha384-ENjdO4Dr2bkBIFxQpeoQW1gK8e3bCWvbPR4zOFO8hA7MaJx8oEmNmeFdnelbGI6z" crossorigin="anonymous">
+ </script>
+ <script>
+ function compartirPorWhatsApp(mensaje) {
+     var url = "https://wa.me/?text=" + mensaje;
+     window.open(url, '_blank');
+ }
+ </script>
+
+
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
     crossorigin="anonymous"></script>

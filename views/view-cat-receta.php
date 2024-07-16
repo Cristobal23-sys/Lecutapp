@@ -86,7 +86,7 @@ try {
 </head>
 <body style="background-color: rgb(255, 255, 255);">
     <!--Navbar-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg "style="background-color: #f7d1c4;">
     <div class="container">
       <a class="navbar-brand" href="../views/index.php">
         Ahorrando®
