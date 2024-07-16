@@ -234,7 +234,7 @@ while ($row = mysqli_fetch_assoc($resultCategorias)) {
 <footer class="" style="margin-left:0px; color:black;">
   <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
     <div class="me-5 d-none d-lg-block">
-      <span>Conéctate con nosotros en las redes sociales:</span>
+      <span></span>
     </div>
     <div>
       <a href="https://www.facebook.com/" target="_blank" class="me-4 text-reset">
