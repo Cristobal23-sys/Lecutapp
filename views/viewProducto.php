@@ -85,10 +85,10 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
 
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
-  <nav class="navbar navbar-expand-lg "style="background-color: #f7d1c4;">
+  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;" >
     <div class="container">
       <a class="navbar-brand" href="../views/index.php">
-        Ahorrando®
+        <strong>Ahorrando®</strong>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-              Categorías
+              <strong>Categorías</strong>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <?php foreach ($categorias as $categoria) { ?>
@@ -113,7 +113,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-              Recetas
+             <strong>Recetas</strong> 
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
               <?php foreach ($TipoReceta as $TipoRecetas) { ?>
@@ -135,7 +135,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Bienvenido, <?php echo $_SESSION['username']; ?>
+                <strong>Bienvenido, <?php echo $_SESSION['username']; ?></strong>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
                 <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
@@ -146,7 +146,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                Iniciar sesión
+               <strong> Iniciar sesión</strong>
               </a>
               <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
                 <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
@@ -166,7 +166,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                     echo '<p style="color: red;">' . $errorMessage . '</p>';
                   }
                   ?>
-                  <button type="submit" class="btn btn-primary" style="margin-left: 35px;">Iniciar sesión</button>
+                  <button type="submit" class="btn btn-primary" style="margin-left: 35px;"> Iniciar sesión </button>
                   <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a
                     href="../views/view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
                 </form>
