@@ -1,5 +1,6 @@
 <?php
 include "../class/connection.php";
+
 $conn = new connection();
 session_start();
 
@@ -33,70 +34,113 @@ session_start();
 
   </div>
   <style>
-        .message {
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid transparent;
-            border-radius: 5px;
-        }
-        .message.success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-        .message.error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-    </style>
+    .message {
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid transparent;
+      border-radius: 5px;
+    }
+
+    .message.success {
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+
+    .message.error {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    .Signup_paragraphText__MbGY9 {
+  font-family: 'Barlow', sans-serif !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 19.2px !important;
+  text-align: center !important;
+  color: #464646 !important;
+}
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
 
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header text-center">
             <h4 class="card-title"><img src="../img/ahor.png" id="icon" alt="User Icon" style="width: 30% ;" /></h4>
           </div>
           <div class="card-body">
-            <div class="card">
-              <br>
-              <form name="f1" style=" justify-content: center; margin-left: 33%; " action="../class/newUsr.php"
-                method="POST" onsubmit="return validateForm()">🧔🏽‍♂️
-                <input type="text" style="margin-bottom:5px ;" id="user" class="fadeIn second" name="user"
+          <p class="Signup_paragraphText__MbGY9">Regístrate y disfruta de nuestros sistema para crear y organizar tus proximas compras en el supermercado</p>
+            <br>
+            <form name="f1" style=" justify-content: center; margin-left: 33%; " action="../class/newUsr.php"
+              method="POST" onsubmit="return validateForm()">
+
+
+
+              <div class="form-floating" style="width: 50% ;">
+                <input type="text" name="user" style="margin-bottom:5px ;" class="form-control" id="floatingInput"
                   placeholder="Usuario" required>
-                <br> 📨 <input type="email" id="email" style="margin-bottom:5px ;" class="fadeIn third" name="email"
-                  placeholder="email" required onblur="validateEmail(this.value)">
+                <label for="floatingInput">Usuario</label>
+              </div>
+
+
+
+              <br>
+              <div class="form-floating" style="width: 50% ;">
+                <input type="email" id="email" class="form-control" id="floatingInput" placeholder="name@example.com"
+                  name="email" required onblur="validateEmail(this.value)">
+                <label for="floatingInput">Email address</label>
                 <span id="emailError" style="color: red; display: none;">Ingresa un correo electrónico válido</span>
-                <br> 🔒 <input type="password" id="password" class="fadeIn third" name="pass" placeholder="Contraseña"
-                  required onkeyup="maskPassword(this)">
-                <br>
-                <br> <input type="submit" class="fadeIn fourth" value="Registrarse" style="margin-left: 14%">
-              </form>
-              <p style="display: flex; justify-content: center;">Ya tienes cuentas?</p><a href="index.php"
-                style="display: flex; justify-content: center;">Iniciar sesion</a>
-              <!-- Remind Passowrd -->
-             <p><?php
-    // Verificar si hay un mensaje de error almacenado en la sesión
-    
-    if (isset($_SESSION['message'])) {
-      $message = $_SESSION['message'];
-      $message_type = $_SESSION['message_type'];
-      echo "<div class='message $message_type'>$message</div>";
-      unset($_SESSION['message']);
-      unset($_SESSION['message_type']);
-  }
-    
-    ?></p>
-            </div>
+              </div>
+              <br>
+
+              <div class="form-floating" style="width: 50% ;">
+                <input type="password" class="form-control" id="password" name="floatingPassword"
+                  placeholder="Contraseña" required onkeyup="maskPassword(this)">
+                <label for="floatingPassword">Contraseña</label>
+              </div>
+
+              <br>
+              <br> <input type="submit" class="w-30 btn btn-lg btn-primary" value="Registrarse" style="margin-left: 9%">
+            </form>
+            <p style="display: flex; justify-content: center;">Ya tienes cuentas?</p><a href="index.php"
+              style="display: flex; justify-content: center;">Iniciar sesion</a>
+            <!-- Remind Passowrd -->
+            <p><?php
+            // Verificar si hay un mensaje de error almacenado en la sesión
+            
+            if (isset($_SESSION['message'])) {
+              $message = $_SESSION['message'];
+              $message_type = $_SESSION['message_type'];
+              echo "<div class='message $message_type'>$message</div>";
+              unset($_SESSION['message']);
+              unset($_SESSION['message_type']);
+            }
+
+            ?></p>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-    <div id="formFooter" style="display: flex; justify-content: center; ">
-      Ahorrando® 2024
-    </div>
+  <div id="formFooter" style="display: flex; justify-content: center; ">
+    Ahorrando® 2024
+  </div>
 
 
 </body>
