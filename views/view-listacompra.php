@@ -188,7 +188,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                 <div class='row'>
                     <div class='col'>
                         <p class='text-black' style='margin-left:30%'>No tienes listas de compras. ¿Deseas crear una?</p>
-                        <button class='btn btn-primary' style='margin-left:35%;' data-bs-toggle='modal' data-bs-target='#wishlistModal'>Crear nueva lista de compras</button>
+                        <button class='btn btn-success' style='margin-left:35%;' data-bs-toggle='modal' data-bs-target='#wishlistModal'>Crear nueva lista de compras</button>
                     </div>
                 </div>
             </div>";

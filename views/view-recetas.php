@@ -315,7 +315,7 @@ while ($row = mysqli_fetch_assoc($resultCategorias)) {
       </div>
     </div>
   </section>
-  <div class="text-center p-4" style="background-color: rgba(1, 179, 200);">
+  <div class="text-center p-4" style="background-color: rgba();">
     <span>© 2024</span>
     <a class="text-reset fw-bold" href="../Views/index.php">AHORRANDO<i class="fa-solid fa-cart-shopping"></i></a>
   </div>

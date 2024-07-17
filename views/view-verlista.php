@@ -152,7 +152,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   </nav>
   <div class="container" style="background-color: rgb(255, 255, 255); margin-top: 25px;">
   <div class="d-flex justify-content-lg-between" style="margin-inline-start: 15%; margin-inline-end: 16%">
-  <a href="../views/view-listacompra.php" class="btn btn-link text-decoration-none" style="color: black">⬅️ Volver Atrás</a>
+  <a href="../views/view-listacompra.php" class="btn btn-link text-decoration-none" style="color: black">⬅️ Volver a Las Listas</a>
   
   <a href="../views/index.php" class="btn btn-outline-success">Añadir productos</a>
 </div>
@@ -170,7 +170,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
 
 
 
-      
+      $productos = []; 
       $total = 0;
       if ($result) {
         if ($result->num_rows > 0) {
@@ -184,7 +184,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             $url = $row['producto_url'];
             $prices = intval($row['producto_price']); // Convertir a entero si es necesario
             $total += $prices;
-            
+           // Inicializas el array de productos vacío o con los productos que ya tienes
             $productos[] = [
               'name' => $name,
               'price' => $price,
@@ -221,7 +221,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             <?php
           }
         } else {
-          echo "No se encontraron resultados.";
+          echo "¡Haz Click en Añadir Productos!";
         }
       } else {
         echo "Error en la consulta: " . mysqli_error($conn);
@@ -245,13 +245,16 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
       alert("<?php echo $alert_message; ?>");
     </script>
   <?php endif; 
-
- // Construir el mensaje de WhatsApp
- $mensaje = "Estos son los productos en mi lista de compras:\n\n";
- foreach ($productos as $producto) {
-     $mensaje .= "• " . $producto['name'] . " - $" . $producto['price'] . "\n  Enlace: " . $producto['url'] . "\n";
- }
- $mensaje .= "\nTotal: $" . number_format($total, 0, ',', '.');
+if (count($productos) == 0) {
+  $mensaje = "No existen productos en la lista de compras.";
+} else {
+  $mensaje = "Estos son los productos en mi lista de compras:\n\n";
+  foreach ($productos as $producto) {
+      $mensaje .= "• " . $producto['name'] . " - $" . $producto['price'] . "\n  Link: " . $producto['url'] . "\n";
+      $total += $producto['price']; // Calculamos el total
+  }
+  $mensaje .= "\nTotal: $" . number_format($total, 0, ',', '.');
+}
  ?>
  <div class="col-12 text-center">
     
@@ -280,6 +283,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <script src="https://kit.fontawesome.com/e801c5457b.js" crossorigin="anonymous"></script>
   <script src="../js/js.js"></script>
 </body>
+
 <footer class="" style="margin-left:0px; color:black;">
   <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
     <div class="me-5 d-none d-lg-block">
@@ -364,7 +368,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
       </div>
     </div>
   </section>
-  <div class="text-center p-4" style="background-color: rgba(1, 179, 200);">
+  <div class="text-center p-4" style="background-color: rgba();">
     <span>© 2024</span>
     <a class="text-reset fw-bold" href="../Views/index.php">AHORRANDO<i class="fa-solid fa-cart-shopping"></i></a>
   </div>
