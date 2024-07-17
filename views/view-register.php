@@ -1,11 +1,7 @@
 <?php
 include "../class/connection.php";
-
 $conn = new connection();
 session_start();
-
-
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -96,9 +92,6 @@ session_start();
                   placeholder="Usuario" required>
                 <label for="floatingInput">Usuario</label>
               </div>
-
-
-
               <br>
               <div class="form-floating" style="width: 50% ;">
                 <input type="email" id="email" class="form-control" id="floatingInput" placeholder="name@example.com"
@@ -107,30 +100,29 @@ session_start();
                 <span id="emailError" style="color: red; display: none;">Ingresa un correo electrónico válido</span>
               </div>
               <br>
-
               <div class="form-floating" style="width: 50% ;">
                 <input type="password" class="form-control" id="password" name="floatingPassword"
                   placeholder="Contraseña" required onkeyup="maskPassword(this)">
                 <label for="floatingPassword">Contraseña</label>
               </div>
-
               <br>
               <br> <input type="submit" class="w-30 btn btn-lg btn-primary" value="Registrarse" style="margin-left: 9%">
             </form>
             <p style="display: flex; justify-content: center;">Ya tienes cuentas?</p><a href="index.php"
               style="display: flex; justify-content: center;">Iniciar sesion</a>
             <!-- Remind Passowrd -->
-            <p><?php
-            // Verificar si hay un mensaje de error almacenado en la sesión
-            
-            if (isset($_SESSION['message'])) {
-              $message = $_SESSION['message'];
-              $message_type = $_SESSION['message_type'];
-              echo "<div class='message $message_type'>$message</div>";
-              unset($_SESSION['message']);
-              unset($_SESSION['message_type']);
+            <p>   <?php
+            $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+            unset($_SESSION['error_message']);
+            if (!empty($errorMessage)) {
+                echo '<p style="color: red; display: flex; justify-content: center;">' . $errorMessage . '</p>';
             }
 
+            $successMessage = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
+            unset($_SESSION['success_message']);
+            if (!empty($successMessage)) {
+                echo '<p style="color: green; display: flex; justify-content: center;">' . $successMessage . '</p>';
+            }
             ?></p>
 
           </div>
@@ -144,5 +136,16 @@ session_start();
 
 
 </body>
+<script>
+    function validation() {
+        var username = document.getElementById('user').value;
 
+        if (username.length < 8) {
+            alert('El nombre de usuario debe tener al menos 8 caracteres.');
+            return false;
+        }
+
+        return true;
+    }
+</script>
 </html>

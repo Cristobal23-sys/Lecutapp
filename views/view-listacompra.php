@@ -118,7 +118,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
                 <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
-                <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
+                <li><a class="dropdown-item" href="../class/Cerrarsesionlistas.php">Cerrar sesión</a></li>
               </ul>
             </li>
           <?php } else { ?>

@@ -171,34 +171,32 @@ try {
             </li>
           <?php } else { ?>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-               <strong> Iniciar sesión</strong>
-              </a>
-              <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
-                <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
-                  <div class="mb-3">
-                    <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
-                    <input type="text" id="user" class=" fadeIn second" name="user" placeholder="Usuario" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
-                    <input type="password" name="pass" class=" fadeIn third" id="pass" placeholder="Contraseña" required
-                      onkeyup="maskPassword(this)">
-                  </div>
-                  <?php
-                  $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-                  unset($_SESSION['error_message']);
-                  if (!empty($errorMessage)) {
-                    echo '<p style="color: red;">' . $errorMessage . '</p>';
-                  }
-                  ?>
-                  <button type="submit" class="btn btn-primary" style="margin-left: 35px;"> Iniciar sesión </button>
-                  <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a
-                    href="../views/view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
-                </form>
-              </div>
-            </li>
+    <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <strong> Iniciar sesión</strong>
+    </a>
+    <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
+        <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
+            <div class="mb-3">
+                <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
+                <input type="text" id="user" class="fadeIn second" name="user" placeholder="Usuario" required>
+            </div>
+            <div class="mb-3">
+                <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
+                <input type="password" name="pass" class="fadeIn third" id="pass" placeholder="Contraseña" required onkeyup="maskPassword(this)">
+            </div>
+            <?php
+            $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+            unset($_SESSION['error_message']);
+            if (!empty($errorMessage)) {
+                echo '<p style="color: red;">' . $errorMessage . '</p>';
+            }
+            ?>
+            <button type="submit" class="btn btn-primary" style="margin-left: 35px;"> Iniciar sesión </button>
+            <p style="display: flex; justify-content: center;">¿Aún no tienes cuenta?</p><a href="../views/view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
+        </form>
+    </div>
+</li>
+
           <?php } ?>
         </ul>
       </div>
