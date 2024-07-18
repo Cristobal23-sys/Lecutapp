@@ -161,7 +161,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <div class="row justify-content-center">      
       <?php
       // Verificar si el usuario tiene listas de deseos
-      $sql = "SELECT c.id, c.producto_name AS producto_name, c.producto_url, c.producto_image AS producto_image, c.producto_categoria AS producto_categoria, c.producto_price AS producto_price, c.producto_url AS producto_url
+      $sql = "SELECT c.id, c.producto_name AS producto_name, c.producto_url, c.producto_image AS producto_image, c.producto_categoria AS producto_categoria, c.producto_price AS producto_price, c.producto_url AS producto_url, c.producto_logo AS producto_logo
                 FROM producto c
                 INNER JOIN listaproductos cw ON c.id = cw.id_producto
                 INNER JOIN listacompra w ON cw.id_listacompra = w.id
@@ -178,6 +178,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
           while ($row = $result->fetch_assoc()) {
             $id = $row['id'];
             $name = $row['producto_name'];
+            $logo = $row['producto_logo'];
             $urlImagen = $row['producto_image'];
             $price = number_format($row['producto_price'], 0, '', '.'); // Formato sin decimales y separador de miles
             $brand = $row['producto_categoria'];
@@ -204,6 +205,8 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                     <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
                     <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
                     <p class="card-title" style="color: black; font-size: 1.1rem;">$<?php echo $price; ?></p>
+                    <img src="<?php echo $logo; ?>" alt="Imagen" style="width: 10%;">
+
 
                     <div class="mt-auto">
                       <div class="card-footer d-flex flex-column justify-content-end align-items-end"

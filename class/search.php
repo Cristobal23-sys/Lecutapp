@@ -84,7 +84,7 @@ try {
 <head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
+<link rel="stylesheet" href="../css/css.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -259,19 +259,22 @@ try {
             // Formatear el precio
             $formattedPrice = "$" . number_format($price, 0, '', '.');
             ?>
-            <div class="col">
-                <a href="../views/viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-                    <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
-                        <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="color: black; font-size: 1.0rem;"><?php echo $shortName; ?></h5>
-                            <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
-                            <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $formattedPrice; ?></p>
-                            <img src="<?php echo $logo; ?>" alt="Imagen" style="height: 10%; position: absolute; bottom: 1%; right: 1%;">
-                        </div>
-                    </div>
-                </a>
+              <div class="col">
+        <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+            <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
+                <div class="img-container">
+                    <img src="../img/blanco.png" alt="Imagen Fondo">
+                    <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" style="color: black; font-size: 1.0rem;"><?php echo $shortName; ?></h5>
+                    <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
+                    <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $formattedPrice; ?></p>
+                    <img src="<?php echo $logo; ?>" alt="Imagen" style="height: 20%; position: absolute; bottom: 1%; right: 1%;">
+                </div>
             </div>
+        </a>
+    </div>
             <?php
         }
     } else {

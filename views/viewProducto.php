@@ -70,6 +70,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="../css/css.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
@@ -312,12 +313,16 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                         echo "<div class='col'>";
                         echo "<a href='../views/viewproducto.php?id={$producto['id']}' style='text-decoration: none;'>";
                         echo "<div class='card' style='background-color: rgb(241, 192, 134); width: 12rem; height: 18rem;'>";
+                        echo "<div class='img-container'>";
+                        echo "<img src='../img/blanco.png' alt='Imagen Fondo' style='border-radius: 5px;'>";
                         echo "<img src='{$producto['producto_image']}' class='card-img-top' alt='Imagen' style='height: 12rem;'>";
+                        echo "</div>";
+                        
                         echo "<div class='card-body'>";
                         echo "<h5 class='card-title' style='color: black; font-size: 1.0rem;'>$shortName</h5>";
                         
                         echo "<p class='card-title' style='color: black; font-size: 1.1rem;'>$formattedPrice</p>";
-                        echo "<img src='$logo' alt='Imagen' style='height: 10%; position: absolute; bottom: 1%; right: 1%;'>";
+                        echo "<img src='$logo' alt='Imagen' style='height: 15%; position: absolute; bottom: 1%; right: 1%;'>";
                         echo "</div>";
                         echo "</div>";
                         echo "</a>";
@@ -327,6 +332,13 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                     echo "</div>";
                 }
                 ?>
+
+
+
+
+
+
+
             </div><br>
             <button class="carousel-control-prev-sm" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" style="background-color:rgb(241, 192, 134);">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -100,6 +100,7 @@ try {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../css/css.css">
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -254,7 +255,7 @@ try {
 <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
   <div class="container my-4">
     <div class="d-flex justify-content-center">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-xl-5 g-5">
         <?php
         if ($count > 0) {
           $i = 0;
@@ -270,20 +271,24 @@ try {
             // Formatear el precio
             $formattedPrice = "$" . number_format($price, 0, '', '.');
             ?>
-            <div class="col">
-              <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-                <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
-                  <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="height: 12rem;">
-                  <div class="card-body">
+             
+       <div class="col">
+        <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+            <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
+                <div class="img-container">
+                <img src="../img/blanco.png" alt="Imagen Fondo" style="border-radius: 5px;">
+
+                    <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
+                </div>
+                <div class="card-body">
                     <h5 class="card-title" style="color: black; font-size: 1.0rem;"><?php echo $shortName; ?></h5>
                     <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
                     <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $formattedPrice; ?></p>
-                    <img src="<?php echo $logo; ?>" alt="Imagen"
-                      style="height: 10%; position: absolute; bottom: 1%; right: 1%;">
-                  </div>
+                    <img src="<?php echo $logo; ?>" alt="Imagen" style="height: 20%; position: absolute; bottom: 1%; right: 1%;">
                 </div>
-              </a>
             </div>
+        </a>
+    </div>
             <?php
           }
         } else {
@@ -446,7 +451,7 @@ try {
             <a href="../views/view-register.php" class="text-reset">Registrarse</a>
           </p>
           <p>
-            <a href="../Views/index.php" class="text-reset">Proximamente</a>
+            <a href="../Views/ruleta.html" class="text-reset">Proximamente</a>
           </p>
           <p>
             <a href="../Views/index.php" class="text-reset">Inicio</a>
