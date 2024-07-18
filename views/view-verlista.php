@@ -8,7 +8,7 @@ if (isset($_SESSION['user'])) {
   $inicio = $_SESSION['user']; // Obtener el nombre de usuario de la sesión
   $idL = mysqli_real_escape_string($conn, $_GET['idL']);
   $cambio = "<a class='dropdown-item' href='../views/view-listacompra.php'>Lista de deseos</a>";
-  $reg = "<a class='dropdown-item' href='../class/Cerrarsesion.php'>Cerrar Sesión</a>";
+  $reg = "<a class='dropdown-item' href='../class/Cerrarsesionlistas.php'>Cerrar Sesión</a>";
 
   $query = "SELECT COUNT(*) AS count FROM listaproductos WHERE id_listacompra = '$idL'";
   $result = mysqli_query($conn, $query);
@@ -112,7 +112,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
                 <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
-                <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
+                <li><a class="dropdown-item" href="../class/Cerrarsesionlistas.php">Cerrar sesión</a></li>
               </ul>
             </li>
           <?php } else { ?>
