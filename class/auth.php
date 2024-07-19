@@ -1,6 +1,6 @@
 <?php
 include "connection.php";
-
+session_start();
 class Auth extends connection
 {
     public function registrar($email, $pass, $username)
@@ -53,27 +53,40 @@ class Auth extends connection
 }
 
 
+public function logear($username, $pass)
+{
+    $conexion = parent::conectar();
+    $sql = "SELECT * FROM usuario WHERE username = ?";
+    $stmt = mysqli_prepare($conexion, $sql);
 
-    public function logear($username, $pass)
-    {
-        $conexion = parent::conectar();
-        $passwordExistente = "";
-        $sql = "SELECT * FROM usuario 
-                    WHERE username = '$username'";
-        $respuesta = mysqli_query($conexion, $sql);
+    if (!$stmt) {
+        error_log("Error en la preparación de la consulta: " . mysqli_error($conexion));
+        return false;
+    }
 
-        if (mysqli_num_rows($respuesta) > 0) {
-            $passwordExistente = mysqli_fetch_array($respuesta);
-            $passwordExistente = $passwordExistente['pass'];
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $respuesta = mysqli_stmt_get_result($stmt);
 
-            if (password_verify($pass, $passwordExistente)) {
-                $_SESSION['username'] = $username;
-                return true;
-            } else {
-                return false;
-            }
+    if (!$respuesta) {
+        error_log("Error en la ejecución de la consulta: " . mysqli_error($conexion));
+        return false;
+    }
+
+    if (mysqli_num_rows($respuesta) > 0) {
+        $passwordExistente = mysqli_fetch_array($respuesta);
+        $passwordExistente = $passwordExistente['pass'];
+
+        if (password_verify($pass, $passwordExistente)) {
+            $_SESSION['username'] = $username;
+            return true;
         } else {
             return false;
         }
+    } else {
+        return false;
     }
+}
+
+
 }

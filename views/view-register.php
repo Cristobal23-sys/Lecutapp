@@ -101,7 +101,7 @@ session_start();
               </div>
               <br>
               <div class="form-floating" style="width: 50% ;">
-                <input type="password" class="form-control" id="password" name="floatingPassword"
+                <input type="password" class="form-control" id="password" name="pass"
                   placeholder="Contraseña" required onkeyup="maskPassword(this)">
                 <label for="floatingPassword">Contraseña</label>
               </div>
