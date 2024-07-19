@@ -255,7 +255,7 @@ try {
 <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
   <div class="container my-4">
     <div class="d-flex justify-content-center">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-xl-5 g-5">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
         <?php
         if ($count > 0) {
           $i = 0;

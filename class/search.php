@@ -243,7 +243,7 @@ try {
     <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">   
     <div class="container my-4">
     <div class="d-flex justify-content-center">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-4">
     <?php
     if ($count > 0) {
         $i = 0;
@@ -259,11 +259,12 @@ try {
             // Formatear el precio
             $formattedPrice = "$" . number_format($price, 0, '', '.');
             ?>
-              <div class="col">
-        <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+         <div class="col">
+        <a href="../views/viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
             <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
                 <div class="img-container">
-                    <img src="../img/blanco.png" alt="Imagen Fondo">
+                <img src="../img/blanco.png" alt="Imagen Fondo" style="border-radius: 5px;">
+
                     <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
                 </div>
                 <div class="card-body">
