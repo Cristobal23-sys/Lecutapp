@@ -1,104 +1,124 @@
 <?php
+
 require_once '../class/connection.php';
 
 $conn = new connection();
 
 try {
-    $connection = $conn->conectar();
-    session_start();
+  $connection = $conn->conectar();
+  session_start();
 
-    // Obtener el término de búsqueda
-    $buscar = isset($_GET['buscar']) ? $_GET['buscar'] : '';
+  // Obtener el término de búsqueda
+  $buscar = isset($_GET['buscar']) ? $_GET['buscar'] : '';
 
-    // Obtener el número total de registros que coinciden con el término de búsqueda
-    $sqlTotal = "SELECT COUNT(*) AS total FROM producto WHERE producto_name LIKE '%$buscar%'";
-    $resultTotal = mysqli_query($connection, $sqlTotal);
-    $rowTotal = mysqli_fetch_assoc($resultTotal);
-    $totalRegistros = $rowTotal['total'];
+  // Obtener el filtro de precio
+  $precio = isset($_GET['precio']) ? $_GET['precio'] : '';
 
-    $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
-    $resultCategorias = mysqli_query($connection, $sqlCategorias);
-    $categorias = [];
-    while ($row = mysqli_fetch_assoc($resultCategorias)) {
-        $categorias[] = $row['producto_categoria'];
+  // Procesar el filtro de precio
+  $precioCondition = '';
+  if ($precio) {
+    $precioParts = explode('-', $precio);
+    if (count($precioParts) == 2) {
+      $minPrice = (int) $precioParts[0];
+      $maxPrice = (int) $precioParts[1];
+      if ($maxPrice > 0) {
+        $precioCondition = " AND producto_price BETWEEN $minPrice AND $maxPrice";
+      } else {
+        $precioCondition = " AND producto_price >= $minPrice";
+      }
     }
+  }
 
-    $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
-    $resultReceta = mysqli_query($connection, $sqlReceta);
-    $TipoReceta = [];
-    while ($row = mysqli_fetch_assoc($resultReceta)) {
-        $TipoReceta[] = $row['TipoReceta'];
-    }
+  // Obtener el número total de registros que coinciden con el término de búsqueda y filtro de precio
+  $sqlTotal = "SELECT COUNT(*) AS total FROM producto WHERE producto_name LIKE '%$buscar%' $precioCondition";
+  $resultTotal = mysqli_query($connection, $sqlTotal);
+  $rowTotal = mysqli_fetch_assoc($resultTotal);
+  $totalRegistros = $rowTotal['total'];
 
-    // Obtener el tipo de orden seleccionado
-    $orden = isset($_GET['orden']) ? $_GET['orden'] : '';
+  // Obtener categorías y tipos de receta
+  $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
+  $resultCategorias = mysqli_query($connection, $sqlCategorias);
+  $categorias = [];
+  while ($row = mysqli_fetch_assoc($resultCategorias)) {
+    $categorias[] = $row['producto_categoria'];
+  }
 
-    // Definir la cantidad de resultados por página
-    $resultadosPorPagina = 25;
+  $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
+  $resultReceta = mysqli_query($connection, $sqlReceta);
+  $TipoReceta = [];
+  while ($row = mysqli_fetch_assoc($resultReceta)) {
+    $TipoReceta[] = $row['TipoReceta'];
+  }
 
-    // Calcular el número total de páginas
-    $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
+  // Obtener el tipo de orden seleccionado
+  $orden = isset($_GET['orden']) ? $_GET['orden'] : '';
 
-    // Obtener el número de página actual
-    $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+  // Definir la cantidad de resultados por página
+  $resultadosPorPagina = 25;
 
-    // Calcular el índice de inicio y fin de los resultados
-    $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
-    $indiceFin = $indiceInicio + $resultadosPorPagina;
+  // Calcular el número total de páginas
+  $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
 
-    // Reiniciar la consulta SQL
-    $sql = "SELECT * FROM `producto` WHERE producto_name LIKE '%$buscar%'";
+  // Obtener el número de página actual
+  $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
-    // Ordenar según la opción seleccionada
-    switch ($orden) {
-        case 'precio_asc':
-            $sql .= " ORDER BY producto_price ASC";
-            break;
-        case 'precio_desc':
-            $sql .= " ORDER BY producto_price DESC";
-            break;
-        case 'nombre_asc':
-            $sql .= " ORDER BY producto_name ASC";
-            break;
-        case 'nombre_desc':
-            $sql .= " ORDER BY producto_name DESC";
-            break;
-        default:
-            // Por defecto, ordenar por algún criterio, por ejemplo, por nombre ascendente
-            $sql .= " ORDER BY producto_name ASC";
-            break;
-    }
+  // Calcular el índice de inicio y fin de los resultados
+  $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
 
-    // Modificar la consulta SQL para incluir la paginación
-    $sql .= " LIMIT $indiceInicio, $resultadosPorPagina";
+  // Reiniciar la consulta SQL
+  $sql = "SELECT * FROM producto WHERE producto_name LIKE '%$buscar%' $precioCondition";
 
-    $result = mysqli_query($connection, $sql);
-    $count = mysqli_num_rows($result);
+  // Ordenar según la opción seleccionada
+  switch ($orden) {
+    case 'precio_asc':
+      $sql .= " ORDER BY producto_price ASC";
+      break;
+    case 'precio_desc':
+      $sql .= " ORDER BY producto_price DESC";
+      break;
+    case 'nombre_asc':
+      $sql .= " ORDER BY producto_name ASC";
+      break;
+    case 'nombre_desc':
+      $sql .= " ORDER BY producto_name DESC";
+      break;
+    default:
+      // Por defecto, ordenar por nombre ascendente
+      $sql .= " ORDER BY producto_name ASC";
+      break;
+  }
+
+  // Modificar la consulta SQL para incluir la paginación
+  $sql .= " LIMIT $indiceInicio, $resultadosPorPagina";
+
+  $result = mysqli_query($connection, $sql);
+  $count = mysqli_num_rows($result);
 } catch (Exception $e) {
-    echo "Error de conexión a la base de datos: " . $e->getMessage();
-    exit;
+  echo "Error de conexión a la base de datos: " . $e->getMessage();
+  exit;
 }
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-<link rel="stylesheet" href="../css/css.css">
+  <link rel="stylesheet" href="../css/css.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ahorrando</title>
 </head>
-<body style="background-color: rgb(255, 255, 255);"> 
-<nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;" >
+
+<body style="background-color: rgb(255, 255, 255);">
+  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
     <div class="container">
       <a class="navbar-brand" href="../views/index.php">
         <strong>Ahorrando®</strong>
@@ -120,13 +140,12 @@ try {
                     href="../views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
                 </li>
               <?php } ?>
-
             </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-             <strong>Recetas</strong> 
+              <strong>Recetas</strong>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
               <?php foreach ($TipoReceta as $TipoRecetas) { ?>
@@ -159,7 +178,7 @@ try {
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-               <strong> Iniciar sesión</strong>
+                <strong> Iniciar sesión</strong>
               </a>
               <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
                 <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
@@ -191,186 +210,238 @@ try {
     </div>
   </nav>
   <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img
-        src="../img/banner1.png"
-        class="d-block w-100" alt="...">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="../img/banner1.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="../img/banner2.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="../img/banner3.png" class="d-block w-100" alt="...">
+      </div>
     </div>
-    <div class="carousel-item">
-      <img
-        src="../img/banner2.png"
-        class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img
-        src="../img/banner3.png"
-        class="d-block w-100" alt="...">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="dropdown">
+          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            🟰FILTROS
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- Ordenar por nombre (A-Z) -->
+            <li><a class="dropdown-item"
+                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                <?php if ($orden == 'nombre_asc')
+                  echo 'class="active"'; ?>>Nombre (A-Z)</a></li>
+            <!-- Ordenar por nombre (Z-A) -->
+            <li><a class="dropdown-item"
+                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                <?php if ($orden == 'nombre_desc')
+                  echo 'class="active"'; ?>>Nombre (Z-A)</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <!-- Ordenar por precio (Menor a Mayor) -->
+            <li><a class="dropdown-item"
+                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=precio_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                <?php if ($orden == 'precio_asc')
+                  echo 'class="active"'; ?>>Precio (Menor a Mayor)</a></li>
+
+            <!-- Ordenar por precio (Mayor a Menor) -->
+            <li><a class="dropdown-item"
+                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=precio_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                <?php if ($orden == 'precio_desc')
+                  echo 'class="active"'; ?>>Precio (Mayor a Menor)</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-<br>
-<div class="container">
-    <div class="row">
-        
-        <div class="col-md-6">
-            <div class="dropdown">
-                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    🟰FILTROS
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="?buscar=<?php echo $buscar; ?>&orden=precio_asc">Precio Menor a Mayor</a></li>
-                    <li><a class="dropdown-item" href="?buscar=<?php echo $buscar; ?>&orden=precio_desc">Precio Mayor a Menor</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="?buscar=<?php echo $buscar; ?>&orden=nombre_asc">Nombre (A-Z)</a></li>
-                    <li><a class="dropdown-item" href="?buscar=<?php echo $buscar; ?>&orden=nombre_desc">Nombre (Z-A)</a></li>
-                </ul>
-            </div>
+  <style>
+        .card {
+            background-color: rgb(241, 192, 134);
+            border-radius: 5px;
+            width: 100%; /* Asegura que la tarjeta use todo el ancho disponible en su columna */
+            height: 100%; /* Asegura que la tarjeta use todo el alto disponible en su columna */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+       
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .img-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .img-container img:first-of-type {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .img-container img:last-of-type {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .logo-img {
+            width: 50px; /* Ajusta el tamaño según sea necesario */
+            height: auto;
+            position: absolute;
+            bottom: 1%;
+            right: 1%;
+        }
+    </style>
+  <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
+    <div class="d-flex justify-content-center"> 
+    <div class="container mt-4">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
+            <?php
+            // Aquí debería ir tu código PHP para obtener productos desde la base de datos
+            if ($count > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $id = $row['id'];
+                    $name = $row['producto_name'];
+                    $urlImagen = $row['producto_image'];
+                    $price = $row['producto_price'];
+                    $brand = $row['producto_categoria'];
+                    $logo = $row['producto_logo'];
+                    $shortName = substr($name, 0, 35);
+                    $formattedPrice = "$" . number_format($price, 0, '', '.');
+                    ?>
+                    <div class="col">
+                        <a href="../views/viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+                            <div class="card">
+                                <div class="img-container">
+                                    <img src="../img/blanco.png" alt="Imagen Fondo">
+                                    <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $shortName; ?></h5>
+                                    <p class="card-text"><?php echo $brand; ?></p>
+                                    <p class="card-title"><strong><?php echo $formattedPrice; ?></strong></p>
+                                    <img src="<?php echo $logo; ?>" alt="Imagen" class="logo-img">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+            }
+            mysqli_close($connection);
+            ?>
         </div>
     </div>
-</div>
-
-
-
-    <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">   
-    <div class="container my-4">
-    <div class="d-flex justify-content-center">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-4">
-    <?php
-    if ($count > 0) {
-        $i = 0;
-        while ($row = mysqli_fetch_assoc($result)) {
-            $id = $row['id'];
-            $name = $row['producto_name'];
-            $urlImagen = $row['producto_image'];
-            $price = $row['producto_price'];
-            $brand = $row['producto_categoria'];
-            $logo = $row['producto_logo'];
-            // Obtener los primeros 35 caracteres del nombre
-            $shortName = substr($name, 0, 35);
-            // Formatear el precio
-            $formattedPrice = "$" . number_format($price, 0, '', '.');
-            ?>
-         <div class="col">
-        <a href="../views/viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-            <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
-                <div class="img-container">
-                <img src="../img/blanco.png" alt="Imagen Fondo" style="border-radius: 5px;">
-
-                    <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title" style="color: black; font-size: 1.0rem;"><?php echo $shortName; ?></h5>
-                    <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
-                    <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $formattedPrice; ?></p>
-                    <img src="<?php echo $logo; ?>" alt="Imagen" style="height: 20%; position: absolute; bottom: 1%; right: 1%;">
-                </div>
-            </div>
-        </a>
-    </div>
-            <?php
-        }
-    } else {
-        echo "<p style='text-align: center;'>No se encontraron productos.</p>";
-    }
-    mysqli_close($connection);
-    ?>
-</div>
-
     </div>
   </div>
-        <br>  
-        <!-- Paginación -->
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <?php if ($paginaActual > 1) : ?>
-              <li class="page-item">
-                <a class="page-link" href="?pagina=<?php echo ($paginaActual - 1); ?>&buscar=<?php echo $buscar; ?>&precio=<?php echo $rangoSeleccionado; ?>" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-            <?php endif; ?>
-
-            <?php
-            // Calcular los límites inferior y superior para las páginas
-            $limiteInferior = max(1, $paginaActual - 2);
-            $limiteSuperior = min($totalPaginas, $paginaActual + 2);
-
-            for ($i = $limiteInferior; $i <= $limiteSuperior; $i++) :
-            ?>
-              <li class="page-item <?php echo ($i == $paginaActual) ? 'active' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $i; ?>&buscar=<?php echo $buscar; ?>&precio=<?php echo $rangoSeleccionado; ?>"><?php echo $i; ?></a>
-              </li>
-            <?php endfor; ?>
-
-            <?php if ($paginaActual < $totalPaginas) : ?>
-              <li class="page-item">
-                <a class="page-link" href="?pagina=<?php echo ($paginaActual + 1); ?>&buscar=<?php echo $buscar; ?>&precio=<?php echo $rangoSeleccionado; ?>" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            <?php endif; ?>
-          </ul>
-        </nav>
-    </div>
-
-    <script>
-      function toggleForm() {
-        var form = document.getElementById("filter-form");
-
-        // Verificar si el formulario está oculto
-        if (form.style.display === "none") {
-          // Mostrar el formulario con animación
-          form.style.opacity = 0;
-          form.style.display = "block";
-          // Aplicar la animación de fundido
-          fadeIn(form);
-        } else {
-          // Ocultar el formulario con animación
-          fadeOut(form, function() {
-            form.style.display = "none";
-          });
+  <br>
+  <!-- paginacion -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <?php if ($paginaActual > 1): ?>
+        <li class="page-item">
+          <a class="page-link"
+            href="?pagina=<?php echo ($paginaActual - 1); ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+            aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+      <?php endif; ?>
+      <?php
+      // Calcular los límites inferior y superior para las páginas
+      $limiteInferior = max(1, $paginaActual - 2);
+      $limiteSuperior = min($totalPaginas, $paginaActual + 2);
+      for ($i = $limiteInferior; $i <= $limiteSuperior; $i++):
+        ?>
+        <li class="page-item <?php echo ($i == $paginaActual) ? 'active' : ''; ?>">
+          <a class="page-link"
+            href="?pagina=<?php echo $i; ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"><?php echo $i; ?></a>
+        </li>
+      <?php endfor; ?>
+      <?php if ($paginaActual < $totalPaginas): ?>
+        <li class="page-item">
+          <a class="page-link"
+            href="?pagina=<?php echo ($paginaActual + 1); ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+            aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      <?php endif; ?>
+    </ul>
+  </nav>
+  </div>
+  <script>
+    function toggleForm() {
+      var form = document.getElementById("filter-form");
+      // Verificar si el formulario está oculto
+      if (form.style.display === "none") {
+        // Mostrar el formulario con animación
+        form.style.opacity = 0;
+        form.style.display = "block";
+        // Aplicar la animación de fundido
+        fadeIn(form);
+      } else {
+        // Ocultar el formulario con animación
+        fadeOut(form, function () {
+          form.style.display = "none";
+        });
+      }
+    }
+    // Función para animar la aparición gradual del elemento
+    function fadeIn(element) {
+      var opacity = 0;
+      var timer = setInterval(function () {
+        if (opacity >= 1) {
+          clearInterval(timer);
         }
-      }
-
-      // Función para animar la aparición gradual del elemento
-      function fadeIn(element) {
-        var opacity = 0;
-        var timer = setInterval(function() {
-          if (opacity >= 1) {
-            clearInterval(timer);
-          }
-          element.style.opacity = opacity;
-          opacity += 0.1;
-        }, 50);
-      }
-
-      // Función para animar la desaparición gradual del elemento
-      function fadeOut(element, callback) {
-        var opacity = 1;
-        var timer = setInterval(function() {
-          if (opacity <= 0) {
-            clearInterval(timer);
-            callback();
-          }
-          element.style.opacity = opacity;
-          opacity -= 0.1;
-        }, 50);
-      }
-    </script>
+        element.style.opacity = opacity;
+        opacity += 0.1;
+      }, 50);
+    }
+    // Función para animar la desaparición gradual del elemento
+    function fadeOut(element, callback) {
+      var opacity = 1;
+      var timer = setInterval(function () {
+        if (opacity <= 0) {
+          clearInterval(timer);
+          callback();
+        }
+        element.style.opacity = opacity;
+        opacity -= 0.1;
+      }, 50);
+    }
+  </script>
 </body>
-
-
 <footer class="" style="margin-left:0px; color:black;">
   <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
     <div class="me-5 d-none d-lg-block">
@@ -416,7 +487,8 @@ try {
             <a href="../views/view-categorias.php?producto_categoria=Lácteos" class="text-reset">Lácteos</a>
           </p>
           <p>
-            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y Verduras</a>
+            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y
+              Verduras</a>
           </p>
           <p>
             <a href="../views/view-categorias.php?producto_categoria=Carniceria" class="text-reset">Carnes</a>

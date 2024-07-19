@@ -88,15 +88,11 @@ try {
   exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html>
-
 <head>
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -104,16 +100,14 @@ try {
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ahorrando</title>
 </head>
-
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
-<nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;" >
+  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
     <div class="container">
       <a class="navbar-brand" href="../views/index.php">
         <strong>Ahorrando®</strong>
@@ -135,13 +129,12 @@ try {
                     href="../views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
                 </li>
               <?php } ?>
-
             </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-             <strong>Recetas</strong> 
+              <strong>Recetas</strong>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
               <?php foreach ($TipoReceta as $TipoRecetas) { ?>
@@ -172,39 +165,40 @@ try {
             </li>
           <?php } else { ?>
             <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <strong> Iniciar sesión</strong>
-    </a>
-    <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
-        <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
-            <div class="mb-3">
-                <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
-                <input type="text" id="user" class="fadeIn second" name="user" placeholder="Usuario" required>
-            </div>
-            <div class="mb-3">
-                <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
-                <input type="password" name="pass" class="fadeIn third" id="pass" placeholder="Contraseña" required onkeyup="maskPassword(this)">
-            </div>
-            <?php
-            $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-            unset($_SESSION['error_message']);
-            if (!empty($errorMessage)) {
-                echo '<p style="color: red;">' . $errorMessage . '</p>';
-            }
-            ?>
-            <button type="submit" class="btn btn-primary" style="margin-left: 35px;"> Iniciar sesión </button>
-            <p style="display: flex; justify-content: center;">¿Aún no tienes cuenta?</p><a href="../views/view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
-        </form>
-    </div>
-</li>
-
+              <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <strong> Iniciar sesión</strong>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
+                <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
+                  <div class="mb-3">
+                    <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
+                    <input type="text" id="user" class="fadeIn second" name="user" placeholder="Usuario" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleDropdownFormPassword2" class="form-label">🔏</label>
+                    <input type="password" name="pass" class="fadeIn third" id="pass" placeholder="Contraseña" required
+                      onkeyup="maskPassword(this)">
+                  </div>
+                  <?php
+                  $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+                  unset($_SESSION['error_message']);
+                  if (!empty($errorMessage)) {
+                    echo '<p style="color: red;">' . $errorMessage . '</p>';
+                  }
+                  ?>
+                  <button type="submit" class="btn btn-primary" style="margin-left: 35px;"> Iniciar sesión </button>
+                  <p style="display: flex; justify-content: center;">¿Aún no tienes cuenta?</p><a
+                    href="../views/view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
+                </form>
+              </div>
+            </li>
           <?php } ?>
         </ul>
       </div>
     </div>
   </nav>
 </body>
-
 <!--carrusel-->
 </div>
 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -228,8 +222,6 @@ try {
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-
-
 <div class="container my-4">
   <div class="row">
     <div class="col-md-6">
@@ -239,65 +231,115 @@ try {
           🟰FILTROS
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <li><a class="dropdown-item" href="?orden=precio_asc">Precio Menor a Mayor</a></li>
-          <li><a class="dropdown-item" href="?orden=precio_desc">Precio Mayor a Menor</a></li>
+          <li><a class="dropdown-item"
+              href="?orden=precio_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
+              Menor a Mayor</a></li>
+          <li><a class="dropdown-item"
+              href="?orden=precio_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
+              Mayor a Menor</a></li>
           <li>
             <hr class="dropdown-divider">
           </li>
-          <li><a class="dropdown-item" href="?orden=nombre_asc">Nombre (A-Z)</a></li>
-          <li><a class="dropdown-item" href="?orden=nombre_desc">Nombre (Z-A)</a></li>
+          <li><a class="dropdown-item"
+              href="?orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
+              (A-Z)</a></li>
+          <li><a class="dropdown-item"
+              href="?orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
+              (Z-A)</a></li>
         </ul>
       </div>
     </div>
   </div>
 </div>
-
-<div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
-  <div class="container my-4">
-    <div class="d-flex justify-content-center">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5">
-        <?php
-        if ($count > 0) {
-          $i = 0;
-          while ($row = mysqli_fetch_assoc($result)) {
-            $id = $row['id'];
-            $name = $row['producto_name'];
-            $urlImagen = $row['producto_image'];
-            $price = $row['producto_price'];
-            $brand = $row['producto_categoria'];
-            $logo = $row['producto_logo'];
-            // Obtener los primeros 35 caracteres del nombre
-            $shortName = substr($name, 0, 35);
-            // Formatear el precio
-            $formattedPrice = "$" . number_format($price, 0, '', '.');
-            ?>
-             
-       <div class="col">
-        <a href="viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-            <div class="card" style="background-color: rgb(241, 192, 134); width: 15.5rem; height: 26rem;">
-                <div class="img-container">
-                <img src="../img/blanco.png" alt="Imagen Fondo" style="border-radius: 5px;">
-
-                    <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title" style="color: black; font-size: 1.0rem;"><?php echo $shortName; ?></h5>
-                    <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
-                    <p class="card-title" style="color: black; font-size: 1.1rem;"><?php echo $formattedPrice; ?></p>
-                    <img src="<?php echo $logo; ?>" alt="Imagen" style="height: 20%; position: absolute; bottom: 1%; right: 1%;">
-                </div>
-            </div>
-        </a>
-    </div>
-            <?php
-          }
-        } else {
-          echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+<style>
+        .card {
+            background-color: rgb(241, 192, 134);
+            border-radius: 5px;
+            width: 100%; /* Asegura que la tarjeta use todo el ancho disponible en su columna */
+            height: 100%; /* Asegura que la tarjeta use todo el alto disponible en su columna */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        mysqli_close($connection);
-        ?>
-      </div>
 
+       
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .img-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .img-container img:first-of-type {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .img-container img:last-of-type {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .logo-img {
+            width: 50px; /* Ajusta el tamaño según sea necesario */
+            height: auto;
+            position: absolute;
+            bottom: 1%;
+            right: 1%;
+        }
+    </style>
+  <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
+    <div class="d-flex justify-content-center"> 
+    <div class="container mt-4">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
+            <?php
+            // Aquí debería ir tu código PHP para obtener productos desde la base de datos
+            if ($count > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $id = $row['id'];
+                    $name = $row['producto_name'];
+                    $urlImagen = $row['producto_image'];
+                    $price = $row['producto_price'];
+                    $brand = $row['producto_categoria'];
+                    $logo = $row['producto_logo'];
+                    $shortName = substr($name, 0, 35);
+                    $formattedPrice = "$" . number_format($price, 0, '', '.');
+                    ?>
+                    <div class="col">
+                        <a href="../views/viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+                            <div class="card">
+                                <div class="img-container">
+                                    <img src="../img/blanco.png" alt="Imagen Fondo">
+                                    <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $shortName; ?></h5>
+                                    <p class="card-text"><?php echo $brand; ?></p>
+                                    <p class="card-title"><strong><?php echo $formattedPrice; ?></strong></p>
+                                    <img src="<?php echo $logo; ?>" alt="Imagen" class="logo-img">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+            }
+            mysqli_close($connection);
+            ?>
+        </div>
+    </div>
     </div>
   </div>
   <br>
@@ -306,14 +348,14 @@ try {
     <ul class="pagination justify-content-center">
       <?php if ($paginaActual > 1): ?>
         <li class="page-item">
-          <a class="page-link" href="?pagina=<?php echo ($paginaActual - 1); ?>&precio=<?php echo $rangoSeleccionado; ?>"
+          <a class="page-link"
+            href="?pagina=<?php echo ($paginaActual - 1); ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
             aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
           </a>
         </li>
       <?php endif; ?>
-
       <?php
       // Calcular los límites inferior y superior para las páginas
       $limiteInferior = max(1, $paginaActual - 2);
@@ -323,13 +365,14 @@ try {
         ?>
         <li class="page-item <?php echo ($i == $paginaActual) ? 'active' : ''; ?>">
           <a class="page-link"
-            href="?pagina=<?php echo $i; ?>&precio=<?php echo $rangoSeleccionado; ?>"><?php echo $i; ?></a>
+            href="?pagina=<?php echo $i; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"><?php echo $i; ?></a>
         </li>
       <?php endfor; ?>
 
       <?php if ($paginaActual < $totalPaginas): ?>
         <li class="page-item">
-          <a class="page-link" href="?pagina=<?php echo ($paginaActual + 1); ?>&precio=<?php echo $rangoSeleccionado; ?>"
+          <a class="page-link"
+            href="?pagina=<?php echo ($paginaActual + 1); ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
             aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
@@ -338,9 +381,7 @@ try {
       <?php endif; ?>
     </ul>
   </nav>
-
 </div>
-
 <script>
   function toggleForm() {
     var form = document.getElementById("filter-form");
@@ -385,9 +426,7 @@ try {
     }, 50);
   }
 </script>
-
 </body>
-
 <footer class="" style="margin-left:0px; color:black;">
   <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
     <div class="me-5 d-none d-lg-block">

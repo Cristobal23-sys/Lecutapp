@@ -86,7 +86,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
 
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
-  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;" >
+  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
     <div class="container">
       <a class="navbar-brand" href="../views/index.php">
         <strong>Ahorrando®</strong>
@@ -114,7 +114,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-             <strong>Recetas</strong> 
+              <strong>Recetas</strong>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
               <?php foreach ($TipoReceta as $TipoRecetas) { ?>
@@ -147,7 +147,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarLoginDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-               <strong> Iniciar sesión</strong>
+                <strong> Iniciar sesión</strong>
               </a>
               <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
                 <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
@@ -283,74 +283,75 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
     $logo = $product['producto_logo'];
     $formattedPrice = "$" . number_format($price, 0, '', '.');
     $descripcion = "$name es un producto de la categoría $brand. Es muy cotizado por las familias chilenas.";
-    
+
     $sqlAleatorios = "SELECT `id`, `producto_name`, `producto_image`, `producto_price`, `producto_url`,`producto_logo`  FROM `producto` WHERE `producto_categoria` = '$brand' AND `id` != '$prod' ORDER BY RAND() LIMIT 15";
     $resultAleatorios = mysqli_query($conn, $sqlAleatorios);
     $productosAleatorios = [];
     if ($resultAleatorios) {
-        while ($row = mysqli_fetch_assoc($resultAleatorios)) {
-            $productosAleatorios[] = $row;
-        }
+      while ($row = mysqli_fetch_assoc($resultAleatorios)) {
+        $productosAleatorios[] = $row;
+      }
     }
-    
+
     ?>
-    <h5><strong>Te recomendamos tambien estos productos de la categoria <?php echo $brand ?></strong></h5>
-
     <br>
-    <div class="d-flex justify-content-center align-items-center" style="background-color: rgb();"> <!-- height: 100vh es opcional -->
-    <div class="col-md-10 text-center">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <?php
-                $chunkedProducts = array_chunk($productosAleatorios, 5);
-                foreach ($chunkedProducts as $index => $chunk) {
-                    $activeClass = $index === 0 ? 'active' : '';
-                    echo "<div class='carousel-item $activeClass'>";
-                    echo "<div class='row'>";
-                    foreach ($chunk as $producto) {
-                        $shortName = strlen($producto['producto_name']) > 20 ? substr($producto['producto_name'], 0, 20) . '...' : $producto['producto_name'];
-                        $formattedPrice = "$" . number_format($producto['producto_price'], 0, '', '.');
-                        echo "<div class='col'>";
-                        echo "<a href='../views/viewproducto.php?id={$producto['id']}' style='text-decoration: none;'>";
-                        echo "<div class='card' style='background-color: rgb(241, 192, 134); width: 12rem; height: 18rem;'>";
-                        echo "<div class='img-container'>";
-                        echo "<img src='../img/blanco.png' alt='Imagen Fondo' style='border-radius: 5px;'>";
-                        echo "<img src='{$producto['producto_image']}' class='card-img-top' alt='Imagen' style='height: 12rem;'>";
-                        echo "</div>";
-                        
-                        echo "<div class='card-body'>";
-                        echo "<h5 class='card-title' style='color: black; font-size: 1.0rem;'>$shortName</h5>";
-                        
-                        echo "<p class='card-title' style='color: black; font-size: 1.1rem;'>$formattedPrice</p>";
-                        echo "<img src='$logo' alt='Imagen' style='height: 15%; position: absolute; bottom: 1%; right: 1%;'>";
-                        echo "</div>";
-                        echo "</div>";
-                        echo "</a>";
-                        echo "</div>";
-                    }
-                    echo "</div>";
-                    echo "</div>";
-                }
-                ?>
-
-
-
-
-
-
-
-            </div><br>
-            <button class="carousel-control-prev-sm" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" style="background-color:rgb(241, 192, 134);">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next-sm" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next" style="background-color:rgb(241, 192, 134);">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+    <br>
+    <div class="d-flex justify-content-center align-items-center" style="background-color: rgb();">
+      <!-- height: 100vh es opcional -->
+      <div class="col-md-10 text-center">
+        <!-- Carrusel para pantallas medianas y grandes -->
+        <div id="carouselExampleIndicators" class="carousel slide d-none d-lg-block" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <h5><strong>Te recomendamos también estos productos de la categoría <?php echo $brand ?>:</strong></h5><br>
+            <?php
+            $chunkedProducts = array_chunk($productosAleatorios, 5);
+            foreach ($chunkedProducts as $index => $chunk) {
+              $activeClass = $index === 0 ? 'active' : '';
+              echo "<div class='carousel-item $activeClass'>";
+              echo "<div class='row'>";
+              foreach ($chunk as $producto) {
+                $shortName = strlen($producto['producto_name']) > 20 ? substr($producto['producto_name'], 0, 20) . '...' : $producto['producto_name'];
+                $formattedPrice = "$" . number_format($producto['producto_price'], 0, '', '.');
+                echo "<div class='col'>";
+                echo "<a href='../views/viewproducto.php?id={$producto['id']}' style='text-decoration: none;'>";
+                echo "<div class='card' style='background-color: rgb(241, 192, 134); width: 12rem; height: 18rem;'>";
+                echo "<div class='img-container'>";
+                echo "<img src='../img/blanco.png' alt='Imagen Fondo' style='border-radius: 5px;'>";
+                echo "<img src='{$producto['producto_image']}' class='card-img-top' alt='Imagen' style='height: 12rem;'>";
+                echo "</div>";
+                echo "<div class='card-body'>";
+                echo "<h5 class='card-title' style='color: black; font-size: 1.0rem;'>$shortName</h5>";
+                echo "<p class='card-title' style='color: black; font-size: 1.1rem;'>$formattedPrice</p>";
+                echo "<img src='$logo' alt='Imagen' style='height: 15%; position: absolute; bottom: 1%; right: 1%;'>";
+                echo "</div>";
+                echo "</div>";
+                echo "</a>";
+                echo "</div>";
+              }
+              echo "</div>";
+              echo "</div>";
+            }
+            ?>
+          </div>
+          <br>
+          <!-- Botón de control anterior -->
+          <button class="custom-carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <!-- Botón de control siguiente -->
+          <button class="custom-carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
+
+        <!-- Mensaje alternativo para pantallas pequeñas -->
+        <div class="d-block d-md-none">
+          <p class="text-center">Visita nuestra tienda para ver los productos recomendados.</p>
+        </div>
+      </div>
     </div>
-</div>
 
 </body>
 <br>

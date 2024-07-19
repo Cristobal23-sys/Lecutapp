@@ -66,3 +66,32 @@ body {
   z-index: 1; /* Asegura que el contenido de la card esté por encima de las imágenes */
 }
 
+/* Estilos para los botones personalizados */
+.custom-carousel-control-prev,
+.custom-carousel-control-next {
+    width: 3rem; /* Ajusta el ancho según sea necesario */
+    height: 3rem; /* Ajusta la altura según sea necesario */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(241, 192, 134); /* Color de fondo */
+    border: none; /* Elimina el borde predeterminado */
+    border-radius: 50%; /* Opcional: botones redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    outline: none; /* Elimina el contorno del botón al hacer clic */
+}
+
+/* Estilo para iconos de Font Awesome */
+.custom-carousel-control-prev i,
+.custom-carousel-control-next i {
+    color: #fff; /* Color del icono */
+    font-size: 1.5rem; /* Ajusta el tamaño del icono */
+}
+
+/* Estilos adicionales para un mejor enfoque visual */
+.custom-carousel-control-prev:hover,
+.custom-carousel-control-next:hover {
+    background-color: rgb(220, 180, 120); /* Color de fondo en hover */
+}
+
+
