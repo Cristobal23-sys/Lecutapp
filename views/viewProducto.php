@@ -473,7 +473,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             <a href="../Views/index.php" class="text-reset">Proximamente</a>
           </p>
           <p>
-            <a href="../Views/index.php" class="text-reset">Inicio</a>
+          <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
           </p>
           <p>
             <a href="../views/view-cat-receta.php?" class="text-reset">Recetas</a>
