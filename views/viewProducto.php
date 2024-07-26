@@ -60,12 +60,9 @@ $TipoReceta = [];
 while ($row = mysqli_fetch_assoc($resultReceta)) {
   $TipoReceta[] = $row['TipoReceta'];
 }
-
-
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -74,16 +71,13 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ahorrando</title>
 </head>
-
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
   <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
@@ -108,7 +102,6 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                     href="../views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
                 </li>
               <?php } ?>
-
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -181,8 +174,6 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <br>
   <a href="javascript:history.back()" class="btn btn-link text-decoration-none" style="margin-left:30%; color: black">⬅️
     Volver</a>
-
-
   <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
     <div class="container" style="background-color:white; margin-top: 25px;">
       <div class="row justify-content-center">
@@ -215,24 +206,18 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                     <p class="card-text" style="color: Black;"><?php echo $brand; ?></p>
                     <p class="card-text" style="color: Black;"><?php echo $descripcion; ?></p>
                     <h5 class="card-text" style="color: black;"> Precio: <?php echo $formattedPrice; ?></h5><br><br>
-
                     <div class="d-flex ">
                       <a href="<?php echo $url ?>" class="btn btn-primary " style=" margin-bottom: 8px ;"
                         target="_blank">Ir a la página</a><br>
-
-
                     </div>
                     <a href="" style=""><?php echo $listaA ?></a>
                   </div>
                 </div>
               </div>
-
             </div>
-
             <?php
         }
         ?>
-
           <!-- Modal para mostrar las listas de deseos -->
           <div class="modal fade" id="wishlistModal" tabindex="-1" aria-labelledby="wishlistModalLabel"
             aria-hidden="true">
@@ -267,7 +252,6 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
         </div>
       </div>
     </div>
-
     <br>
     <br>
     <?php
@@ -283,7 +267,6 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
     $logo = $product['producto_logo'];
     $formattedPrice = "$" . number_format($price, 0, '', '.');
     $descripcion = "$name es un producto de la categoría $brand. Es muy cotizado por las familias chilenas.";
-
     $sqlAleatorios = "SELECT `id`, `producto_name`, `producto_image`, `producto_price`, `producto_url`,`producto_logo`  FROM `producto` WHERE `producto_categoria` = '$brand' AND `id` != '$prod' ORDER BY RAND() LIMIT 15";
     $resultAleatorios = mysqli_query($conn, $sqlAleatorios);
     $productosAleatorios = [];
@@ -292,7 +275,6 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
         $productosAleatorios[] = $row;
       }
     }
-
     ?>
     <br>
     <br>
@@ -334,31 +316,35 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             ?>
           </div>
           <br>
-          <!-- Botón de control anterior -->
-          <button class="custom-carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <!-- Botón de control siguiente -->
-          <button class="custom-carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next">
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-
-        <!-- Mensaje alternativo para pantallas pequeñas -->
-        <div class="d-block d-md-none">
-          <p class="text-center">Visita nuestra tienda para ver los productos recomendados.</p>
+          <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px;">
+            <!-- Botón de control anterior -->
+            <button
+              style="background: rgb(241, 192, 134); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
+              onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
+              onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
+              class="custom-carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <!-- Botón de control siguiente -->
+            <button
+              style="background: rgb(241, 192, 134); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
+              onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
+              onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
+              class="custom-carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="d-block d-md-none">
+              <p class="text-center">Visita nuestra tienda para ver los productos recomendados.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
 </body>
 <br>
-<!-- paginacion -->
-
-
-</div>
 
 <script>
   function toggleForm() {
@@ -473,7 +459,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             <a href="../Views/index.php" class="text-reset">Proximamente</a>
           </p>
           <p>
-          <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
+            <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
           </p>
           <p>
             <a href="../views/view-cat-receta.php?" class="text-reset">Recetas</a>
