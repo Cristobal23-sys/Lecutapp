@@ -1,5 +1,5 @@
 <?php
-include "../class/auth.php"; // Asegúrate de que auth.php esté configurado correctamente
+include "../class/auth.php";
 
 // Elimina la llamada a session_start() aquí
 // session_start();

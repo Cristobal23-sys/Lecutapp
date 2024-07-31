@@ -39,7 +39,7 @@ class Auth extends connection
         return false;
     } else {
         // El correo electrónico y el nombre de usuario no existen, se puede crear un nuevo usuario
-        $sql_insertar = "INSERT INTO usuario (email, pass, username) VALUES (?, ?, ?)";
+        $sql_insertar = "INSERT INTO usuario (email, pass, username, rol) VALUES (?, ?, ?, 1)";
         $query_insertar = $conexion->prepare($sql_insertar);
         $query_insertar->bind_param('sss', $email, $pass, $username);
         if ($query_insertar->execute()) {
@@ -74,12 +74,21 @@ public function logear($username, $pass)
     }
 
     if (mysqli_num_rows($respuesta) > 0) {
-        $passwordExistente = mysqli_fetch_array($respuesta);
-        $passwordExistente = $passwordExistente['pass'];
+        $user = mysqli_fetch_array($respuesta);
+        $passwordExistente = $user['pass'];
+        $rol = $user['rol']; // Obtener el rol del usuario
 
         if (password_verify($pass, $passwordExistente)) {
             $_SESSION['username'] = $username;
-            return true;
+
+            // Redirigir según el rol del usuario
+            if ($rol == "1") {
+                // Mantenerse en la misma página, no se hace nada
+                return true;
+            } else if ($rol == "0") {
+                header("Location: ../views/admin.php");
+                exit(); // Asegúrate de salir después de redirigir
+            }
         } else {
             return false;
         }
@@ -87,6 +96,7 @@ public function logear($username, $pass)
         return false;
     }
 }
+
 
 
 }
