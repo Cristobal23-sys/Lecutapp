@@ -50,6 +50,8 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="icon" href="../img/lecut.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,9 +62,9 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <!--Navbar-->
   <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;" >
     <div class="container">
-      <a class="navbar-brand" href="../views/index.php">
-        <strong>Ahorrando®</strong>
-      </a>
+    <a class="navbar-brand" href="../views/index.php">
+    <img src="../img/lecut.ico" alt="Logo" style="height: 40px; width: auto;">
+</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -101,7 +103,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
         <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">🔎</button>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>

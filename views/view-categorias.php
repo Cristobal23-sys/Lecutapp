@@ -24,7 +24,11 @@ try {
 
   // Obtener el número total de registros según la categoría seleccionada
   $categoriaSeleccionada = isset($_GET['producto_categoria']) ? $_GET['producto_categoria'] : "";
-
+  // Establecer el título según la categoría seleccionada
+  $titulo = "Lecut";
+  if (!empty($categoriaSeleccionada)) {
+    $titulo = $categoriaSeleccionada . " | Lecut";
+  }
   $sqlTotal = "SELECT COUNT(*) AS total FROM producto";
   if (!empty($categoriaSeleccionada)) {
     $sqlTotal .= " WHERE producto_categoria = '$categoriaSeleccionada'";
@@ -35,7 +39,7 @@ try {
   $totalRegistros = $rowTotal['total'];
 
   // Definir la cantidad de resultados por página
-  $resultadosPorPagina = 25;
+  $resultadosPorPagina = 24;
 
   // Calcular el número total de páginas
   $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
@@ -45,20 +49,20 @@ try {
 
   // Calcular el índice de inicio y fin de los resultados
   $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
-   // Obtener el rango de precio seleccionado
-   $rangoSeleccionado = isset($_GET['precio']) ? $_GET['precio'] : "";
+  // Obtener el rango de precio seleccionado
+  $rangoSeleccionado = isset($_GET['precio']) ? $_GET['precio'] : "";
 
-   // Obtener el criterio de orden seleccionado
-   $orden = isset($_GET['orden']) ? $_GET['orden'] : "";
- 
-   // Reiniciar la consulta SQL
-   $sql = "SELECT * FROM `producto`";
- 
-   // Verificar si se ha seleccionado un rango de precio
-   if (!empty($rangoSeleccionado)) {
-     $precioMin = $rangosPrecios[$rangoSeleccionado][0];
-     $precioMax = $rangosPrecios[$rangoSeleccionado][1];
-   }
+  // Obtener el criterio de orden seleccionado
+  $orden = isset($_GET['orden']) ? $_GET['orden'] : "";
+
+  // Reiniciar la consulta SQL
+  $sql = "SELECT * FROM `producto`";
+
+  // Verificar si se ha seleccionado un rango de precio
+  if (!empty($rangoSeleccionado)) {
+    $precioMin = $rangosPrecios[$rangoSeleccionado][0];
+    $precioMax = $rangosPrecios[$rangoSeleccionado][1];
+  }
   // Verificar si se ha seleccionado una categoría
   if (!empty($categoriaSeleccionada)) {
     $sql .= " WHERE `producto_categoria` = '$categoriaSeleccionada'";
@@ -104,21 +108,24 @@ try {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../css/css.css">
+  <link rel="icon" href="../img/lecut.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Lora:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ahorrando</title>
+  <title><?php echo $titulo; ?></title>
 </head>
 
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
-  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
+  <nav class="navbar navbar-expand-lg" style="background-color: rgb(71, 126, 213);">
     <div class="container">
       <a class="navbar-brand" href="../views/index.php">
-        <strong>Ahorrando®</strong>
+        <img src="../img/lecut.ico" alt="Logo" style="height: 40px; width: auto;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -158,7 +165,7 @@ try {
         <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">🔎</button>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>
@@ -206,188 +213,239 @@ try {
         </ul>
       </div>
     </div>
-  </nav>
+  </nav><br>
   <!--Navbar-->
-  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="../img/banner1.png" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="../img/banner2.png" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="../img/banner3.png" class="d-block w-100" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-      data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-      data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-  <!-- Contenido principal -->
-  <div class="container my-4">
-    <div class="row">
-      <!-- Menú desplegable para ordenar productos -->
-      <div class="col-md-6">
-      <div class="dropdown">
-  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
-    data-bs-toggle="dropdown" aria-expanded="false">
-    🟰FILTROS
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <li><a class="dropdown-item" href="?orden=precio_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio Menor a Mayor</a></li>
-    <li><a class="dropdown-item" href="?orden=precio_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio Mayor a Menor</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="?orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre (A-Z)</a></li>
-    <li><a class="dropdown-item" href="?orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre (Z-A)</a></li>
-</ul>
+  <?php
+  // Verificar si se ha pasado la categoría a través de la URL
+  $categoriaSeleccionada = isset($_GET['producto_categoria']) ? $_GET['producto_categoria'] : null;
 
-</div>
-      </div>
-    </div>
+  // Función para obtener la ruta de la imagen según la categoría
+  function obtenerRutaImagen($categoria)
+  {
+    switch ($categoria) {
+      case 'Lácteos':
+        return 'https://i.postimg.cc/qBm3mYMY/2.png';
+      case 'Frutas y verduras':
+        return 'https://i.postimg.cc/qRTsTC95/1.png';
+      case 'Despensa':
+        return 'https://i.postimg.cc/L50gnqbR/5.png';
+      case 'Carniceria':
+        return 'https://i.postimg.cc/PrP804Cq/4.png';
+      case 'Limpieza':
+        return 'https://i.postimg.cc/qq7CJcQj/3.png';
+      case 'Mascotas':
+        return 'https://i.postimg.cc/HsR7myM9/6.png';
+      case 'Botillería':
+        return 'https://i.postimg.cc/HkM8kk4D/7.png';
+      default:
+        return '../img/banner1.png';
+    }
+  }
+
+  // Obtener la ruta de la imagen para la categoría seleccionada
+  $rutaImagen = $categoriaSeleccionada ? obtenerRutaImagen($categoriaSeleccionada) : '';
+  ?>
+
+  <!-- Mostrar la imagen centrada con Bootstrap y limitando la altura al 50% -->
+  <div class="text-center">
+    <?php if ($rutaImagen): ?>
+      <img src="<?php echo $rutaImagen; ?>" alt="Imagen de la categoría" class="img-fluid rounded"
+        style="max-width: 50%; height: 50%;">
+    <?php else: ?>
+      <p>No se ha seleccionado ninguna categoría.</p>
+    <?php endif; ?>
   </div>
   <style>
-        .card {
-            background-color: rgb(241, 192, 134);
-            border-radius: 5px;
-            width: 100%; /* Asegura que la tarjeta use todo el ancho disponible en su columna */
-            height: 100%; /* Asegura que la tarjeta use todo el alto disponible en su columna */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-       
-
-        .card-body {
-            padding: 1rem;
-        }
-
-        .img-container {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .img-container img:first-of-type {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .img-container img:last-of-type {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
-
-        .logo-img {
-            width: 50px; /* Ajusta el tamaño según sea necesario */
-            height: auto;
-            position: absolute;
-            bottom: 1%;
-            right: 1%;
-        }
-    </style>
-  <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
-    <div class="d-flex justify-content-center"> 
-    <div class="container mt-4">
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
-            <?php
-            // Aquí debería ir tu código PHP para obtener productos desde la base de datos
-            if ($count > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $id = $row['id'];
-                    $name = $row['producto_name'];
-                    $urlImagen = $row['producto_image'];
-                    $price = $row['producto_price'];
-                    $brand = $row['producto_categoria'];
-                    $logo = $row['producto_logo'];
-                    $shortName = substr($name, 0, 35);
-                    $formattedPrice = "$" . number_format($price, 0, '', '.');
-                    ?>
-                    <div class="col">
-                        <a href="../views/viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
-                            <div class="card">
-                                <div class="img-container">
-                                    <img src="../img/blanco.png" alt="Imagen Fondo">
-                                    <img src="<?php echo $urlImagen; ?>" alt="Imagen Superpuesta">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo $shortName; ?></h5>
-                                    <p class="card-text"><?php echo $brand; ?></p>
-                                    <p class="card-title"><strong><?php echo $formattedPrice; ?></strong></p>
-                                    <img src="<?php echo $logo; ?>" alt="Imagen" class="logo-img">
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <?php
-                }
-            } else {
-                echo "<p style='text-align: center;'>No se encontraron productos.</p>";
-            }
-            mysqli_close($connection);
-            ?>
+hr.elegant-line {
+  border: none; border-top: 2px solid #ccc; color: #333; text-align: center; height: 0; margin: 20px 0; overflow: visible; &:before { content: "• "; display: inline-block; position: relative; top: -0.7em; font-size: 1.5em; padding: 0 0.25em; background-color: #fff; } }
+  </style>
+  <hr class="elegant-line">
+  <h3 class="text-center" style="font-family: 'Playfair Display', serif; font-size: 40px; color: #333;">
+            <?php echo $categoriaSeleccionada; ?>
+        </h3>
+  <div class="container my-4">
+    <div class="row">
+        <div class="col-md-6">
+            <a href="../views/index.php" class="text" style="text-decoration:none; color: black;"><Strong>Inicio </Strong></a> /
+            <span class="text-primary"><?php echo $categoriaSeleccionada ?></span>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+            <div class="dropdown">
+                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    🟰ORDENAR
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item"
+                        href="?orden=precio_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
+                        Menor a Mayor</a></li>
+                    <li><a class="dropdown-item"
+                        href="?orden=precio_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
+                        Mayor a Menor</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item"
+                        href="?orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
+                        (A-Z)</a></li>
+                    <li><a class="dropdown-item"
+                        href="?orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
+                        (Z-A)</a></li>
+                </ul>
+            </div>
         </div>
     </div>
+</div>
+  <style>
+    .card {
+      background-color: rgb();
+      width: 100%;
+      /* Asegura que la tarjeta use todo el ancho disponible en su columna */
+      height: 300px;
+      /* Ajusta la altura automáticamente */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      /* Centra el contenido horizontalmente */
+      transition: transform 0.3s ease;
+      /* Añade una transición suave */
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      /* Aumenta el tamaño de la tarjeta al pasar el mouse */
+      z-index: 1;
+      /* Asegura que la tarjeta esté por encima de otras */
+    }
+
+    .img-container {
+      width: 80%;
+      height: 90%;
+      overflow: hidden;
+      /* Asegura que la imagen no se desborde */
+      display: flex;
+      justify-content: center;
+      /* Centra horizontalmente */
+      align-items: center;
+      /* Centra verticalmente */
+    }
+
+    .img-container img {
+      width: 100%;
+      /* La imagen ocupa todo el ancho del contenedor */
+      height: auto;
+      /* Mantiene la proporción de la imagen */
+      object-fit: cover;
+      /* Ajusta la imagen para cubrir el contenedor sin distorsionarse */
+    }
+
+
+
+    .card-body {
+      padding: 0.5rem;
+      /* Reduce el padding para acercar el texto a la imagen */
+      text-align: center;
+      /* Centra el texto */
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+      /* Reduce el margen inferior del título */
+    }
+
+    .logo-img {
+      width: 40px;
+      /* Ajusta el tamaño según sea necesario */
+
+      position: absolute;
+      bottom: 1%;
+      right: 1%;
+    }
+  </style>
+  <div class="container" style="background-color:rgb(); margin-top: 25px;">
+    <div class="d-flex justify-content-center">
+      <div class="container mt-4">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 row-cols-xl-8 g-4">
+          <?php
+          if ($count > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+              $id = $row['id'];
+              $name = $row['producto_name'];
+              $urlImagen = $row['producto_image'];
+              $price = $row['producto_price'];
+              $brand = $row['producto_categoria'];
+              $logo = $row['producto_logo'];
+              $shortName = substr($name, 0, 35);
+              $formattedPrice = "$" . number_format($price, 0, '', '.');
+              ?>
+              <div class="col">
+                <a href="../views/viewProducto.php?id=<?php echo $id; ?>" style="text-decoration: none;">
+                  <div class="card">
+                    <div class="img-container">
+                      <img src="<?php echo $urlImagen; ?>" alt="Imagen Producto">
+                    </div>
+                    <div class="card-body">
+                      <h6 class="card-title" style="color:#272727"><strong><?php echo $shortName; ?></strong></h6>
+                      <p class="card-text"><?php echo $brand; ?></p>
+                      <p class="card-title">
+                      <h5><strong><?php echo $formattedPrice; ?></strong></h5>
+                      </p>
+                    </div>
+                    <img src="<?php echo $logo; ?>" alt="Imagen" class="logo-img">
+                  </div>
+                </a>
+              </div>
+              <?php
+            }
+          } else {
+            echo "<p style='text-align: center;'>No se encontraron productos.</p>";
+          }
+          mysqli_close($connection);
+          ?>
+        </div>
+      </div>
     </div>
   </div>
-    <br>
-    <!-- paginacion -->
-    <nav aria-label="Page navigation">
-  <ul class="pagination justify-content-center">
-    <?php if ($paginaActual > 1): ?>
-      <li class="page-item">
-        <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>" aria-label="Anterior">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-    <?php endif; ?>
+  <br>
+  <!-- paginacion -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <?php if ($paginaActual > 1): ?>
+        <li class="page-item">
+          <a class="page-link"
+            href="?pagina=<?php echo $paginaActual - 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
+            aria-label="Anterior">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      <?php endif; ?>
 
-    <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-      <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
-        <a class="page-link" href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"><?php echo $i; ?></a>
-      </li>
-    <?php endfor; ?>
+      <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+        <li class="page-item <?php if ($i == $paginaActual)
+          echo 'active'; ?>">
+          <a class="page-link"
+            href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"><?php echo $i; ?></a>
+        </li>
+      <?php endfor; ?>
 
-    <?php if ($paginaActual < $totalPaginas): ?>
-      <li class="page-item">
-        <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>" aria-label="Siguiente">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    <?php endif; ?>
-  </ul>
-</nav>
+      <?php if ($paginaActual < $totalPaginas): ?>
+        <li class="page-item">
+          <a class="page-link"
+            href="?pagina=<?php echo $paginaActual + 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
+            aria-label="Siguiente">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      <?php endif; ?>
+    </ul>
+  </nav>
 
 
 
 
   </div>
 
-  <!-- Scripts JavaScript -->
-  <script>
-    // Función para mostrar contraseña en el formulario de inicio de sesión
-    function maskPassword(input) {
-      if (input.type === "password") {
-        input.type = "text";
-      } else {
-        input.type = "password";
-      }
-    }
-  </script>
   <script>
     function toggleForm() {
       var form = document.getElementById("filter-form");
@@ -500,7 +558,7 @@ try {
             <a href="../Views/index.php" class="text-reset">Proximamente</a>
           </p>
           <p>
-          <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
+            <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
           </p>
           <p>
             <a href="../views/view-cat-receta.php?" class="text-reset">Recetas</a>

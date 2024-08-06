@@ -27,7 +27,9 @@ while ($row = mysqli_fetch_assoc($resultCategorias)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="../img/lecut.ico">
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -83,7 +85,7 @@ while ($row = mysqli_fetch_assoc($resultCategorias)) {
         <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">🔎</button>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>
@@ -135,99 +137,52 @@ while ($row = mysqli_fetch_assoc($resultCategorias)) {
 
   <br>
   <a href="javascript:history.back()" class="btn btn-link text-decoration-none" style="margin-left:30%; color: black">⬅️ Volver</a>
-  <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
-  <div class="container" style="background-color:white; margin-top: 25px;">
-    <div class="row justify-content-center">
-      <?php
-      if ($conn != true) {
-        die("Error de conexión " . mysqli_connect_error());
-      }
-      $sql = "SELECT `id`, `Name`, `Desc`, `TipoReceta`, `Image` FROM `receta` WHERE id LIKE '$prod'";
-      $resultSet = mysqli_query($conn, $sql);
-      while ($row = mysqli_fetch_assoc($resultSet)) {
-        $id = $row['id'];
-        $name = $row['Name'];
-        $urlImagen = $row['Image'];
-        $Desc = $row['Desc'];
-       
-      ?>
-        <?php $descripcion ?>
-        <div class="col-md-5 col-lg-8">
-          <div class="card" style="background-color: white; border-radius: 40px; box-shadow: 15px 15px 15px;">
-            <div class="row g-4">
-              <div class="col-md-6">
-                <img src="<?php echo $urlImagen; ?>" class="card-img-top" alt="Imagen" style="border-radius: 30px; max-width: 85%; margin-left: 5%;">
-              </div>
-              <div class="col-md-6">
-                <div class="card-body">
-                  <h5 class="card-title" style="color: Black;"><?php echo $name; ?></h5>
-                 
-                  <p class="card-text" style="color: Black;"><?php echo $Desc; ?></p>
-                  
-                  </div>
-                </div>
-              </div>
+<div class="container" style="background-color: rgb(255, 255, 255); margin-top: 25px;">
+  <div class="row justify-content-center">
+    <?php
+    if ($conn != true) {
+      die("Error de conexión " . mysqli_connect_error());
+    }
+    $sql = "SELECT `id`, `Name`, `Desc`, `TipoReceta`, `Image`, `Ingredientes` FROM `receta` WHERE id LIKE '$prod'";
+    $resultSet = mysqli_query($conn, $sql);
+    while ($row = mysqli_fetch_assoc($resultSet)) {
+      $id = $row['id'];
+      $name = $row['Name'];
+      $urlImagen = $row['Image'];
+      $Desc = $row['Desc'];
+      $ingredientes = $row['Ingredientes']; // Nuevo campo de ingredientes
+
+      // Dividir los ingredientes en un array
+      $listaIngredientes = explode(',', $ingredientes);
+    ?>
+      <div class="col-md-8 mb-4">
+
+          <div class="row">
+            <div class="col-md-4">
+              <img src="<?php echo $urlImagen; ?>" class="img-fluid" alt="Imagen" style="border-radius: 20px; max-width: 100%;">
+            </div>
+            <div class="col-md-8">
+              <h5 style="color: Black;"><?php echo $name; ?></h5>
+              <h6>Ingredientes:</h6>
+              <?php
+              // Mostrar cada ingrediente en un nuevo párrafo
+              foreach ($listaIngredientes as $ingrediente) {
+                echo '<p style="color: Black; margin: 0; padding: 0;">- ' . trim($ingrediente) . '</p>';
+              }
+              ?>
+              <br>
+              <h6>Elaboracion:</h6>
+              <p style="color: Black;"><?php echo $Desc; ?></p>
             </div>
           </div>
         </div>
-      <?php
-      }
-      ?>
-    </div>
+      </div>
+    <?php
+    }
+    ?>
   </div>
 </div>
-  
-</body>
-      <br>
-      <!-- paginacion -->
-     
 
-    </div>
-
-    <script>
-      function toggleForm() {
-        var form = document.getElementById("filter-form");
-
-        // Verificar si el formulario está oculto
-        if (form.style.display === "none") {
-          // Mostrar el formulario con animación
-          form.style.opacity = 0;
-          form.style.display = "block";
-          // Aplicar la animación de fundido
-          fadeIn(form);
-        } else {
-          // Ocultar el formulario con animación
-          fadeOut(form, function() {
-            form.style.display = "none";
-          });
-        }
-      }
-
-      // Función para animar la aparición gradual del elemento
-      function fadeIn(element) {
-        var opacity = 0;
-        var timer = setInterval(function() {
-          if (opacity >= 1) {
-            clearInterval(timer);
-          }
-          element.style.opacity = opacity;
-          opacity += 0.1;
-        }, 50);
-      }
-
-      // Función para animar la desaparición gradual del elemento
-      function fadeOut(element, callback) {
-        var opacity = 1;
-        var timer = setInterval(function() {
-          if (opacity <= 0) {
-            clearInterval(timer);
-            callback();
-          }
-          element.style.opacity = opacity;
-          opacity -= 0.1;
-        }, 50);
-      }
-    </script>
 
 </body>
 

@@ -76,21 +76,23 @@ try {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="../img/lecut.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahorrando</title>
+    <title>Recetas</title>
 </head>
 <body style="background-color: rgb(255, 255, 255);">
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;" >
     <div class="container">
-      <a class="navbar-brand" href="../views/index.php">
-        <strong>Ahorrando®</strong>
-      </a>
+    <a class="navbar-brand" href="../views/index.php">
+    <img src="../img/lecut.ico" alt="Logo" style="height: 40px; width: auto;">
+</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

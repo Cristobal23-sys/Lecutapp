@@ -54,6 +54,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -107,7 +108,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
         <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">🔎</button>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>

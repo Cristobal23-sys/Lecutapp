@@ -60,15 +60,40 @@ $TipoReceta = [];
 while ($row = mysqli_fetch_assoc($resultReceta)) {
   $TipoReceta[] = $row['TipoReceta'];
 }
+
+$sql = "SELECT `id`, `producto_name`, `producto_image`, `producto_price`, `producto_categoria`, `producto_url` ,`producto_logo` FROM `producto` WHERE id LIKE '$prod'";
+$resultSet = mysqli_query($conn, $sql);
+$product = mysqli_fetch_assoc($resultSet);
+$id = $product['id'];
+$name = $product['producto_name'];
+$urlImagen = $product['producto_image'];
+$price = $product['producto_price'];
+$brand = $product['producto_categoria'];
+$url = $product['producto_url'];
+$logo = $product['producto_logo'];
+$formattedPrice = "$" . number_format($price, 0, '', '.');
+$descripcion = "$name es un producto de la categoría $brand. Es muy cotizado por las familias chilenas.";
+$sqlAleatorios = "SELECT `id`, `producto_name`, `producto_image`, `producto_price`, `producto_url`,`producto_logo`  FROM `producto` WHERE `producto_categoria` = '$brand' AND `id` != '$prod' ORDER BY RAND() LIMIT 15";
+$resultAleatorios = mysqli_query($conn, $sqlAleatorios);
+$productosAleatorios = [];
+if ($resultAleatorios) {
+  while ($row = mysqli_fetch_assoc($resultAleatorios)) {
+    $productosAleatorios[] = $row;
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="../css/css.css">
+  <link rel="icon" href="../img/lecut.ico">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -76,15 +101,16 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ahorrando</title>
+  <title><?php echo htmlspecialchars($name); ?> | Lecut</title>
 </head>
+
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
   <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
     <div class="container">
-      <a class="navbar-brand" href="../views/index.php">
-        <strong>Ahorrando®</strong>
-      </a>
+    <a class="navbar-brand" href="../views/index.php">
+    <img src="../img/lecut.ico" alt="Logo" style="height: 40px; width: auto;">
+</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -122,7 +148,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
         <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">🔎</button>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>
@@ -202,10 +228,13 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                 </div>
                 <div class="col-md-6">
                   <div class="card-body">
-                    <h5 class="card-title" style="color: Black;"><?php echo $name; ?></h5>
-                    <p class="card-text" style="color: Black;"><?php echo $brand; ?></p>
-                    <p class="card-text" style="color: Black;"><?php echo $descripcion; ?></p>
-                    <h5 class="card-text" style="color: black;"> Precio: <?php echo $formattedPrice; ?></h5><br><br>
+                    <h5 class="card-title" style="color: Black;"><?php echo htmlspecialchars($name); ?></h5>
+                    <p class="card-text" style="color: Black;"><?php echo htmlspecialchars($brand); ?></p>
+                    <p class="card-text" style="color: Black;"><?php echo htmlspecialchars($descripcion); ?></p>
+                    <img src="<?php echo htmlspecialchars($logo); ?>" alt="Imagen"
+                      style="height: 20%; position: absolute; right: 15%;">
+                    <h5 class="card-text" style="color: black;"> Precio: <?php echo htmlspecialchars($formattedPrice); ?>
+                    </h5><br><br>
                     <div class="d-flex ">
                       <a href="<?php echo $url ?>" class="btn btn-primary " style=" margin-bottom: 8px ;"
                         target="_blank">Ir a la página</a><br>
@@ -254,28 +283,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
     </div>
     <br>
     <br>
-    <?php
-    $sql = "SELECT `id`, `producto_name`, `producto_image`, `producto_price`, `producto_categoria`, `producto_url` ,`producto_logo` FROM `producto` WHERE id LIKE '$prod'";
-    $resultSet = mysqli_query($conn, $sql);
-    $product = mysqli_fetch_assoc($resultSet);
-    $id = $product['id'];
-    $name = $product['producto_name'];
-    $urlImagen = $product['producto_image'];
-    $price = $product['producto_price'];
-    $brand = $product['producto_categoria'];
-    $url = $product['producto_url'];
-    $logo = $product['producto_logo'];
-    $formattedPrice = "$" . number_format($price, 0, '', '.');
-    $descripcion = "$name es un producto de la categoría $brand. Es muy cotizado por las familias chilenas.";
-    $sqlAleatorios = "SELECT `id`, `producto_name`, `producto_image`, `producto_price`, `producto_url`,`producto_logo`  FROM `producto` WHERE `producto_categoria` = '$brand' AND `id` != '$prod' ORDER BY RAND() LIMIT 15";
-    $resultAleatorios = mysqli_query($conn, $sqlAleatorios);
-    $productosAleatorios = [];
-    if ($resultAleatorios) {
-      while ($row = mysqli_fetch_assoc($resultAleatorios)) {
-        $productosAleatorios[] = $row;
-      }
-    }
-    ?>
+
     <br>
     <br>
     <div class="d-flex justify-content-center align-items-center" style="background-color: rgb();">
@@ -296,9 +304,9 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                 $formattedPrice = "$" . number_format($producto['producto_price'], 0, '', '.');
                 echo "<div class='col'>";
                 echo "<a href='../views/viewproducto.php?id={$producto['id']}' style='text-decoration: none;'>";
-                echo "<div class='card' style='background-color: rgb(241, 192, 134); width: 12rem; height: 18rem;'>";
+                echo "<div class='card' style='background-color: rgb(); width: 12rem; height: 18rem;'>";
                 echo "<div class='img-container'>";
-                echo "<img src='../img/blanco.png' alt='Imagen Fondo' style='border-radius: 5px;'>";
+                
                 echo "<img src='{$producto['producto_image']}' class='card-img-top' alt='Imagen' style='height: 12rem;'>";
                 echo "</div>";
                 echo "<div class='card-body'>";
@@ -311,7 +319,8 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                 echo "</div>";
               }
               echo "</div>";
-              echo "</div>";
+              echo "</div> ";
+              
             }
             ?>
           </div>

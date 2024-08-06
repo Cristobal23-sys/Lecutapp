@@ -5,10 +5,9 @@ require_once '../class/connection.php';
 $conn = new connection();
 // Verificar si el usuario ha iniciado sesión y es administrador
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: ../views/admin.php");
     exit();
 }
-
 
 $conexion = $conn->conectar();
 if ($conexion->connect_error) {
@@ -25,7 +24,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
 if ($row['rol'] != '0') { // Suponiendo que '0' es el rol de administrador
-    header("Location: index.php");
+    header("Location: ../views/index.php");
     exit();
 }
 

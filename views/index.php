@@ -7,6 +7,7 @@ try {
   $connection = $conn->conectar();
   session_start();
 
+
   // Obtener el número total de registros
   $sqlTotal = "SELECT COUNT(*) AS total FROM producto";
   $resultTotal = mysqli_query($connection, $sqlTotal);
@@ -48,24 +49,26 @@ try {
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../css/css.css">
+  <link rel="icon" href="../img/lecut.ico">
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LeCut</title>
+  <title>Cotiza, Compara | Lecut</title>
 </head>
 
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
-  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
+  <nav class="navbar navbar-expand-lg" style="background-color: rgb(71, 126, 213);">
     <div class="container">
-      <a class="navbar-brand" href="../views/index.php">
-        <strong>L®</strong>
-      </a>
+    <a class="navbar-brand" href="../views/index.php">
+    <img src="../img/lecut.ico" alt="Logo" style="height: 40px; width: auto;">
+</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -103,7 +106,7 @@ try {
         <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">🔎</button>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>
@@ -158,13 +161,13 @@ try {
 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="../img/banner1.png" class="d-block w-100" alt="...">
+      <img src="https://i.postimg.cc/GtzVYRFb/bannerlecut.png" class="d-block mx-auto w-50" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="../img/banner2.png" class="d-block w-100" alt="...">
+      <img src="https://i.postimg.cc/GtzVYRFb/bannerlecut.png" class="d-block mx-auto w-50" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="../img/banner3.png" class="d-block w-100" alt="...">
+      <img src="https://i.postimg.cc/GtzVYRFb/bannerlecut.png" class="d-block mx-auto w-50" alt="...">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -176,6 +179,7 @@ try {
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
 <div class="container mt-5">
   <div class="row justify-content-center">
     <h2 class="text-center col-12"><strong>Categorías Destacadas</strong></h2>
@@ -183,7 +187,7 @@ try {
       <a href="../views/view-categorias.php?producto_categoria=Lacteos">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
-            <img src="https://i.postimg.cc/sgDSYzxy/1.png" alt="Imagen de Lacteos"
+            <img src="https://i.postimg.cc/rFjG4srp/1.png" alt="Imagen de Lacteos"
               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; cursor: pointer;"
               onmouseover="this.style.transform='scale(1.15)';"
               onmouseout="this.style.transform='scale(1)';">
@@ -195,7 +199,7 @@ try {
       <a href="../views/view-categorias.php?producto_categoria=Botilleria">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
-            <img src="https://i.postimg.cc/MGnQLY1F/2.png" alt="Imagen de Botilleria"
+            <img src="https://i.postimg.cc/Z5DrfQjt/2.png" alt="Imagen de Botilleria"
               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; cursor: pointer;"
               onmouseover="this.style.transform='scale(1.15)';"
               onmouseout="this.style.transform='scale(1)';">
@@ -207,7 +211,7 @@ try {
       <a href="../views/view-categorias.php?producto_categoria=Mascotas">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
-            <img src="https://i.postimg.cc/rwn4gHR4/3.png" alt="Imagen de Mascotas"
+            <img src="https://i.postimg.cc/8CJLxbnF/3.png" alt="Imagen de Mascotas"
               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; cursor: pointer;"
               onmouseover="this.style.transform='scale(1.15)';"
               onmouseout="this.style.transform='scale(1)';">
@@ -219,7 +223,7 @@ try {
       <a href="../views/view-categorias.php?producto_categoria=Carniceria">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
-            <img src="https://i.postimg.cc/SKffdRrT/4.png" alt="Imagen de Carniceria"
+            <img src="https://i.postimg.cc/1zkDSNLv/4.png" alt="Imagen de Carniceria"
               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; cursor: pointer;"
               onmouseover="this.style.transform='scale(1.15)';"
               onmouseout="this.style.transform='scale(1)';">
@@ -231,54 +235,68 @@ try {
 </div>
 
 
-<style>
-  .card {
-    background-color: rgb(241, 192, 134);
-    border-radius: 5px;
-    width: 100%;
-    /* Asegura que la tarjeta use todo el ancho disponible en su columna */
-    height: 100%;
-    /* Asegura que la tarjeta use todo el alto disponible en su columna */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
 
-  .card-body {
-    padding: 1rem;
-  }
+  <style>
+    .card {
+      background-color: rgb();
+      width: 100%;
+      /* Asegura que la tarjeta use todo el ancho disponible en su columna */
+      height: 300px;
+      /* Ajusta la altura automáticamente */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      /* Centra el contenido horizontalmente */
+      transition: transform 0.3s ease;
+      /* Añade una transición suave */
+    }
 
-  .img-container {
-    position: relative;
-    overflow: hidden;
-  }
+    .card:hover {
+      transform: scale(1.05);
+      /* Aumenta el tamaño de la tarjeta al pasar el mouse */
+      z-index: 1;
+      /* Asegura que la tarjeta esté por encima de otras */
+    }
 
-  .img-container img:first-of-type {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+    .img-container {
+      width: 80%;
+      /* Asegura que el contenedor de la imagen use todo el ancho */
+      height: 60%;
+      /* Ajusta la altura del contenedor de la imagen */
+      overflow: hidden;
+      /* Asegura que la imagen no se desborde */
+      display: flex;
+      justify-content: center;
+      /* Centra horizontalmente */
+      align-items: center;
+      /* Centra verticalmente */
+    }
 
-  .img-container img:last-of-type {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-  }
 
-  .logo-img {
-    width: 50px;
-    /* Ajusta el tamaño según sea necesario */
-    height: auto;
-    position: absolute;
-    bottom: 1%;
-    right: 1%;
-  }
-</style>
+
+    .card-body {
+      padding: 0.5rem;
+      /* Reduce el padding para acercar el texto a la imagen */
+      text-align: center;
+      /* Centra el texto */
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+      /* Reduce el margen inferior del título */
+    }
+
+    .logo-img {
+      width: 50px;
+      /* Ajusta el tamaño según sea necesario */
+      height: auto;
+      position: absolute;
+      bottom: 3%;
+      right: 1%;
+    }
+  </style>
+
 <div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">
   <div class="d-flex justify-content-center">
     <div class="container mt-4">
@@ -311,7 +329,7 @@ try {
               echo '<a href="../views/viewProducto.php?id=' . $id . '" style="text-decoration: none;">';
               echo '<div class="card">';
               echo '<div class="img-container">';
-              echo '<img src="../img/blanco.png" alt="Imagen Fondo">';
+             
               echo '<img src="' . $urlImagen . '" alt="Imagen Superpuesta">';
               echo '</div>';
               echo '<div class="card-body">';
@@ -396,37 +414,20 @@ try {
   }
 
   .logo-img {
-    width: 50px;
+    width: 40px;
     height: auto;
   }
 </style>
 
 
 <br>
+
 <div class="container">
     <div class="d-flex justify-content-center">
       <img src="../img/b-cupon.png" alt="Descripción de la imagen" class="img-fluid" style="max-width: 100%;">
     </div>
   </div>
-
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card text-center" style="background-color: black;">
-        <div class="card-body" style="background-color: white;">
-          <h2 class="card-title">Suscríbete a nuestras novedades</h2>
-          <p class="card-text">Recibe cupones y ofertas directamente en tu correo electrónico.</p>
-          <form action="#" method="post">
-            <div class="input-group mb-3">
-              <input type="email" class="form-control" placeholder="Introduce tu email" required>
-              <button class="btn btn-outline-success" type="submit">Suscribirse</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<br><br><br>
 <!-- Asegúrate de que estos scripts se carguen en el orden correcto -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

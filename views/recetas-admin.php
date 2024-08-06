@@ -23,7 +23,5 @@
 <h2>Administrar Recetas</h2>
 <img src="https://adclichosting.com/wp-content/uploads/2021/10/Pagina-en-construccion.jpg" alt="Construccion">
 </div>
-
-
 </body>
 </html>
