@@ -106,10 +106,10 @@ if ($resultAleatorios) {
 
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
-  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
+  <nav class="navbar navbar-expand-lg" style="background-color: rgb(71, 126, 213);">
     <div class="container">
     <a class="navbar-brand" href="../views/index.php">
-    <img src="../img/lecut.ico" alt="Logo" style="height: 40px; width: auto;">
+    <img src="https://i.postimg.cc/vBfDj9sv/icono-removebg-preview.png" alt="Logo" style="height: 50px; width: auto;">
 </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,11 +145,24 @@ if ($resultAleatorios) {
             </ul>
           </li>
         </ul>
-        <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
+        <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET" id="searchForm">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </form>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>        
+        </form>      
+<script>
+  document.getElementById('searchForm').addEventListener('submit', function(event) {
+    var input = document.getElementById('searchInput');
+    var regex = /^[a-zA-Z0-9\s]+$/;
+    
+    if (!regex.test(input.value)) {
+      input.classList.add('is-invalid'); // Agregar clase de Bootstrap para indicar error
+      event.preventDefault(); // Prevenir el envío del formulario
+    } else {
+      input.classList.remove('is-invalid'); // Remover clase si la validación es correcta
+    }
+  });
+</script>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>
             <li class="nav-item dropdown">
@@ -328,7 +341,7 @@ if ($resultAleatorios) {
           <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px;">
             <!-- Botón de control anterior -->
             <button
-              style="background: rgb(241, 192, 134); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
+              style="background: rgb(71, 126, 213); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
               onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
               onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
               class="custom-carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -337,7 +350,7 @@ if ($resultAleatorios) {
             </button>
             <!-- Botón de control siguiente -->
             <button
-              style="background: rgb(241, 192, 134); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
+              style="background: rgb(71, 126, 213); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
               onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
               onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
               class="custom-carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
@@ -433,10 +446,10 @@ if ($resultAleatorios) {
       <div class="row mt-3">
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <h6 class="text-uppercase fw-bold mb-4">
-            <i class="fas fa-gem me-3"></i>Ahorrando
+          <i class="fa-solid fa-cart-shopping"></i>
           </h6>
           <p>
-            Los mejores precio en Ahorrando para los consumidores
+            Los mejores precio en Lecut para los consumidores
           </p>
         </div>
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4" style="background-color: rgba(255, 255, 255)">
@@ -465,7 +478,7 @@ if ($resultAleatorios) {
             <a href="../views/view-register.php" class="text-reset">Registrarse</a>
           </p>
           <p>
-            <a href="../Views/index.php" class="text-reset">Proximamente</a>
+            <a href="../Views/ruleta.html" class="text-reset">Proximamente</a>
           </p>
           <p>
             <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
@@ -479,7 +492,7 @@ if ($resultAleatorios) {
           <p><i class="fas fa-home me-3"></i> Juan Fernández 2010, Archipiélago, Curicó, Chile</p>
           <p>
             <i class="fas fa-envelope me-3"></i>
-            info@ahorrando.cl
+            info@lecut.cl
           </p>
           <p><i class="fas fa-phone me-3"></i> +56 9 12345678</p>
 
@@ -489,7 +502,7 @@ if ($resultAleatorios) {
   </section>
   <div class="text-center p-4" style="background-color: rgba();">
     <span>© 2024</span>
-    <a class="text-reset fw-bold" href="../Views/index.php">AHORRANDO<i class="fa-solid fa-cart-shopping"></i></a>
+    <a class="text-reset fw-bold" href="../Views/index.php" style="text-decoration: none;">LeCut®</a>
   </div>
 </footer>
 

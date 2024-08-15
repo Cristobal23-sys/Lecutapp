@@ -63,7 +63,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;" >
     <div class="container">
     <a class="navbar-brand" href="../views/index.php">
-    <img src="../img/lecut.ico" alt="Logo" style="height: 40px; width: auto;">
+    <img src="https://i.postimg.cc/vBfDj9sv/icono-removebg-preview.png" alt="Logo" style="height: 50px; width: auto;">
 </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,11 +100,24 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             </ul>
           </li>
         </ul>
-        <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET">
+        <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET" id="searchForm">
           <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
             aria-label="Search">
-          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </form>
+          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>        
+        </form>      
+<script>
+  document.getElementById('searchForm').addEventListener('submit', function(event) {
+    var input = document.getElementById('searchInput');
+    var regex = /^[a-zA-Z0-9\s]+$/;
+    
+    if (!regex.test(input.value)) {
+      input.classList.add('is-invalid'); // Agregar clase de Bootstrap para indicar error
+      event.preventDefault(); // Prevenir el envío del formulario
+    } else {
+      input.classList.remove('is-invalid'); // Remover clase si la validación es correcta
+    }
+  });
+</script>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>
             <li class="nav-item dropdown">
@@ -320,10 +333,10 @@ if (count($productos) == 0) {
       <div class="row mt-3">
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <h6 class="text-uppercase fw-bold mb-4">
-            <i class="fas fa-gem me-3"></i>Ahorrando
+          <i class="fa-solid fa-cart-shopping"></i>
           </h6>
           <p>
-            Los mejores precio en Ahorrando para los consumidores
+            Los mejores precio en Lecut para los consumidores
           </p>
         </div>
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4" style="background-color: rgba(255, 255, 255)">
@@ -334,7 +347,8 @@ if (count($productos) == 0) {
             <a href="../views/view-categorias.php?producto_categoria=Lácteos" class="text-reset">Lácteos</a>
           </p>
           <p>
-            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y Verduras</a>
+            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y
+              Verduras</a>
           </p>
           <p>
             <a href="../views/view-categorias.php?producto_categoria=Carniceria" class="text-reset">Carnes</a>
@@ -351,10 +365,10 @@ if (count($productos) == 0) {
             <a href="../views/view-register.php" class="text-reset">Registrarse</a>
           </p>
           <p>
-            <a href="../Views/index.php" class="text-reset">Proximamente</a>
+            <a href="../Views/ruleta.html" class="text-reset">Proximamente</a>
           </p>
           <p>
-          <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
+            <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
           </p>
           <p>
             <a href="../views/view-cat-receta.php?" class="text-reset">Recetas</a>
@@ -365,7 +379,7 @@ if (count($productos) == 0) {
           <p><i class="fas fa-home me-3"></i> Juan Fernández 2010, Archipiélago, Curicó, Chile</p>
           <p>
             <i class="fas fa-envelope me-3"></i>
-            info@ahorrando.cl
+            info@lecut.cl
           </p>
           <p><i class="fas fa-phone me-3"></i> +56 9 12345678</p>
 
@@ -375,7 +389,7 @@ if (count($productos) == 0) {
   </section>
   <div class="text-center p-4" style="background-color: rgba();">
     <span>© 2024</span>
-    <a class="text-reset fw-bold" href="../Views/index.php">AHORRANDO<i class="fa-solid fa-cart-shopping"></i></a>
+    <a class="text-reset fw-bold" href="../Views/index.php" style="text-decoration: none;">LeCut®</a>
   </div>
 </footer>
 

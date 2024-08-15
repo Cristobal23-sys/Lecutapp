@@ -7,11 +7,12 @@ session_start();
 <html>
 
 <head>
-  <title>LogIn</title>
+  <title>Registro | LeCut</title>
   <link rel="stylesheet" type="text/css" href="../Css/styles.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="icon" href="../img/lecut.ico">
 </head>
 
 <body>
@@ -19,13 +20,15 @@ session_start();
   <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
       <div class="navbar-left">
-        <a class="navbar-brand" style="display: flex; justify-content: center;" href="index.php">Ahorrando®</a>
+        <a class="navbar-brand" style="display: flex; justify-content: center;" href="index.php">
+        <img src="https://i.postimg.cc/vBfDj9sv/icono-removebg-preview.png" alt="Logo" style="height: 50px; width: auto;">
+        </a>
       </div>
 
     </div>
   </nav>
   <h2 style="display: flex; justify-content: center;">Registro</h2>
-  <!-- Logo Ahorrando -->
+  <!-- Logo -->
   <div class="fadeIn first" style="display: flex; justify-content: center;">
 
   </div>
@@ -77,7 +80,7 @@ session_start();
       <div class="col-md-6">
         <div class="card">
           <div class="card-header text-center">
-            <h4 class="card-title"><img src="../img/ahor.png" id="icon" alt="User Icon" style="width: 30% ;" /></h4>
+            <h4 class="card-title"><img src="https://i.postimg.cc/C55HkmDK/iconosuperprime.png id="icon" alt="User Icon" style="width: 20% ;" /></h4>
           </div>
           <div class="card-body">
           <p class="Signup_paragraphText__MbGY9">Regístrate y disfruta de nuestros sistema para crear y organizar tus proximas compras en el supermercado</p>
@@ -131,7 +134,7 @@ session_start();
     </div>
   </div>
   <div id="formFooter" style="display: flex; justify-content: center; ">
-    Ahorrando® 2024
+    LeCut® 2024
   </div>
 
 
