@@ -68,11 +68,11 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
 
 <body style="background-color: rgb(255, 255, 255);">
   <!--Navbar-->
-  <nav class="navbar navbar-expand-lg" style="background-color: #f7d1c4;">
+  <nav class="navbar navbar-expand-lg" style="background-color: rgb(71, 126, 213);">
     <div class="container">
-      <a class="navbar-brand" href="../views/index.php">
-        <strong>LeCut®</strong>
-      </a>
+    <a class="navbar-brand" href="../views/index.php">
+    <img src="https://i.postimg.cc/vBfDj9sv/icono-removebg-preview.png" alt="Logo" style="height: 50px; width: auto;">
+</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
