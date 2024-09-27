@@ -122,9 +122,56 @@ try {
 <body style="background-color: rgb(255, 255, 255);">
   <nav class="navbar navbar-expand-lg" style="background-color: rgb(71, 126, 213);">
     <div class="container">
-    <a class="navbar-brand" href="../views/index.php">
-    <img src="https://i.postimg.cc/vBfDj9sv/icono-removebg-preview.png" alt="Logo" style="height: 50px; width: auto;">
-</a>
+    <style>
+
+.button {
+  margin: 0;
+  height: auto;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+/* button styling */
+.button {
+  --border-right: 6px;
+  --text-stroke-color: rgba(0,0,0);
+  --animation-color: #ffffff;
+  --fs-size: 1.2em;
+  letter-spacing: 3px;
+  text-decoration: none;
+  font-size: var(--fs-size);
+  font-family: "Lucida Handwriting";
+  position: relative;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-stroke-color);
+}
+/* this is the text, when you hover on button */
+.hover-text {
+  position: absolute;
+  box-sizing: border-box;
+  content: attr(data-text);
+  color: var(--animation-color);
+  width: 0%;
+  inset: 0;
+  border-right: var(--border-right) solid var(--animation-color);
+  overflow: hidden;
+  transition: 0.5s;
+  -webkit-text-stroke: 1px var(--animation-color);
+}
+/* hover */
+.button:hover .hover-text {
+  width: 100%;
+  filter: drop-shadow(0 0 23px var(--animation-color))
+}
+</style>
+
+<button class="button" data-text="LeCut" onclick="location.href='../views/index.php'">
+    <span class="actual-text">&nbsp;LeCut&nbsp;</span>
+    <span aria-hidden="true" class="hover-text">&nbsp;LeCut&nbsp;</span>
+</button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -159,10 +206,40 @@ try {
             </ul>
           </li>
         </ul>
-        <form class="d-flex me-auto w-50" role="search" action="../class/search.php" method="GET" id="searchForm">
-          <input class="form-control me-1 w-50" id="searchInput" type="search" name="buscar" placeholder="Buscar"
-            aria-label="Search">
-          <button class="btn btn-Light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>        
+        <style>
+.container-input {
+  position: relative;
+}
+
+.input {
+  width: 350px;
+  padding: 10px 0px 10px 40px;
+  border-radius: 9999px;
+  border: solid 1px #333;
+  transition: all .2s ease-in-out;
+  outline: none;
+  opacity: 0.6;
+}
+
+.container-input svg {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translate(0, -50%);
+}
+
+.input:focus {
+  opacity: 1;
+  width: 350px;
+}
+</style>
+        <form class="d-flex me-auto w-50 container-input" role="search" action="../class/search.php" method="GET" id="searchForm">
+        <input  placeholder="Busca Tu Producto..." name="buscar" class="input" type="search" id="searchInput" aria-label="Search">
+       
+  <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+    <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+</svg>
+             
         </form>      
 <script>
   document.getElementById('searchForm').addEventListener('submit', function(event) {
@@ -224,27 +301,7 @@ try {
       </div>
     </div>
   </nav>
-  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="https://i.postimg.cc/GtzVYRFb/bannerlecut.png" class="d-block mx-auto w-50" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="https://i.postimg.cc/GtzVYRFb/bannerlecut.png" class="d-block mx-auto w-50" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="https://i.postimg.cc/GtzVYRFb/bannerlecut.png" class="d-block mx-auto w-50" alt="...">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div><br>
+ <br>
 <?php echo "<h4 style='text-align: center; display: block;'>Tus Resultados Por La Busqueda De: <strong>" . htmlspecialchars($buscar) . "</strong>.</h4>"; ?>
  
   <div class="container">
