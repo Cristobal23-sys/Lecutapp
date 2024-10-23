@@ -496,38 +496,42 @@ hr.elegant-line {
     </div>
   </div>
   <br>
-  <!-- paginacion -->
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-      <?php if ($paginaActual > 1): ?>
-        <li class="page-item">
-          <a class="page-link"
-            href="?pagina=<?php echo $paginaActual - 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
-            aria-label="Anterior">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-      <?php endif; ?>
+ <!-- paginacion -->
+<nav aria-label="Page navigation">
+    <div class="d-flex justify-content-center">
+        <?php if ($paginaActual > 1): ?>
+            <a class="btn btn-link me-2" style="font-weight: bold; text-decoration: none; color: black;"
+               href="?pagina=<?php echo $paginaActual - 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
+               aria-label="Anterior">
+                &laquo; Anterior
+            </a>
+        <?php endif; ?>
 
-      <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-        <li class="page-item <?php if ($i == $paginaActual)
-          echo 'active'; ?>">
-          <a class="page-link"
-            href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"><?php echo $i; ?></a>
-        </li>
-      <?php endfor; ?>
+        <div class="dropdown">
+            <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold; text-decoration: none; color:black;">
+                Página <?php echo $paginaActual; ?>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                    <li>
+                        <a class="dropdown-item <?php if ($i == $paginaActual) echo 'active'; ?>"
+                           href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>">
+                            Página <?php echo $i; ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </div>
 
-      <?php if ($paginaActual < $totalPaginas): ?>
-        <li class="page-item">
-          <a class="page-link"
-            href="?pagina=<?php echo $paginaActual + 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
-            aria-label="Siguiente">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      <?php endif; ?>
-    </ul>
-  </nav>
+        <?php if ($paginaActual < $totalPaginas): ?>
+            <a class="btn btn-link ms-2" style="font-weight: bold; text-decoration: none; color:black;"
+               href="?pagina=<?php echo $paginaActual + 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
+               aria-label="Siguiente">
+                Siguiente &raquo;
+            </a>
+        <?php endif; ?>
+    </div>
+</nav>
 
 
 

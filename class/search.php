@@ -453,42 +453,47 @@ try {
     </div>
   </div>
   <br>
-  <!-- paginacion -->
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <?php if ($paginaActual > 1): ?>
-        <li class="page-item">
-          <a class="page-link"
-            href="?pagina=<?php echo ($paginaActual - 1); ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"
-            aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-          </a>
-        </li>
-      <?php endif; ?>
-      <?php
-      // Calcular los límites inferior y superior para las páginas
-      $limiteInferior = max(1, $paginaActual - 2);
-      $limiteSuperior = min($totalPaginas, $paginaActual + 2);
-      for ($i = $limiteInferior; $i <= $limiteSuperior; $i++):
-        ?>
-        <li class="page-item <?php echo ($i == $paginaActual) ? 'active' : ''; ?>">
-          <a class="page-link"
-            href="?pagina=<?php echo $i; ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"><?php echo $i; ?></a>
-        </li>
-      <?php endfor; ?>
-      <?php if ($paginaActual < $totalPaginas): ?>
-        <li class="page-item">
-          <a class="page-link"
-            href="?pagina=<?php echo ($paginaActual + 1); ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"
-            aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-          </a>
-        </li>
-      <?php endif; ?>
-    </ul>
-  </nav>
+<!-- paginacion -->
+<!-- paginacion -->
+<nav aria-label="Page navigation">
+    <div class="d-flex justify-content-center">
+        <?php if ($paginaActual > 1): ?>
+            <a class="btn btn-link me-2" style="font-weight: bold; text-decoration: none; color:black;"
+               href="?pagina=<?php echo ($paginaActual - 1); ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+               aria-label="Anterior">
+                &laquo; Anterior
+            </a>
+        <?php endif; ?>
+
+        <div class="dropdown">
+            <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold; text-decoration: none; color:black;">
+                Página <?php echo $paginaActual; ?>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <?php
+                // Calcular los límites inferior y superior para las páginas
+                $limiteInferior = max(1, $paginaActual - 2);
+                $limiteSuperior = min($totalPaginas, $paginaActual + 2);
+                for ($i = $limiteInferior; $i <= $limiteSuperior; $i++): ?>
+                    <li>
+                        <a class="dropdown-item <?php if ($i == $paginaActual) echo 'active'; ?>"
+                           href="?pagina=<?php echo $i; ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>">
+                            Página <?php echo $i; ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </div>
+
+        <?php if ($paginaActual < $totalPaginas): ?>
+            <a class="btn btn-link ms-2" style="font-weight: bold; text-decoration: none; color:black;"
+               href="?pagina=<?php echo ($paginaActual + 1); ?>&buscar=<?php echo htmlspecialchars($buscar); ?>&orden=<?php echo htmlspecialchars($orden); ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+               aria-label="Siguiente">
+                Siguiente &raquo;
+            </a>
+        <?php endif; ?>
+    </div>
+</nav>
   </div>
   <script>
     function toggleForm() {

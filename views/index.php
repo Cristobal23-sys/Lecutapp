@@ -546,10 +546,14 @@ try {
 
 
 <br>
-
+<br><br><br>
 <div class="container">
     <div class="d-flex justify-content-center">
-      <img src="https://i.postimg.cc/ryZDK8pc/cupon.png" alt="Descripción de la imagen" class="img-fluid" style="max-width: 100%;">
+      <img src="https://i.postimg.cc/5yHk6qhP/banner-horizontal-decoration-hogar-elegante-sofisticado-marron-acuarela.png" alt="Descripción de la imagen" class="img-fluid" style="max-width: 40%;">
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+      <img src="https://i.postimg.cc/qMh9R40k/Post-para-twitter-rese-a-cap-tulo-de-serie-de-dragones-pergamino-collage-1.png" alt="Descripción de la imagen" class="img-fluid" style="max-width: 65%;">
     </div>
   </div>
 <br><br><br>
