@@ -87,17 +87,20 @@ if ($resultAleatorios) {
 <html>
 
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="../css/css.css">
-  <link rel="icon" href="../img/lecut.ico">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="../img/lecut.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -418,22 +421,52 @@ if ($resultAleatorios) {
           <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px;">
             <!-- Botón de control anterior -->
             <button
-              style="background: rgb(71, 126, 213); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
-              onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
-              onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
-              class="custom-carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="prev">
-              <i class="fas fa-chevron-left"></i>
-            </button>
+    style="
+        background: rgb(71, 126, 213); 
+        border: none; 
+        font-size: 30px; 
+        color: #333; 
+        cursor: pointer; 
+        transition: color 0.3s ease, transform 0.3s ease; 
+        border-radius: 50%; /* Hace el botón redondo */
+        width: 60px; /* Ancho del botón */
+        height: 60px; /* Alto del botón */
+        display: flex; /* Para centrar el contenido */
+        align-items: center; /* Centra verticalmente */
+        justify-content: center; /* Centra horizontalmente */
+    "
+    onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
+    onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
+    class="custom-carousel-control-prev" 
+    type="button" 
+    data-bs-target="#carouselExampleIndicators"
+    data-bs-slide="prev">
+    <i class="fas fa-chevron-left"></i>
+</button>
             <!-- Botón de control siguiente -->
             <button
-              style="background: rgb(71, 126, 213); border: none; font-size: 30px; color: #333; cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;"
-              onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
-              onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
-              class="custom-carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="next">
-              <i class="fas fa-chevron-right"></i>
-            </button>
+    style="
+        background: rgb(71, 126, 213); 
+        border: none; 
+        font-size: 30px; 
+        color: #333; 
+        cursor: pointer; 
+        transition: color 0.3s ease, transform 0.3s ease; 
+        border-radius: 50%; /* Hace el botón redondo */
+        width: 60px; /* Ancho del botón */
+        height: 60px; /* Alto del botón */
+        display: flex; /* Para centrar el contenido */
+        align-items: center; /* Centra verticalmente */
+        justify-content: center; /* Centra horizontalmente */
+    "
+    onmouseover="this.style.color='#6b8cff'; this.style.transform='scale(1.2)';"
+    onmouseout="this.style.color='#333'; this.style.transform='scale(1)';"
+    class="custom-carousel-control-next" 
+    type="button" 
+    data-bs-target="#carouselExampleIndicators"
+    data-bs-slide="next">
+    <i class="fas fa-chevron-right"></i>
+</button>
             <div class="d-block d-md-none">
               <p class="text-center">Visita nuestra tienda para ver los productos recomendados.</p>
             </div>
