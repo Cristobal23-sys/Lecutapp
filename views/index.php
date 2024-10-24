@@ -252,13 +252,13 @@ try {
 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="https://i.postimg.cc/MKh8jnJZ/Comprar-2.png" class="d-block mx-auto w-80" alt="...">
+      <img src="https://i.postimg.cc/MTqVs6Tw/3.png" class="d-block mx-auto w-80" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="https://i.postimg.cc/MKh8jnJZ/Comprar-2.png" class="d-block mx-auto w-80" alt="...">
+      <img src="https://i.postimg.cc/pdDKYhPk/4.png" class="d-block mx-auto w-80" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="https://i.postimg.cc/MKh8jnJZ/Comprar-2.png" class="d-block mx-auto w-80" alt="...">
+      <img src="https://i.postimg.cc/mrVSM1LM/2.png" class="d-block mx-auto w-80" alt="...">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
