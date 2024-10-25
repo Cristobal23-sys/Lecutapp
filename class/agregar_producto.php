@@ -68,4 +68,3 @@ if (isset($_POST['prod']) && isset($_POST['wishlist'])) {
 }
 
 mysqli_close($conn);
-?>

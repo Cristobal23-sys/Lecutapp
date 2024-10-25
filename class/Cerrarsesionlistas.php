@@ -8,5 +8,5 @@ session_start();
 session_destroy();
 
 // Redirigir al usuario a index.php
-header("Location: ../views/index.php");
+header("Location: ../index.php");
 exit();

@@ -9,16 +9,17 @@ $pass = $_POST['pass'];
 
 $Auth = new Auth($user, $pass);
 
+$referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '../index.php';
+
 if ($Auth->logear($user, $pass)) {
     $_SESSION['user'] = $user;
-    $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '../views/index.php';
 
     // Redirigir al usuario a la página anterior
     header("Location: " . $referrer);
     exit();
 } else {
     $_SESSION['error_message'] = 'Usuario o contraseña incorrectos.';
-    header("Location: ../views/index.php");
+    header("Location: " . $referrer);
     exit();
 }
 

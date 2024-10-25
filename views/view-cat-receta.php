@@ -272,10 +272,16 @@ try {
   </nav>
 </body>
 
-<!--carrusel-->
+
 </div>
 
-<div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">   
+<div class="container" style="background-color:rgb(255,255,255); margin-top: 25px;">  
+
+<button class="btn btn-outline-primary"  onclick="location.href='../views/recetasIA.html'">
+    <span class="actual-text">Crea Tu Receta Con Inteligencia Artificial</span>
+    
+</button>
+
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-5" style="margin-top: 1px;">
   <?php
   if ($count > 0) {

@@ -1,5 +1,5 @@
 <?php
-require_once '../class/connection.php';
+require_once 'class/connection.php';
 
 $conn = new connection();
 
@@ -52,7 +52,7 @@ try {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="../img/lecut.ico">
+    <link rel="icon" href="img/lecut.ico">
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -130,7 +130,7 @@ try {
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <?php foreach ($categorias as $categoria) { ?>
                 <li><a class="dropdown-item"
-                    href="../views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
+                    href="views/view-categorias.php?producto_categoria=<?php echo $categoria; ?>"><?php echo $categoria; ?></a>
                 </li>
               <?php } ?>
 
@@ -144,10 +144,10 @@ try {
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
               <?php foreach ($TipoReceta as $TipoRecetas) { ?>
                 <li><a class="dropdown-item"
-                    href="../views/view-cat-receta.php?TipoReceta=<?php echo $TipoRecetas; ?>"><?php echo $TipoRecetas; ?></a>
+                    href="views/view-cat-receta.php?TipoReceta=<?php echo $TipoRecetas; ?>"><?php echo $TipoRecetas; ?></a>
                 </li>
               <?php } ?>
-              <li><a class="dropdown-item" href="../views/view-cat-receta.php?"> Todas </a></li>
+              <li><a class="dropdown-item" href="views/view-cat-receta.php?"> Todas </a></li>
             </ul>
           </li>
         </ul>
@@ -178,7 +178,7 @@ try {
   width: 350px;
 }
 </style>
-        <form class="d-flex me-auto w-50 container-input" role="search" action="../class/search.php" method="GET" id="searchForm">
+        <form class="d-flex me-auto w-50 container-input" role="search" action="class/search.php" method="GET" id="searchForm">
         <input  placeholder="Busca Tu Producto..." name="buscar" class="input" type="search" id="searchInput" aria-label="Search">
        
   <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
@@ -207,8 +207,8 @@ try {
                 <strong>Bienvenido, <?php echo $_SESSION['username']; ?></strong>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                <li><a class="dropdown-item" href="../views/view-listacompra.php">Lista de compras</a></li>
-                <li><a class="dropdown-item" href="../class/Cerrarsesion.php">Cerrar sesión</a></li>
+                <li><a class="dropdown-item" href="views/view-listacompra.php">Lista de compras</a></li>
+                <li><a class="dropdown-item" href="class/Cerrarsesion.php">Cerrar sesión</a></li>
               </ul>
             </li>
           <?php } else { ?>
@@ -218,7 +218,7 @@ try {
                <strong> Iniciar sesión</strong>
               </a>
               <div class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="navbarLoginDropdown">
-                <form action="../class/pass.php" name="f1" onsubmit="return validation()" method="POST">
+                <form action="class/pass.php" name="f1" onsubmit="return validation()" method="POST">
                   <div class="mb-3">
                     <label for="exampleDropdownFormEmail2" class="form-label">👨🏽‍💼</label>
                     <input type="text" id="user" class=" fadeIn second" name="user" placeholder="Usuario" required>
@@ -237,7 +237,7 @@ try {
                   ?>
                   <button type="submit" class="btn btn-primary" style="margin-left: 35px;"> Iniciar sesión </button>
                   <p style="display: flex; justify-content: center;">¿Aun no tienes cuenta?</p><a
-                    href="../views/view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
+                    href="views/view-register.php" style="display: flex; justify-content: center;">Regístrate</a>
                 </form>
               </div>
             </li>
@@ -275,7 +275,7 @@ try {
   <div class="row justify-content-center">
     <h2 class="text-center col-12"><strong>Categorías Destacadas</strong></h2>
     <div class="col-12 col-sm-6 col-md-3 mb-4">
-      <a href="../views/view-categorias.php?producto_categoria=Lácteos">
+      <a href="views/view-categorias.php?producto_categoria=Lácteos">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
             <img src="https://i.postimg.cc/rFjG4srp/1.png" alt="Imagen de Lacteos"
@@ -287,7 +287,7 @@ try {
       </a>
     </div>
     <div class="col-12 col-sm-6 col-md-3 mb-4">
-      <a href="../views/view-categorias.php?producto_categoria=Botillería">
+      <a href="views/view-categorias.php?producto_categoria=Botillería">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
             <img src="https://i.postimg.cc/Z5DrfQjt/2.png" alt="Imagen de Botilleria"
@@ -299,7 +299,7 @@ try {
       </a>
     </div>
     <div class="col-12 col-sm-6 col-md-3 mb-4">
-      <a href="../views/view-categorias.php?producto_categoria=Mascotas">
+      <a href="views/view-categorias.php?producto_categoria=Mascotas">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
             <img src="https://i.postimg.cc/8CJLxbnF/3.png" alt="Imagen de Mascotas"
@@ -311,7 +311,7 @@ try {
       </a>
     </div>
     <div class="col-12 col-sm-6 col-md-3 mb-4">
-      <a href="../views/view-categorias.php?producto_categoria=Carniceria">
+      <a href="views/view-categorias.php?producto_categoria=Carniceria">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
             <img src="https://i.postimg.cc/1zkDSNLv/4.png" alt="Imagen de Carniceria"
@@ -417,7 +417,7 @@ try {
 
               // Crear tarjeta
               echo '<div class="col-md-2 d-none d-md-block">'; // Ocultar en pantallas medianas y pequeñas
-              echo '<a href="../views/viewProducto.php?id=' . $id . '" style="text-decoration: none;">';
+              echo '<a href="views/viewProducto.php?id=' . $id . '" style="text-decoration: none;">';
               echo '<div class="card">';
               echo '<div class="img-container">';
              
@@ -608,17 +608,17 @@ try {
             Categorias
           </h6>
           <p>
-            <a href="../views/view-categorias.php?producto_categoria=Lácteos" class="text-reset">Lácteos</a>
+            <a href="views/view-categorias.php?producto_categoria=Lácteos" class="text-reset">Lácteos</a>
           </p>
           <p>
-            <a href="../views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y
+            <a href="views/view-categorias.php?producto_categoria=Frutas%20y%20verduras" class="text-reset">Frutas Y
               Verduras</a>
           </p>
           <p>
-            <a href="../views/view-categorias.php?producto_categoria=Carniceria" class="text-reset">Carnes</a>
+            <a href="views/view-categorias.php?producto_categoria=Carniceria" class="text-reset">Carnes</a>
           </p>
           <p>
-            <a href="../views/view-categorias.php?producto_categoria=Botillería" class="text-reset">Botillería</a>
+            <a href="views/view-categorias.php?producto_categoria=Botillería" class="text-reset">Botillería</a>
           </p>
         </div>
         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4" style="background-color: rgba(255, 2555, 255)">
@@ -626,16 +626,16 @@ try {
             Enlaces
           </h6>
           <p>
-            <a href="../views/view-register.php" class="text-reset">Registrarse</a>
+            <a href="views/view-register.php" class="text-reset">Registrarse</a>
           </p>
           <p>
-            <a href="../Views/ruleta.html" class="text-reset">Proximamente</a>
+            <a href="views/ruleta.html" class="text-reset">Proximamente</a>
           </p>
           <p>
-            <a href="../Views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
+            <a href="views/P-frec.html" class="text-reset">Preguntas Frecuentes</a>
           </p>
           <p>
-            <a href="../views/view-cat-receta.php?" class="text-reset">Recetas</a>
+            <a href="views/view-cat-receta.php?" class="text-reset">Recetas</a>
           </p>
         </div>
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4" style="background-color: rgba(255, 255, 255)">
@@ -653,7 +653,7 @@ try {
   </section>
   <div class="text-center p-4" style="background-color: rgba();">
     <span>© 2024</span>
-    <a class="text-reset fw-bold" href="../Views/index.php" style="text-decoration: none;">LeCut®</a>
+    <a class="text-reset fw-bold" href="index.php" style="text-decoration: none;">LeCut®</a>
   </div>
 </footer>
 

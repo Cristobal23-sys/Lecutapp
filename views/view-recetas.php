@@ -229,6 +229,7 @@ while ($row = mysqli_fetch_assoc($resultCategorias)) {
   <br>
   <a href="javascript:history.back()" class="btn btn-link text-decoration-none" style="margin-left:30%; color: black">⬅️ Volver</a>
 <div class="container" style="background-color: rgb(255, 255, 255); margin-top: 25px;">
+  
   <div class="row justify-content-center">
     <?php
     if ($conn != true) {

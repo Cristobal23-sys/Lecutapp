@@ -39,7 +39,7 @@ try {
   $totalRegistros = $rowTotal['total'];
 
   // Definir la cantidad de resultados por página
-  $resultadosPorPagina = 24;
+  $resultadosPorPagina = 48;
 
   // Calcular el número total de páginas
   $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
@@ -168,7 +168,7 @@ try {
 }
 </style>
 
-<button class="button" data-text="LeCut" onclick="location.href='index.php'">
+<button class="button" data-text="LeCut" onclick="location.href='../index.php'">
     <span class="actual-text">&nbsp;LeCut&nbsp;</span>
     <span aria-hidden="true" class="hover-text">&nbsp;LeCut&nbsp;</span>
 </button>
@@ -354,7 +354,7 @@ hr.elegant-line {
   <div class="container my-4">
     <div class="row">
         <div class="col-md-6">
-            <a href="../views/index.php" class="text" style="text-decoration:none; color: black;"><Strong>Inicio </Strong></a> /
+            <a href="../index.php" class="text" style="text-decoration:none; color: black;"><Strong>Inicio </Strong></a> /
             <span class="text-primary"><?php echo $categoriaSeleccionada ?></span>
         </div>
         <div class="col-md-6 d-flex justify-content-end">
@@ -497,7 +497,7 @@ hr.elegant-line {
   </div>
   <br>
  <!-- paginacion -->
-<nav aria-label="Page navigation">
+ <nav aria-label="Page navigation">
     <div class="d-flex justify-content-center">
         <?php if ($paginaActual > 1): ?>
             <a class="btn btn-link me-2" style="font-weight: bold; text-decoration: none; color: black;"
@@ -511,7 +511,7 @@ hr.elegant-line {
             <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold; text-decoration: none; color:black;">
                 Página <?php echo $paginaActual; ?>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="max-height: 200px; overflow-y: auto;">
                 <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
                     <li>
                         <a class="dropdown-item <?php if ($i == $paginaActual) echo 'active'; ?>"
