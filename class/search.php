@@ -29,8 +29,17 @@ try {
     }
   }
 
+
+  $sqlTotal = "
+  SELECT COUNT(*) AS total 
+  FROM producto 
+  WHERE LOWER(producto_name) REGEXP REPLACE(LOWER('$buscar'), ' ', '.*')
+  $precioCondition
+  ";
+  
+
   // Obtener el número total de registros que coinciden con el término de búsqueda y filtro de precio
-  $sqlTotal = "SELECT COUNT(*) AS total FROM producto WHERE producto_name LIKE '%$buscar%' $precioCondition";
+ 
   $resultTotal = mysqli_query($connection, $sqlTotal);
   $rowTotal = mysqli_fetch_assoc($resultTotal);
   $totalRegistros = $rowTotal['total'];
@@ -243,7 +252,7 @@ try {
 <script>
   document.getElementById('searchForm').addEventListener('submit', function(event) {
     var input = document.getElementById('searchInput');
-    var regex = /^[a-zA-Z0-9\s]+$/;
+    var regex = /^[a-zA-Z0-9ñÑ\s]+$/;
     
     if (!regex.test(input.value)) {
       input.classList.add('is-invalid'); // Agregar clase de Bootstrap para indicar error

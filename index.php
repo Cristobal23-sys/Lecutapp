@@ -189,7 +189,7 @@ try {
 <script>
   document.getElementById('searchForm').addEventListener('submit', function(event) {
     var input = document.getElementById('searchInput');
-    var regex = /^[a-zA-Z0-9\s]+$/;
+    var regex = /^[a-zA-Z0-9ñÑ\s]+$/;
     
     if (!regex.test(input.value)) {
       input.classList.add('is-invalid'); // Agregar clase de Bootstrap para indicar error
