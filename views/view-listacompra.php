@@ -116,7 +116,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
 }
 </style>
 
-<button class="button" data-text="LeCut" onclick="location.href='index.php'">
+<button class="button" data-text="LeCut" onclick="location.href='../index.php'">
     <span class="actual-text">&nbsp;LeCut&nbsp;</span>
     <span aria-hidden="true" class="hover-text">&nbsp;LeCut&nbsp;</span>
 </button>

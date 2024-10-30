@@ -20,7 +20,7 @@ session_start();
   <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
       <div class="navbar-left">
-        <a class="navbar-brand" style="display: flex; justify-content: center;" href="index.php">
+        <a class="navbar-brand" style="display: flex; justify-content: center;" href="../index.php">
         <img src="https://i.postimg.cc/vBfDj9sv/icono-removebg-preview.png" alt="Logo" style="height: 50px; width: auto;">
         </a>
       </div>
@@ -111,7 +111,7 @@ session_start();
               <br>
               <br> <input type="submit" class="w-30 btn btn-lg btn-primary" value="Registrarse" style="margin-left: 9%">
             </form>
-            <p style="display: flex; justify-content: center;">Ya tienes cuentas?</p><a href="index.php"
+            <p style="display: flex; justify-content: center;">Ya tienes cuentas?</p><a href="../index.php"
               style="display: flex; justify-content: center;">Iniciar sesion</a>
             <!-- Remind Passowrd -->
             <p>   <?php

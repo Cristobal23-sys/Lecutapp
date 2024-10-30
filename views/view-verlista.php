@@ -108,7 +108,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
 }
 </style>
 
-<button class="button" data-text="LeCut" onclick="location.href='index.php'">
+<button class="button" data-text="LeCut" onclick="location.href='../index.php'">
     <span class="actual-text">&nbsp;LeCut&nbsp;</span>
     <span aria-hidden="true" class="hover-text">&nbsp;LeCut&nbsp;</span>
 </button>
@@ -246,7 +246,7 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
   <div class="d-flex justify-content-lg-between" style="margin-inline-start: 15%; margin-inline-end: 16%">
   <a href="../views/view-listacompra.php" class="btn btn-link text-decoration-none" style="color: black">⬅️ Volver a Las Listas</a>
   
-  <a href="../views/index.php" class="btn btn-outline-success">Añadir productos</a>
+  <a href="../index.php" class="btn btn-outline-success">Añadir productos</a>
 </div>
 
       
@@ -259,8 +259,6 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
                 INNER JOIN listacompra w ON cw.id_listacompra = w.id
                 WHERE w.id = $idL";
       $result = $conn->query($sql);
-
-
 
       $productos = []; 
       $total = 0;

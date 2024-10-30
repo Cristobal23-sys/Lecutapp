@@ -31,7 +31,7 @@ if (isset($_POST['prod']) && isset($_POST['wishlist'])) {
                     // El producto ya está en la lista de deseos
                     session_start();
                     $_SESSION['alert_message'] = "El producto ya está en la lista de deseos.";
-                    // Redirigir a la vista wishLists.php
+                    // Redirigir a la vista view-verlista.php
                     header("Location: ../views/view-verlista.php?idL=" . urlencode($wishlist));
                     exit();
                 } else {
@@ -40,7 +40,7 @@ if (isset($_POST['prod']) && isset($_POST['wishlist'])) {
                     if (mysqli_query($conn, $insertQuery)) {
                         session_start();
                         $_SESSION['alert_message'] = "¡Producto añadido!";
-                        // Redirigir a la vista wishLists.php
+                        // Redirigir a la vista view-verlista.php
                         header("Location: ../views/view-verlista.php?idL=" . urlencode($wishlist));
                         exit();
                     } else {

@@ -167,7 +167,7 @@ try {
 }
 </style>
 
-<button class="button" data-text="LeCut" onclick="location.href='../views/index.php'">
+<button class="button" data-text="LeCut" onclick="location.href='../index.php'">
     <span class="actual-text">&nbsp;LeCut&nbsp;</span>
     <span aria-hidden="true" class="hover-text">&nbsp;LeCut&nbsp;</span>
 </button>
@@ -303,44 +303,54 @@ try {
  <br>
 <?php echo "<h4 style='text-align: center; display: block;'>Tus Resultados Por La Busqueda De: <strong>" . htmlspecialchars($buscar) . "</strong>.</h4>"; ?>
  
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="dropdown">
-          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            🟰FILTROS
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <!-- Ordenar por nombre (A-Z) -->
-            <li><a class="dropdown-item"
-                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
-                <?php if ($orden == 'nombre_asc')
-                  echo 'class="active"'; ?>>Nombre (A-Z)</a></li>
-            <!-- Ordenar por nombre (Z-A) -->
-            <li><a class="dropdown-item"
-                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
-                <?php if ($orden == 'nombre_desc')
-                  echo 'class="active"'; ?>>Nombre (Z-A)</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <!-- Ordenar por precio (Menor a Mayor) -->
-            <li><a class="dropdown-item"
-                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=precio_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
-                <?php if ($orden == 'precio_asc')
-                  echo 'class="active"'; ?>>Precio (Menor a Mayor)</a></li>
+<style>
+  .floating-card {
+    position: fixed; /* Mantiene la tarjeta en una posición fija */
+    top: 19%; /* Distancia desde la parte superior de la ventana */
+    right: 85%; /* Distancia desde el lado derecho de la ventana */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+  }
+</style>
 
-            <!-- Ordenar por precio (Mayor a Menor) -->
-            <li><a class="dropdown-item"
-                href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=precio_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
-                <?php if ($orden == 'precio_desc')
-                  echo 'class="active"'; ?>>Precio (Mayor a Menor)</a></li>
-          </ul>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 ">
+    <div class="card floating-card" style="width: 15rem;">
+    <div class="card-body">
+          <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              🟰 ORDENAR
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <!-- Ordenar por nombre (A-Z) -->
+              <li><a class="dropdown-item"
+                  href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                  <?php if ($orden == 'nombre_asc') echo 'class="active"'; ?>>Nombre (A-Z)</a></li>
+              <!-- Ordenar por nombre (Z-A) -->
+              <li><a class="dropdown-item"
+                  href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                  <?php if ($orden == 'nombre_desc') echo 'class="active"'; ?>>Nombre (Z-A)</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <!-- Ordenar por precio (Menor a Mayor) -->
+              <li><a class="dropdown-item"
+                  href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=precio_asc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                  <?php if ($orden == 'precio_asc') echo 'class="active"'; ?>>Precio (Menor a Mayor)</a></li>
+
+              <!-- Ordenar por precio (Mayor a Menor) -->
+              <li><a class="dropdown-item"
+                  href="?buscar=<?php echo htmlspecialchars($buscar); ?>&orden=precio_desc&pagina=<?php echo $paginaActual; ?>&precio=<?php echo htmlspecialchars($precio); ?>"
+                  <?php if ($orden == 'precio_desc') echo 'class="active"'; ?>>Precio (Mayor a Menor)</a></li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </div> <!-- Cierre de la tarjeta -->
     </div>
   </div>
+</div>
   <style>
     .card {
       background-color: rgb();

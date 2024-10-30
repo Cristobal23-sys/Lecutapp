@@ -6,7 +6,7 @@ $conn = new connection();
 try {
   $connection = $conn->conectar();
   session_start();
-
+  $subcategoria = isset($_GET['subcategoria']) ? $_GET['subcategoria'] : '';
   // Obtener las categorías de productos
   $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
   $resultCategorias = mysqli_query($connection, $sqlCategorias);
@@ -29,10 +29,24 @@ try {
   if (!empty($categoriaSeleccionada)) {
     $titulo = $categoriaSeleccionada . " | Lecut";
   }
-  $sqlTotal = "SELECT COUNT(*) AS total FROM producto";
+  $sqlTotal = "SELECT COUNT(*) AS total FROM producto WHERE 1=1";
+
   if (!empty($categoriaSeleccionada)) {
-    $sqlTotal .= " WHERE producto_categoria = '$categoriaSeleccionada'";
+    $sqlTotal .= " AND producto_categoria = '$categoriaSeleccionada'";
   }
+
+  if (!empty($subcategoria)) {
+    $sqlTotal .= " AND producto_name LIKE '%$subcategoria%'";
+  }
+
+
+  // Definir los rangos de precios
+$rangosPrecio = array(
+  array(1, 1000),
+  array(1001, 5000),
+  array(5001, 10000),
+  array(10001,100000)
+);
 
   $resultTotal = mysqli_query($connection, $sqlTotal);
   $rowTotal = mysqli_fetch_assoc($resultTotal);
@@ -51,6 +65,7 @@ try {
   $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
   // Obtener el rango de precio seleccionado
   $rangoSeleccionado = isset($_GET['precio']) ? $_GET['precio'] : "";
+
 
   // Obtener el criterio de orden seleccionado
   $orden = isset($_GET['orden']) ? $_GET['orden'] : "";
@@ -102,15 +117,16 @@ try {
 <html>
 
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="../img/lecut.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="../img/lecut.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+ES+Deco:wght@100..400&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -122,56 +138,57 @@ try {
   <!--Navbar-->
   <nav class="navbar navbar-expand-lg" style="background-color: rgb(71, 126, 213);">
     <div class="container">
-    <style>
+      <style>
+        .button {
+          margin: 0;
+          height: auto;
+          background: transparent;
+          padding: 0;
+          border: none;
+          cursor: pointer;
+        }
 
-.button {
-  margin: 0;
-  height: auto;
-  background: transparent;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-}
+        /* button styling */
+        .button {
+          --border-right: 6px;
+          --text-stroke-color: rgba(0, 0, 0);
+          --animation-color: #ffffff;
+          --fs-size: 1.2em;
+          letter-spacing: 3px;
+          text-decoration: none;
+          font-size: var(--fs-size);
+          font-family: "Lucida Handwriting";
+          position: relative;
+          text-transform: uppercase;
+          color: transparent;
+          -webkit-text-stroke: 1px var(--text-stroke-color);
+        }
 
-/* button styling */
-.button {
-  --border-right: 6px;
-  --text-stroke-color: rgba(0,0,0);
-  --animation-color: #ffffff;
-  --fs-size: 1.2em;
-  letter-spacing: 3px;
-  text-decoration: none;
-  font-size: var(--fs-size);
-  font-family: "Lucida Handwriting";
-  position: relative;
-  text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--text-stroke-color);
-}
-/* this is the text, when you hover on button */
-.hover-text {
-  position: absolute;
-  box-sizing: border-box;
-  content: attr(data-text);
-  color: var(--animation-color);
-  width: 0%;
-  inset: 0;
-  border-right: var(--border-right) solid var(--animation-color);
-  overflow: hidden;
-  transition: 0.5s;
-  -webkit-text-stroke: 1px var(--animation-color);
-}
-/* hover */
-.button:hover .hover-text {
-  width: 100%;
-  filter: drop-shadow(0 0 23px var(--animation-color))
-}
-</style>
+        /* this is the text, when you hover on button */
+        .hover-text {
+          position: absolute;
+          box-sizing: border-box;
+          content: attr(data-text);
+          color: var(--animation-color);
+          width: 0%;
+          inset: 0;
+          border-right: var(--border-right) solid var(--animation-color);
+          overflow: hidden;
+          transition: 0.5s;
+          -webkit-text-stroke: 1px var(--animation-color);
+        }
 
-<button class="button" data-text="LeCut" onclick="location.href='../index.php'">
-    <span class="actual-text">&nbsp;LeCut&nbsp;</span>
-    <span aria-hidden="true" class="hover-text">&nbsp;LeCut&nbsp;</span>
-</button>
+        /* hover */
+        .button:hover .hover-text {
+          width: 100%;
+          filter: drop-shadow(0 0 23px var(--animation-color))
+        }
+      </style>
+
+      <button class="button" data-text="LeCut" onclick="location.href='../index.php'">
+        <span class="actual-text">&nbsp;LeCut&nbsp;</span>
+        <span aria-hidden="true" class="hover-text">&nbsp;LeCut&nbsp;</span>
+      </button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -208,53 +225,57 @@ try {
           </li>
         </ul>
         <style>
-.container-input {
-  position: relative;
-}
+          .container-input {
+            position: relative;
+          }
 
-.input {
-  width: 350px;
-  padding: 10px 0px 10px 40px;
-  border-radius: 9999px;
-  border: solid 1px #333;
-  transition: all .2s ease-in-out;
-  outline: none;
-  opacity: 0.6;
-}
+          .input {
+            width: 350px;
+            padding: 10px 0px 10px 40px;
+            border-radius: 9999px;
+            border: solid 1px #333;
+            transition: all .2s ease-in-out;
+            outline: none;
+            opacity: 0.6;
+          }
 
-.container-input svg {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translate(0, -50%);
-}
+          .container-input svg {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translate(0, -50%);
+          }
 
-.input:focus {
-  opacity: 1;
-  width: 350px;
-}
-</style>
-        <form class="d-flex me-auto w-50 container-input" role="search" action="../class/search.php" method="GET" id="searchForm">
-        <input  placeholder="Busca Tu Producto..." name="buscar" class="input" type="search" id="searchInput" aria-label="Search">
-       
-  <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-    <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
-</svg>
-             
-        </form>      
-<script>
-  document.getElementById('searchForm').addEventListener('submit', function(event) {
-    var input = document.getElementById('searchInput');
-    var regex = /^[a-zA-Z0-9\s]+$/;
-    
-    if (!regex.test(input.value)) {
-      input.classList.add('is-invalid'); // Agregar clase de Bootstrap para indicar error
-      event.preventDefault(); // Prevenir el envío del formulario
-    } else {
-      input.classList.remove('is-invalid'); // Remover clase si la validación es correcta
-    }
-  });
-</script>
+          .input:focus {
+            opacity: 1;
+            width: 350px;
+          }
+        </style>
+        <form class="d-flex me-auto w-50 container-input" role="search" action="../class/search.php" method="GET"
+          id="searchForm">
+          <input placeholder="Busca Tu Producto..." name="buscar" class="input" type="search" id="searchInput"
+            aria-label="Search">
+
+          <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z"
+              fill-rule="evenodd"></path>
+          </svg>
+
+        </form>
+        <script>
+          document.getElementById('searchForm').addEventListener('submit', function (event) {
+            var input = document.getElementById('searchInput');
+            var regex = /^[a-zA-Z0-9\s]+$/;
+
+            if (!regex.test(input.value)) {
+              input.classList.add('is-invalid'); // Agregar clase de Bootstrap para indicar error
+              event.preventDefault(); // Prevenir el envío del formulario
+            } else {
+              input.classList.remove('is-invalid'); // Remover clase si la validación es correcta
+            }
+          });
+        </script>
         <ul class="navbar-nav">
           <?php if (isset($_SESSION['username'])) { ?>
             <li class="nav-item dropdown">
@@ -329,8 +350,6 @@ try {
         return '../img/banner1.png';
     }
   }
-
-  // Obtener la ruta de la imagen para la categoría seleccionada
   $rutaImagen = $categoriaSeleccionada ? obtenerRutaImagen($categoriaSeleccionada) : '';
   ?>
 
@@ -344,26 +363,64 @@ try {
     <?php endif; ?>
   </div>
   <style>
-hr.elegant-line {
-  border: none; border-top: 2px solid #ccc; color: #333; text-align: center; height: 0; margin: 20px 0; overflow: visible; &:before { content: "• "; display: inline-block; position: relative; top: -0.7em; font-size: 1.5em; padding: 0 0.25em; background-color: #fff; } }
+    hr.elegant-line {
+      border: none;
+      border-top: 2px solid #ccc;
+      color: #333;
+      text-align: center;
+      height: 0;
+      margin: 20px 0;
+      overflow: visible;
+
+      &:before {
+        content: "• ";
+        display: inline-block;
+        position: relative;
+        top: -0.7em;
+        font-size: 1.5em;
+        padding: 0 0.25em;
+        background-color: #fff;
+      }
+    }
   </style>
   <hr class="elegant-line">
   <h3 class="text-center" style="font-family: 'Playfair Display', serif; font-size: 40px; color: #333;">
-            <?php echo $categoriaSeleccionada; ?>
-        </h3>
+    <?php echo $categoriaSeleccionada; ?>
+  </h3>
+  <style>
+    .floating-card {
+      position: fixed;
+      /* Mantiene la tarjeta en una posición fija */
+      top: 10%;
+      /* Distancia desde la parte superior de la ventana */
+      right: 1%;
+      /* Distancia desde el lado derecho de la ventana */
+      z-index: 1000;
+      /* Asegura que esté por encima de otros elementos */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      /* Sombra para darle profundidad */
+
+    }
+  </style>
+
   <div class="container my-4">
     <div class="row">
-        <div class="col-md-6">
-            <a href="../index.php" class="text" style="text-decoration:none; color: black;"><Strong>Inicio </Strong></a> /
-            <span class="text-primary"><?php echo $categoriaSeleccionada ?></span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-end">
-            <div class="dropdown">
-                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+      <div class="col-md-4">
+        <a href="../index.php" class="text" style="text-decoration:none; color: black;"><strong>Inicio</strong></a> /
+        <span class="text-primary"><?php echo $categoriaSeleccionada ?></span>
+      </div>
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-md-6 d-flex">
+            <div class="card floating-card" style="width: 15rem;">
+              <div class="card-body">
+                <h6 class="card-title">Ordenar por:</h6>
+                <div class="dropdown">
+                  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    🟰ORDENAR
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    🟰 Seleccionar Orden
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li><a class="dropdown-item"
                         href="?orden=precio_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
                         Menor a Mayor</a></li>
@@ -371,7 +428,7 @@ hr.elegant-line {
                         href="?orden=precio_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
                         Mayor a Menor</a></li>
                     <li>
-                        <hr class="dropdown-divider">
+                      <hr class="dropdown-divider">
                     </li>
                     <li><a class="dropdown-item"
                         href="?orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
@@ -379,11 +436,30 @@ hr.elegant-line {
                     <li><a class="dropdown-item"
                         href="?orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
                         (Z-A)</a></li>
-                </ul>
+                  </ul>
+                </div>
+                <br>
+                <h6 class="card-title">Precio:</h6>
+                <div class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                  <label class="btn btn-outline-success" for="btnradio1">Entre $0 - $1.000</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                  <label class="btn btn-outline-success" for="btnradio2">Entre $1.001 - $5.000</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                  <label class="btn btn-outline-success" for="btnradio3">Entre $5.001 - $10.000</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                  <label class="btn btn-outline-success" for="btnradio3">Mas De $10.000</label>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
   <style>
     .card {
       background-color: rgb();
@@ -496,42 +572,45 @@ hr.elegant-line {
     </div>
   </div>
   <br>
- <!-- paginacion -->
- <nav aria-label="Page navigation">
+  <!-- paginacion -->
+  <nav aria-label="Page navigation">
     <div class="d-flex justify-content-center">
-        <?php if ($paginaActual > 1): ?>
-            <a class="btn btn-link me-2" style="font-weight: bold; text-decoration: none; color: black;"
-               href="?pagina=<?php echo $paginaActual - 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
-               aria-label="Anterior">
-                &laquo; Anterior
-            </a>
-        <?php endif; ?>
+      <?php if ($paginaActual > 1): ?>
+        <a class="btn btn-link me-2" style="font-weight: bold; text-decoration: none; color: black;"
+          href="?pagina=<?php echo $paginaActual - 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
+          aria-label="Anterior">
+          &laquo; Anterior
+        </a>
+      <?php endif; ?>
 
-        <div class="dropdown">
-            <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold; text-decoration: none; color:black;">
-                Página <?php echo $paginaActual; ?>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="max-height: 200px; overflow-y: auto;">
-                <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                    <li>
-                        <a class="dropdown-item <?php if ($i == $paginaActual) echo 'active'; ?>"
-                           href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>">
-                            Página <?php echo $i; ?>
-                        </a>
-                    </li>
-                <?php endfor; ?>
-            </ul>
-        </div>
+      <div class="dropdown">
+        <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton"
+          data-bs-toggle="dropdown" aria-expanded="false"
+          style="font-weight: bold; text-decoration: none; color:black;">
+          Página <?php echo $paginaActual; ?>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="max-height: 200px; overflow-y: auto;">
+          <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+            <li>
+              <a class="dropdown-item <?php if ($i == $paginaActual)
+                echo 'active'; ?>"
+                href="?pagina=<?php echo $i; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>">
+                Página <?php echo $i; ?>
+              </a>
+            </li>
+          <?php endfor; ?>
+        </ul>
+      </div>
 
-        <?php if ($paginaActual < $totalPaginas): ?>
-            <a class="btn btn-link ms-2" style="font-weight: bold; text-decoration: none; color:black;"
-               href="?pagina=<?php echo $paginaActual + 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
-               aria-label="Siguiente">
-                Siguiente &raquo;
-            </a>
-        <?php endif; ?>
+      <?php if ($paginaActual < $totalPaginas): ?>
+        <a class="btn btn-link ms-2" style="font-weight: bold; text-decoration: none; color:black;"
+          href="?pagina=<?php echo $paginaActual + 1; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&orden=<?php echo $orden; ?>&precio=<?php echo $rangoSeleccionado; ?>"
+          aria-label="Siguiente">
+          Siguiente &raquo;
+        </a>
+      <?php endif; ?>
     </div>
-</nav>
+  </nav>
 
 
 
@@ -615,7 +694,7 @@ hr.elegant-line {
       <div class="row mt-3">
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <h6 class="text-uppercase fw-bold mb-4">
-          <i class="fa-solid fa-cart-shopping"></i>
+            <i class="fa-solid fa-cart-shopping"></i>
           </h6>
           <p>
             Los mejores precio en Lecut para los consumidores
