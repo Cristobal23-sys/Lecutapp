@@ -20,6 +20,7 @@ try {
   while ($row = mysqli_fetch_assoc($resultCategorias)) {
     $categorias[] = $row['producto_categoria'];
   }
+  
 
   $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
   $resultReceta = mysqli_query($connection, $sqlReceta);
@@ -275,7 +276,7 @@ try {
   <div class="row justify-content-center">
     <h2 class="text-center col-12"><strong>Categorías Destacadas</strong></h2>
     <div class="col-12 col-sm-6 col-md-3 mb-4">
-      <a href="views/view-categorias.php?producto_categoria=Lácteos">
+      <a href="views/view-categorias.php?producto_categoria=Lácteos%20y%20Quesos">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
             <img src="https://i.postimg.cc/rFjG4srp/1.png" alt="Imagen de Lacteos"
@@ -287,7 +288,7 @@ try {
       </a>
     </div>
     <div class="col-12 col-sm-6 col-md-3 mb-4">
-      <a href="views/view-categorias.php?producto_categoria=Botillería">
+      <a href="views/view-categorias.php?producto_categoria=Vinos,%20Cervezas%20y%20Licores">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
             <img src="https://i.postimg.cc/Z5DrfQjt/2.png" alt="Imagen de Botilleria"
@@ -311,7 +312,7 @@ try {
       </a>
     </div>
     <div class="col-12 col-sm-6 col-md-3 mb-4">
-      <a href="views/view-categorias.php?producto_categoria=Carniceria">
+      <a href="views/view-categorias.php?producto_categoria=Carnicería">
         <div class="card h-100" style="width: 100%;">
           <div style="width: 100%; height: 100%; padding-bottom: 75%; position: relative; overflow: hidden;">
             <img src="https://i.postimg.cc/1zkDSNLv/4.png" alt="Imagen de Carniceria"

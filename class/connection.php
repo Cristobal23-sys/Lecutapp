@@ -3,7 +3,7 @@
         public $host = "localhost";
         public $user = "root";
         public $password = '';
-        public $db_name = "ahorrando";
+        public $db_name = "Lecut";
         public $port = '3306';
 
         public function conectar() {

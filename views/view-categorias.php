@@ -7,28 +7,70 @@ try {
   $connection = $conn->conectar();
   session_start();
   $subcategoria = isset($_GET['subcategoria']) ? $_GET['subcategoria'] : '';
-  // Obtener las categorías de productos
-  $sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
-  $resultCategorias = mysqli_query($connection, $sqlCategorias);
-  $categorias = [];
-  while ($row = mysqli_fetch_assoc($resultCategorias)) {
-    $categorias[] = $row['producto_categoria'];
-  }
 
+
+  // Obtener tipos de recetas
   $sqlReceta = "SELECT DISTINCT TipoReceta FROM receta";
   $resultReceta = mysqli_query($connection, $sqlReceta);
   $TipoReceta = [];
   while ($row = mysqli_fetch_assoc($resultReceta)) {
     $TipoReceta[] = $row['TipoReceta'];
   }
+// Obtener las categorías de productos
+$sqlCategorias = "SELECT DISTINCT producto_categoria FROM producto";
+$resultCategorias = mysqli_query($connection, $sqlCategorias);
+$categorias = [];
+while ($row = mysqli_fetch_assoc($resultCategorias)) {
+    $categorias[] = $row['producto_categoria'];
+}
 
-  // Obtener el número total de registros según la categoría seleccionada
+// Obtener la categoría seleccionada
+$categoriaSeleccionada = isset($_GET['producto_categoria']) ? $_GET['producto_categoria'] : "";
+
+// Inicializar la variable para las marcas
+$marca = [];
+
+// Obtener marcas solo de la categoría seleccionada
+if (!empty($categoriaSeleccionada)) {
+    // Escapar la categoría para prevenir inyecciones SQL
+    $categoriaEscapada = mysqli_real_escape_string($connection, $categoriaSeleccionada);
+    
+    // Consulta para obtener marcas filtradas por categoría
+    $sqlMarca = "SELECT DISTINCT producto_marca FROM producto WHERE producto_categoria = '$categoriaEscapada'";
+    $resultMarca = mysqli_query($connection, $sqlMarca);
+
+    if ($resultMarca) {
+        while ($row = mysqli_fetch_assoc($resultMarca)) {
+            $marca[] = $row['producto_marca'];
+        }
+    } else {
+        // Manejo de error si la consulta falla
+        echo "Error al obtener marcas: " . mysqli_error($connection);
+    }
+} else {
+    echo "No se ha seleccionado ninguna categoría.";
+}
+
+// Obtener marca seleccionada
+$marcaSeleccionada = isset($_GET['producto_marca']) ? $_GET['producto_marca'] : [];
+
+// Asegúrate de que sea un array
+if (!is_array($marcaSeleccionada)) {
+    $marcaSeleccionada = [];
+}
+
+  
+  $orden = isset($_GET['orden']) ? $_GET['orden'] : ""; // 
+  // Obtener la categoría seleccionada
   $categoriaSeleccionada = isset($_GET['producto_categoria']) ? $_GET['producto_categoria'] : "";
+
   // Establecer el título según la categoría seleccionada
   $titulo = "Lecut";
   if (!empty($categoriaSeleccionada)) {
     $titulo = $categoriaSeleccionada . " | Lecut";
   }
+
+  // Contar total de productos
   $sqlTotal = "SELECT COUNT(*) AS total FROM producto WHERE 1=1";
 
   if (!empty($categoriaSeleccionada)) {
@@ -39,18 +81,35 @@ try {
     $sqlTotal .= " AND producto_name LIKE '%$subcategoria%'";
   }
 
+  // Filtrar por marcas seleccionadas
+  if (!empty($marcaSeleccionada)) {
+    // Escapar las marcas seleccionadas y crear una lista para la cláusula IN
+    $marcasEscapadas = array_map(function ($marca) use ($connection) {
+      return "'" . mysqli_real_escape_string($connection, $marca) . "'";
+    }, (array) $marcaSeleccionada);
+
+    // Unir las marcas en una cadena separada por comas
+    $marcasString = implode(',', $marcasEscapadas);
+    $sqlTotal .= " AND producto_marca IN ($marcasString)";
+  }
 
   // Definir los rangos de precios
-$rangosPrecio = array(
-  array(1, 1000),
-  array(1001, 5000),
-  array(5001, 10000),
-  array(10001,100000)
-);
+  $rangosPrecio = array(
+    array(1, 1000),
+    array(1001, 5000),
+    array(5001, 10000),
+    array(10001, 100000)
+  );
 
+  // Ejecutar la consulta para contar total de productos
   $resultTotal = mysqli_query($connection, $sqlTotal);
+  if (!$resultTotal) {
+    throw new Exception("Error en la consulta: " . mysqli_error($connection));
+  }
+
+  // Obtener el total de registros
   $rowTotal = mysqli_fetch_assoc($resultTotal);
-  $totalRegistros = $rowTotal['total'];
+  $totalRegistros = (int) $rowTotal['total'];
 
   // Definir la cantidad de resultados por página
   $resultadosPorPagina = 48;
@@ -59,28 +118,42 @@ $rangosPrecio = array(
   $totalPaginas = ceil($totalRegistros / $resultadosPorPagina);
 
   // Obtener el número de página actual
-  $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+  $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
 
   // Calcular el índice de inicio y fin de los resultados
   $indiceInicio = ($paginaActual - 1) * $resultadosPorPagina;
+
   // Obtener el rango de precio seleccionado
   $rangoSeleccionado = isset($_GET['precio']) ? $_GET['precio'] : "";
 
 
-  // Obtener el criterio de orden seleccionado
-  $orden = isset($_GET['orden']) ? $_GET['orden'] : "";
-
-  // Reiniciar la consulta SQL
-  $sql = "SELECT * FROM `producto`";
+  // Reiniciar la consulta SQL para obtener productos
+  // Iniciar la consulta base
+  $sql = "SELECT * FROM `producto` WHERE 1=1"; // Facilita agregar condiciones
 
   // Verificar si se ha seleccionado un rango de precio
   if (!empty($rangoSeleccionado)) {
-    $precioMin = $rangosPrecios[$rangoSeleccionado][0];
-    $precioMax = $rangosPrecios[$rangoSeleccionado][1];
+    if (isset($rangosPrecio[$rangoSeleccionado])) {
+      list($precioMin, $precioMax) = $rangosPrecio[$rangoSeleccionado];
+      $sql .= " AND producto_price BETWEEN '$precioMin' AND '$precioMax'";
+    }
   }
-  // Verificar si se ha seleccionado una categoría
+
+  // Filtrar por categoría seleccionada
   if (!empty($categoriaSeleccionada)) {
-    $sql .= " WHERE `producto_categoria` = '$categoriaSeleccionada'";
+    $sql .= " AND `producto_categoria` = '$categoriaSeleccionada'";
+  }
+
+  // Filtrar por marcas seleccionadas
+  if (!empty($marcaSeleccionada)) {
+    // Escapar y unir las marcas para la cláusula IN
+    foreach ($marcaSeleccionada as &$marca) {
+      $marca = mysqli_real_escape_string($connection, $marca);
+    }
+    $marcasString = "'" . implode("','", array_filter($marcaSeleccionada)) . "'";
+    if (!empty($marcasString)) {
+      $sql .= " AND `producto_marca` IN ($marcasString)";
+    }
   }
 
   // Modificar la consulta SQL para incluir el ordenamiento
@@ -98,18 +171,26 @@ $rangosPrecio = array(
       $sql .= " ORDER BY `producto_name` DESC";
       break;
     default:
-      // Por defecto, ordenar por alguna columna relevante
-      $sql .= " ORDER BY RAND()"; // Ordenar aleatoriamente si no se especifica orden
+      // Por defecto, ordenar aleatoriamente si no se especifica orden
+      $sql .= " ORDER BY RAND()";
       break;
   }
 
-  // Añadir límite y offset para la paginación
-  $sql .= " LIMIT $indiceInicio, $resultadosPorPagina";
 
-  $result = mysqli_query($connection, $sql);
+  
+  // Añadir límite y offset para la paginación
+  $sql .= " LIMIT {$indiceInicio}, {$resultadosPorPagina}";
+
+  // Ejecutar la consulta para obtener los productos filtrados
+  if (!$result = mysqli_query($connection, $sql)) {
+    throw new Exception("Error en la consulta: " . mysqli_error($connection));
+  }
+
+  // Contar los resultados obtenidos
   $count = mysqli_num_rows($result);
+
 } catch (Exception $e) {
-  echo "Error de conexión a la base de datos: " . $e->getMessage();
+  echo "Error: " . htmlspecialchars($e->getMessage());
   exit;
 }
 ?>
@@ -332,19 +413,19 @@ $rangosPrecio = array(
   function obtenerRutaImagen($categoria)
   {
     switch ($categoria) {
-      case 'Lácteos':
+      case 'Lácteos y Quesos':
         return 'https://i.postimg.cc/qBm3mYMY/2.png';
-      case 'Frutas y verduras':
+      case 'Frutas y Verduras':
         return 'https://i.postimg.cc/qRTsTC95/1.png';
       case 'Despensa':
         return 'https://i.postimg.cc/L50gnqbR/5.png';
-      case 'Carniceria':
+      case 'Carnicería':
         return 'https://i.postimg.cc/PrP804Cq/4.png';
       case 'Limpieza':
         return 'https://i.postimg.cc/qq7CJcQj/3.png';
       case 'Mascotas':
         return 'https://i.postimg.cc/HsR7myM9/6.png';
-      case 'Botillería':
+      case 'Vinos, Cervezas y Licores':
         return 'https://i.postimg.cc/HkM8kk4D/7.png';
       default:
         return '../img/banner1.png';
@@ -399,7 +480,18 @@ $rangosPrecio = array(
       /* Asegura que esté por encima de otros elementos */
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       /* Sombra para darle profundidad */
-
+      width: 300px;
+      /* Ajusta el ancho según sea necesario */
+      height: auto;
+      /* Permite que la altura se ajuste automáticamente al contenido */
+      min-height: 400px;
+      /* Establece una altura mínima para que sea más grande */
+      padding: 20px;
+      /* Espacio interno para el contenido */
+      background-color: white;
+      /* Color de fondo para la tarjeta */
+      border-radius: 8px;
+      /* Bordes redondeados para un aspecto más suave */
     }
   </style>
 
@@ -412,7 +504,7 @@ $rangosPrecio = array(
       <div class="container mt-4">
         <div class="row">
           <div class="col-md-6 d-flex">
-            <div class="card floating-card" style="width: 15rem;">
+            <div class="card floating-card" style="width: 16rem;">
               <div class="card-body">
                 <h6 class="card-title">Ordenar por:</h6>
                 <div class="dropdown">
@@ -439,26 +531,54 @@ $rangosPrecio = array(
                   </ul>
                 </div>
                 <br>
-                <h6 class="card-title">Precio:</h6>
-                <div class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
-                  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                  <label class="btn btn-outline-success" for="btnradio1">Entre $0 - $1.000</label>
-
-                  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                  <label class="btn btn-outline-success" for="btnradio2">Entre $1.001 - $5.000</label>
-
-                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                  <label class="btn btn-outline-success" for="btnradio3">Entre $5.001 - $10.000</label>
-
-                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                  <label class="btn btn-outline-success" for="btnradio3">Mas De $10.000</label>
-                </div>
+                <!-- Sección para seleccionar marcas -->
+                <div class="form-group">
+    <h6 class="card-title">Seleccionar Marca:</h6>
+    <form method="GET" action="">
+        <div class="marca-scroll-container">
+            <?php if (is_array($marca)): // Verifica que $marca sea un array ?>
+                <?php foreach ($marca as $marcaItem): ?>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="producto_marca[]"
+                               value="<?php echo htmlspecialchars($marcaItem); ?>"
+                               id="<?php echo htmlspecialchars($marcaItem); ?>" 
+                               <?php echo (in_array($marcaItem, (array) $marcaSeleccionada)) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="<?php echo htmlspecialchars($marcaItem); ?>">
+                            <?php echo htmlspecialchars($marcaItem); ?>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No hay marcas disponibles.</p>
+            <?php endif; ?>
+        </div>
+        <!-- Campos ocultos para mantener el estado -->
+        <input type="hidden" name="pagina" value="<?php echo htmlspecialchars($paginaActual); ?>">
+        <input type="hidden" name="producto_categoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+        <input type="hidden" name="precio" value="<?php echo htmlspecialchars($rangoSeleccionado); ?>">
+<br>
+        <button type="submit" class="btn btn-outline-success">Aplicar Filtros</button>
+    </form>
+</div>
+                <style>
+                  .marca-scroll-container {
+                    max-height: 180px;
+                    /* Ajusta la altura máxima según sea necesario */
+                    overflow-y: auto;
+                    /* Habilita el scroll vertical */
+                    border: 1px solid #ccc;
+                    /* Añade un borde para mayor claridad */
+                    padding: 15px;
+                    margin-top: 10px;
+                  }
+                </style>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
   <style>
     .card {
@@ -538,8 +658,9 @@ $rangosPrecio = array(
               $name = $row['producto_name'];
               $urlImagen = $row['producto_image'];
               $price = $row['producto_price'];
-              $brand = $row['producto_categoria'];
+              $cat = $row['producto_categoria'];
               $logo = $row['producto_logo'];
+              $mar = $row['producto_marca'];
               $shortName = substr($name, 0, 35);
               $formattedPrice = "$" . number_format($price, 0, '', '.');
               ?>
@@ -551,7 +672,7 @@ $rangosPrecio = array(
                     </div>
                     <div class="card-body">
                       <h6 class="card-title" style="color:#272727"><strong><?php echo $shortName; ?></strong></h6>
-                      <p class="card-text"><?php echo $brand; ?></p>
+                      <p class="card-text"><?php echo $cat; ?></p>
                       <p class="card-title">
                       <h5><strong><?php echo $formattedPrice; ?></strong></h5>
                       </p>
