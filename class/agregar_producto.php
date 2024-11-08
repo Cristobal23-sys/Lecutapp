@@ -42,6 +42,7 @@ if (isset($_POST['prod']) && isset($_POST['wishlist'])) {
                         $_SESSION['alert_message'] = "¡Producto añadido!";
                         // Redirigir a la vista view-verlista.php
                         header("Location: ../views/view-verlista.php?idL=" . urlencode($wishlist));
+                        
                         exit();
                     } else {
                         echo "Error al agregar el producto a la lista de deseos: " . mysqli_error($conn);

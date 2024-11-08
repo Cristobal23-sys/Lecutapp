@@ -208,7 +208,7 @@ try {
                 <strong>Bienvenido, <?php echo $_SESSION['username']; ?></strong>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                <li><a class="dropdown-item" href="views/view-listacompra.php">Lista de compras</a></li>
+                <li><a class="dropdown-item" onclick="location.href='views/view-listacompra.php'">Lista de compras</a></li>
                 <li><a class="dropdown-item" href="class/Cerrarsesion.php">Cerrar sesión</a></li>
               </ul>
             </li>

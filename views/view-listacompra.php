@@ -10,7 +10,7 @@ if (isset($_SESSION['user'])) {
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_assoc($result);
   $idUser = $row['id'];
-  $cambio = "<a class='dropdown-item' href='../views/view-listacompra.php'>Lista de deseos</a>";
+  $cambio = "<a class='dropdown-item' href='../views/view-listacompra.php'>Lista de Compras</a>";
   $reg = "<a class='dropdown-item' href='../Class/logOut.php'>Cerrar Sesión</a>";
 
   $query = "SELECT COUNT(*) AS count FROM listacompra WHERE id_usuario = '$idUser'";

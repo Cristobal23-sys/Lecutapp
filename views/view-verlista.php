@@ -285,32 +285,34 @@ while ($row = mysqli_fetch_assoc($resultReceta)) {
             $formatted_Price = "$" . number_format($price, 0, '', '.'); // Formato sin decimales y separador de miles
 
             ?>
-            <div class="card mb-4 col-12 col-md-8" style="background-color: rgb(255, 255, 255); margin-top: 10px;">
-              <div class="row g-0 align-items-start">
-                <div class="col-md-4 col-12">
-                  <img src="<?php echo $urlImagen ?>" class="img-fluid rounded-start card-image" alt="...">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body d-flex flex-column">
-                    <h5 class="card-title" style="color: black; font-size: 1.0 rem;"><?php echo $name; ?></h5>
-                    <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
-                    <p class="card-title" style="color: black; font-size: 1.1rem;">$<?php echo $price; ?></p>
-                    <img src="<?php echo $logo; ?>" alt="Imagen" style="width: 10%;">
+<div class="card mb-4 col-12 col-md-8" style="background-color: rgb(255, 255, 255); margin-top: 1px;">
+  <div class="row g-0 align-items-start">
+    <div class="col-md-4 col-12 d-flex justify-content-center align-items-center"> <!-- Centrado con Flexbox -->
+      <img src="<?php echo $urlImagen ?>" class="img-fluid rounded-start card-image" alt="..." style="max-width: 100%; height: auto;">
+    </div>
+    <div class="col-md-8 d-flex flex-column">
+      <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title" style="color: black; font-size: 1.3rem;"><?php echo $name; ?></h5>
+          <img src="<?php echo $logo; ?>" alt="Imagen" style="width: 7%;">
+        </div>
+        <p class="card-text" style="color: black; font-size: 0.8rem;"><?php echo $brand; ?></p>
 
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="card-title mb-0" style="color: black; font-size: 1.5rem;">$<?php echo $price; ?></p>
 
-                    <div class="mt-auto">
-                      <div class="card-footer d-flex flex-column justify-content-end align-items-end"
-                        style="background-color: transparent; border: none;">
-                        <a href="../Class/eliminarprodlista.php?idP=<?php echo $id ?>&idL=<?php echo $idL ?>"
-                          class="btn btn-danger mb-2" style="width: 30%;">Eliminar</a>
-                        <a href="<?php echo $url ?>" target="_blank" class="btn btn-primary" style="width: 30%;">Ir a la
-                          tienda</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <!-- Botones alineados a la derecha -->
+          <div class="d-flex flex-column align-items-end">
+            <a href="../class/eliminarprodlista.php?idP=<?php echo $id ?>&idL=<?php echo $idL ?>"
+               class="btn btn-danger mb-2" style="width: 160px;">Eliminar</a>
+            <a href="<?php echo $url ?>" target="_blank" class="btn btn-primary" style="width: 160px;">Ir a la tienda</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
             <?php
           }
         } else {

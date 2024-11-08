@@ -172,7 +172,7 @@ if (!is_array($marcaSeleccionada)) {
       break;
     default:
       // Por defecto, ordenar aleatoriamente si no se especifica orden
-      $sql .= " ORDER BY RAND()";
+      $sql .= " ORDER BY `producto_name` ASC";
       break;
   }
 
@@ -502,81 +502,87 @@ if (!is_array($marcaSeleccionada)) {
         <span class="text-primary"><?php echo $categoriaSeleccionada ?></span>
       </div>
       <div class="container mt-4">
-        <div class="row">
-          <div class="col-md-6 d-flex">
-            <div class="card floating-card" style="width: 16rem;">
-              <div class="card-body">
-                <h6 class="card-title">Ordenar por:</h6>
-                <div class="dropdown">
-                  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+  <div class="row">
+    <!-- Botón para mostrar/ocultar en pantallas pequeñas -->
+    <div class="col-12 d-md-none mb-3">
+      <button class="btn btn-outline-primary" onclick="toggleVisibility()">
+        Mostrar filtros
+      </button>
+    </div>
+
+    <!-- Contenido de la tarjeta, oculto en pantallas pequeñas por defecto -->
+    <div class="col-md-6 d-flex">
+      <div id="filterCard" class="card floating-card d-none d-md-block" style="width: 16rem;">
+        <div class="card-body">
+          <h6 class="card-title">Ordenar por:</h6>
+          <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    🟰 Seleccionar Orden
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item"
-                        href="?orden=precio_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
-                        Menor a Mayor</a></li>
-                    <li><a class="dropdown-item"
-                        href="?orden=precio_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio
-                        Mayor a Menor</a></li>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item"
-                        href="?orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
-                        (A-Z)</a></li>
-                    <li><a class="dropdown-item"
-                        href="?orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre
-                        (Z-A)</a></li>
-                  </ul>
-                </div>
-                <br>
-                <!-- Sección para seleccionar marcas -->
-                <div class="form-group">
-    <h6 class="card-title">Seleccionar Marca:</h6>
-    <form method="GET" action="">
-        <div class="marca-scroll-container">
-            <?php if (is_array($marca)): // Verifica que $marca sea un array ?>
-                <?php foreach ($marca as $marcaItem): ?>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="producto_marca[]"
-                               value="<?php echo htmlspecialchars($marcaItem); ?>"
-                               id="<?php echo htmlspecialchars($marcaItem); ?>" 
-                               <?php echo (in_array($marcaItem, (array) $marcaSeleccionada)) ? 'checked' : ''; ?>>
-                        <label class="form-check-label" for="<?php echo htmlspecialchars($marcaItem); ?>">
-                            <?php echo htmlspecialchars($marcaItem); ?>
-                        </label>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No hay marcas disponibles.</p>
-            <?php endif; ?>
-        </div>
-        <!-- Campos ocultos para mantener el estado -->
-        <input type="hidden" name="pagina" value="<?php echo htmlspecialchars($paginaActual); ?>">
-        <input type="hidden" name="producto_categoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
-        <input type="hidden" name="precio" value="<?php echo htmlspecialchars($rangoSeleccionado); ?>">
-<br>
-        <button type="submit" class="btn btn-outline-success">Aplicar Filtros</button>
-    </form>
-</div>
-                <style>
-                  .marca-scroll-container {
-                    max-height: 180px;
-                    /* Ajusta la altura máxima según sea necesario */
-                    overflow-y: auto;
-                    /* Habilita el scroll vertical */
-                    border: 1px solid #ccc;
-                    /* Añade un borde para mayor claridad */
-                    padding: 15px;
-                    margin-top: 10px;
-                  }
-                </style>
-              </div>
-            </div>
+              🟰 Seleccionar Orden
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item"
+                     href="?orden=precio_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio Menor a Mayor</a></li>
+              <li><a class="dropdown-item"
+                     href="?orden=precio_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Precio Mayor a Menor</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item"
+                     href="?orden=nombre_asc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre (A-Z)</a></li>
+              <li><a class="dropdown-item"
+                     href="?orden=nombre_desc&pagina=<?php echo $paginaActual; ?>&producto_categoria=<?php echo $categoriaSeleccionada; ?>&precio=<?php echo $rangoSeleccionado; ?>">Nombre (Z-A)</a></li>
+            </ul>
           </div>
+          <br>
+          <!-- Sección para seleccionar marcas -->
+          <div class="form-group">
+            <h6 class="card-title">Seleccionar Marca:</h6>
+            <form method="GET" action="">
+              <div class="marca-scroll-container">
+                <?php if (is_array($marca)): ?>
+                  <?php foreach ($marca as $marcaItem): ?>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="producto_marca[]"
+                             value="<?php echo htmlspecialchars($marcaItem); ?>"
+                             id="<?php echo htmlspecialchars($marcaItem); ?>"
+                             <?php echo (in_array($marcaItem, (array) $marcaSeleccionada)) ? 'checked' : ''; ?>>
+                      <label class="form-check-label" for="<?php echo htmlspecialchars($marcaItem); ?>">
+                        <?php echo htmlspecialchars($marcaItem); ?>
+                      </label>
+                    </div>
+                  <?php endforeach; ?>
+                <?php else: ?>
+                  <p>No hay marcas disponibles.</p>
+                <?php endif; ?>
+              </div>
+              <input type="hidden" name="pagina" value="<?php echo htmlspecialchars($paginaActual); ?>">
+              <input type="hidden" name="producto_categoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+              <input type="hidden" name="precio" value="<?php echo htmlspecialchars($rangoSeleccionado); ?>">
+              <br>
+              <button type="submit" class="btn btn-outline-success">Aplicar Filtros</button>
+            </form>
+          </div>
+          <style>
+            .marca-scroll-container {
+              max-height: 180px;
+              overflow-y: auto;
+              border: 1px solid #ccc;
+              padding: 15px;
+              margin-top: 10px;
+            }
+          </style>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleVisibility() {
+    const filterCard = document.getElementById('filterCard');
+    filterCard.classList.toggle('d-none'); // Alterna la visibilidad de la tarjeta en pantallas pequeñas
+  }
+</script>
+
     </div>
   </div>
   </div>
